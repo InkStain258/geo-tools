@@ -75,13 +75,49 @@ const IndustrialLocation: React.FC = () => {
 
           <Box sx={{ mt: 2, p: 1.5, bgcolor: '#f3e5f5', borderRadius: 2 }}>
             <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#7B1FA2' }}>
-              {industry.orientation}
+              📌 {industry.orientation}
             </Typography>
+            {industry.detailDesc && (
+              <Typography variant="body2" sx={{ mb: 1 }}>
+                {industry.detailDesc}
+              </Typography>
+            )}
             <Typography variant="body2">
               该工业类型的首要区位因素是<b>{industry.factors.sort((a, b) => b.weight - a.weight)[0].name}</b>，
               应优先布局在{industry.factors.sort((a, b) => b.weight - a.weight)[0].description.toLowerCase()}的地区。
             </Typography>
           </Box>
+
+          {/* Examples */}
+          {industry.examples && industry.examples.length > 0 && (
+            <Box sx={{ mt: 2, p: 1.5, bgcolor: '#e8eaf6', borderRadius: 2 }}>
+              <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#283593', mb: 0.5 }}>
+                🏭 典型工业举例
+              </Typography>
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                {industry.examples.map((ex, i) => (
+                  <Typography key={i} variant="body2" sx={{
+                    bgcolor: '#c5cae9', px: 1, py: 0.3, borderRadius: 1,
+                    fontSize: '0.8rem',
+                  }}>
+                    {ex}
+                  </Typography>
+                ))}
+              </Box>
+            </Box>
+          )}
+
+          {/* Gaokao Tips */}
+          {industry.gaokaoTips && (
+            <Box sx={{ mt: 2, p: 1.5, bgcolor: '#fff8e1', borderRadius: 2, borderLeft: '4px solid #FF8F00' }}>
+              <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#E65100', mb: 0.5 }}>
+                💡 学习提示 (Gaokao Tips)
+              </Typography>
+              <Typography variant="body2">
+                {industry.gaokaoTips}
+              </Typography>
+            </Box>
+          )}
         </Box>
       </Box>
     </ToolPageLayout>

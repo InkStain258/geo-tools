@@ -98,6 +98,9 @@ export interface IndustryType {
   name: string;
   orientation: string;
   factors: LocationFactor[];
+  examples?: string[];
+  gaokaoTips?: string;
+  detailDesc?: string;
 }
 
 /** 农业类型 */
@@ -106,6 +109,9 @@ export interface AgricultureType {
   name: string;
   naturalFactors: LocationFactor[];
   humanFactors: LocationFactor[];
+  examples?: string[];
+  gaokaoTips?: string;
+  detailDesc?: string;
 }
 
 /** 公式条目 */

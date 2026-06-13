@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
-import { Box, Typography, Select, MenuItem, FormControl, InputLabel, Button } from '@mui/material';
+import { Box, Typography, Select, MenuItem, FormControl, InputLabel, Button, Slider, Chip } from '@mui/material';
 import ToolPageLayout from '@/components/shared/ToolPageLayout';
 import { terrainPresets } from '@/data/terrainPresets';
 import { getCanvasCoords } from '@/utils/canvasHelper';
@@ -7,7 +7,7 @@ import { getCanvasCoords } from '@/utils/canvasHelper';
 const CANVAS_W = 400;
 const CANVAS_H = 400;
 const PROFILE_W = 400;
-const PROFILE_H = 250;
+const PROFILE_H = 280;
 
 const TerrainProfile: React.FC = () => {
   const exportRef = useRef<HTMLDivElement>(null);
@@ -16,6 +16,9 @@ const TerrainProfile: React.FC = () => {
   const [presetId, setPresetId] = useState('mountain');
   const [pointA, setPointA] = useState<{ x: number; y: number } | null>(null);
   const [pointB, setPointB] = useState<{ x: number; y: number } | null>(null);
+  const [verticalExag, setVerticalExag] = useState(1);
+  const [elevationPoints, setElevationPoints] = useState<{ x: number; y: number; h: number }[]>([]);
+  const [terrainTips, setTerrainTips] = useState<string[]>([]);
 
   const preset = terrainPresets.find((p) => p.id === presetId) || terrainPresets[0];
 
@@ -42,6 +45,46 @@ const TerrainProfile: React.FC = () => {
 
     return Math.max(0, h);
   }, [preset, presetId]);
+
+  // Generate terrain interpretation tips
+  useEffect(() => {
+    const tips: string[] = [];
+    switch (presetId) {
+      case 'mountain':
+        tips.push('🔺 等高线密集处 → 陡坡 (steep slope)');
+        tips.push('🔻 等高线稀疏处 → 缓坡 (gentle slope)');
+        tips.push('⛰️ 等高线呈闭合圆形，数值内高外低 → 山峰');
+        break;
+      case 'valley':
+        tips.push('🏞️ 等高线向高处凸出 → 山谷 (凸高为谷)');
+        tips.push('🏔️ 等高线向低处凸出 → 山脊 (凸低为脊)');
+        tips.push('💧 山谷常有河流发育，山脊常为分水岭');
+        break;
+      case 'ridge':
+        tips.push('🏔️ 等高线向低处凸出 → 山脊 (凸低为脊)');
+        tips.push('💧 山脊是分水岭，两侧水流相背');
+        tips.push('📏 注意山脊线与等高线垂直相交');
+        break;
+      case 'basin':
+        tips.push('🥣 等高线呈闭合圆形，数值外高内低 → 盆地');
+        tips.push('📐 四周高中间低，如四川盆地');
+        break;
+      case 'saddle':
+        tips.push('🐴 两山顶之间低洼处 → 鞍部 (saddle)');
+        tips.push('🚶 鞍部是翻越山脊的最佳通道');
+        break;
+      case 'plateau':
+        tips.push('🏜️ 顶部等高线稀疏、边缘密集 → 高原');
+        tips.push('📏 顶部平坦广阔，边缘陡峭下降');
+        break;
+      case 'escarpment':
+        tips.push('🧗 多条等高线重叠 → 陡崖 (cliff/escarpment)');
+        tips.push('⚠️ 等高线重合处坡度近垂直');
+        break;
+    }
+    tips.push('💡 口诀：凸高为谷，凸低为脊（等高线弯曲方向）');
+    setTerrainTips(tips);
+  }, [presetId]);
 
   /** Draw contour map */
   const drawContours = useCallback(() => {
@@ -93,6 +136,17 @@ const TerrainProfile: React.FC = () => {
     ctx.font = '10px sans-serif';
     ctx.fillText(`${preset.peakHeight}m`, preset.peakX + 5, preset.peakY - 5);
 
+    // Draw elevation point markers
+    elevationPoints.forEach((ep) => {
+      ctx.fillStyle = '#FF5722';
+      ctx.beginPath();
+      ctx.arc(ep.x, ep.y, 4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#333';
+      ctx.font = '9px sans-serif';
+      ctx.fillText(`${Math.round(ep.h)}m`, ep.x + 6, ep.y - 4);
+    });
+
     // Draw profile line
     if (pointA && pointB) {
       ctx.strokeStyle = '#F57C00';
@@ -107,21 +161,21 @@ const TerrainProfile: React.FC = () => {
       // Point A
       ctx.fillStyle = '#F57C00';
       ctx.beginPath();
-      ctx.arc(pointA.x, pointA.y, 5, 0, Math.PI * 2);
+      ctx.arc(pointA.x, pointA.y, 6, 0, Math.PI * 2);
       ctx.fill();
       ctx.fillStyle = '#fff';
-      ctx.font = 'bold 12px sans-serif';
+      ctx.font = 'bold 11px sans-serif';
       ctx.fillText('A', pointA.x - 4, pointA.y - 8);
 
       // Point B
       ctx.fillStyle = '#1565C0';
       ctx.beginPath();
-      ctx.arc(pointB.x, pointB.y, 5, 0, Math.PI * 2);
+      ctx.arc(pointB.x, pointB.y, 6, 0, Math.PI * 2);
       ctx.fill();
       ctx.fillStyle = '#fff';
       ctx.fillText('B', pointB.x - 4, pointB.y - 8);
     }
-  }, [getHeight, pointA, pointB, preset]);
+  }, [getHeight, pointA, pointB, preset, elevationPoints]);
 
   /** Draw profile */
   const drawProfile = useCallback(() => {
@@ -148,13 +202,14 @@ const TerrainProfile: React.FC = () => {
 
     ctx.fillStyle = '#333';
     ctx.font = '10px sans-serif';
-    ctx.fillText('距离', PROFILE_W - 40, PROFILE_H - 10);
+    ctx.fillText('距离 →', PROFILE_W - 50, PROFILE_H - 10);
     ctx.fillText('海拔(m)', 2, 20);
 
     if (!pointA || !pointB) {
       ctx.fillStyle = '#999';
-      ctx.font = '14px sans-serif';
-      ctx.fillText('请在等高线图上点击两点确定剖面线', 60, PROFILE_H / 2);
+      ctx.font = '13px sans-serif';
+      ctx.fillText('请在等高线图上点击两点确定剖面线', 55, PROFILE_H / 2 - 10);
+      ctx.fillText('💡 可点击等高线标注自选点高程', 65, PROFILE_H / 2 + 12);
       return;
     }
 
@@ -164,31 +219,34 @@ const TerrainProfile: React.FC = () => {
 
     if (totalDist < 5) return;
 
-    const chartW = PROFILE_W - 50;
-    const chartH = PROFILE_H - 50;
-    const points: { x: number; h: number }[] = [];
+    const chartW = PROFILE_W - 60;
+    const chartH = PROFILE_H - 60;
+    const points: { x: number; h: number; dist: number }[] = [];
 
     for (let i = 0; i <= 100; i++) {
       const t = i / 100;
       const px = pointA.x + dx * t;
       const py = pointA.y + dy * t;
       const h = getHeight(px, py);
-      points.push({ x: 40 + t * chartW, h });
+      points.push({ x: 50 + t * chartW, h, dist: t * totalDist });
     }
 
     const maxH = Math.max(...points.map((p) => p.h), 100);
+    const vScale = verticalExag;
 
     // Draw profile fill
     ctx.beginPath();
-    ctx.moveTo(40, PROFILE_H - 30);
+    ctx.moveTo(50, PROFILE_H - 30);
     points.forEach((p) => {
-      const y = PROFILE_H - 30 - (p.h / maxH) * chartH;
-      ctx.lineTo(p.x, y);
+      const y = PROFILE_H - 30 - (p.h / maxH) * chartH * vScale;
+      // clamp
+      const clampedY = Math.max(PROFILE_H - 30 - chartH * vScale, y);
+      ctx.lineTo(p.x, clampedY);
     });
-    ctx.lineTo(40 + chartW, PROFILE_H - 30);
+    ctx.lineTo(50 + chartW, PROFILE_H - 30);
     ctx.closePath();
     const gradient = ctx.createLinearGradient(0, 0, 0, PROFILE_H);
-    gradient.addColorStop(0, 'rgba(46,125,50,0.6)');
+    gradient.addColorStop(0, 'rgba(46,125,50,0.7)');
     gradient.addColorStop(1, 'rgba(46,125,50,0.1)');
     ctx.fillStyle = gradient;
     ctx.fill();
@@ -196,37 +254,74 @@ const TerrainProfile: React.FC = () => {
     // Draw profile line
     ctx.beginPath();
     points.forEach((p, i) => {
-      const y = PROFILE_H - 30 - (p.h / maxH) * chartH;
-      if (i === 0) ctx.moveTo(p.x, y);
-      else ctx.lineTo(p.x, y);
+      const y = PROFILE_H - 30 - (p.h / maxH) * chartH * vScale;
+      const clampedY = Math.max(PROFILE_H - 30 - chartH * vScale, y);
+      if (i === 0) ctx.moveTo(p.x, clampedY);
+      else ctx.lineTo(p.x, clampedY);
     });
     ctx.strokeStyle = '#2E7D32';
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 2.5;
     ctx.stroke();
+
+    // Vertical exaggeration label
+    if (vScale !== 1) {
+      ctx.fillStyle = '#F57C00';
+      ctx.font = 'bold 10px sans-serif';
+      ctx.fillText(`垂直夸大 ×${vScale.toFixed(1)}`, PROFILE_W - 130, 18);
+    }
 
     // Y axis labels
     ctx.fillStyle = '#333';
     ctx.font = '9px sans-serif';
     for (let i = 0; i <= 4; i++) {
       const val = Math.round((maxH * i) / 4);
-      const y = PROFILE_H - 30 - (val / maxH) * chartH;
-      ctx.fillText(`${val}`, 2, y + 3);
+      const y = PROFILE_H - 30 - (val / maxH) * chartH * vScale;
+      const clampedY = Math.max(PROFILE_H - 30 - chartH * vScale, y);
+      ctx.fillText(`${val}`, 2, clampedY + 3);
       ctx.strokeStyle = '#ddd';
       ctx.beginPath();
-      ctx.moveTo(40, y);
-      ctx.lineTo(PROFILE_W - 10, y);
+      ctx.moveTo(50, clampedY);
+      ctx.lineTo(PROFILE_W - 10, clampedY);
       ctx.stroke();
     }
-  }, [pointA, pointB, getHeight]);
+
+    // Mark steep vs gentle slopes
+    let maxSlope = 0;
+    let maxSlopeIdx = 0;
+    for (let i = 1; i < points.length; i++) {
+      const slope = Math.abs(points[i].h - points[i - 1].h) / (points[i].dist - points[i - 1].dist);
+      if (slope > maxSlope) {
+        maxSlope = slope;
+        maxSlopeIdx = i;
+      }
+    }
+    if (maxSlope > 0.2 && points.length > 0) {
+      const p = points[maxSlopeIdx];
+      const py = PROFILE_H - 30 - (p.h / maxH) * chartH * vScale;
+      ctx.fillStyle = '#F44336';
+      ctx.font = 'bold 9px sans-serif';
+      ctx.fillText('陡坡', p.x + 2, py - 4);
+    }
+  }, [pointA, pointB, getHeight, verticalExag]);
 
   useEffect(() => { drawContours(); }, [drawContours]);
   useEffect(() => { drawProfile(); }, [drawProfile]);
 
   const handleCanvasClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const { x, y } = getCanvasCoords(e.currentTarget, e);
+    const h = getHeight(x, y);
+
+    // If shift-like behavior: add elevation point
+    // Simplified: if we have A and B already set, add elevation point
+    if (pointA && pointB) {
+      setElevationPoints(prev => [...prev.slice(-10), { x, y, h }]);
+      return;
+    }
+
     if (!pointA || (pointA && pointB)) {
       setPointA({ x, y });
       setPointB(null);
+      setElevationPoints([]);
     } else {
       setPointB({ x, y });
     }
@@ -236,17 +331,17 @@ const TerrainProfile: React.FC = () => {
     <ToolPageLayout title="地形剖面生成器" exportRef={exportRef}>
       <Box ref={exportRef} sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 2, width: '100%' }}>
         {/* Left: Contour map */}
-        <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 1 }}>
+        <Box sx={{ flex: 1.2, display: 'flex', flexDirection: 'column', gap: 1 }}>
           <FormControl size="small" sx={{ minWidth: 140 }}>
             <InputLabel>地形预设</InputLabel>
-            <Select value={presetId} label="地形预设" onChange={(e) => { setPresetId(e.target.value); setPointA(null); setPointB(null); }}>
+            <Select value={presetId} label="地形预设" onChange={(e) => { setPresetId(e.target.value); setPointA(null); setPointB(null); setElevationPoints([]); }}>
               {terrainPresets.map((p) => (
                 <MenuItem key={p.id} value={p.id}>{p.name} - {p.description}</MenuItem>
               ))}
             </Select>
           </FormControl>
           <Typography variant="body2" sx={{ color: '#757575' }}>
-            点击等高线图上两点确定 A-B 剖面线
+            🖱️ 点击两点确定 A-B 剖面线，再点击可标注高程点
           </Typography>
           <canvas
             ref={contourCanvasRef}
@@ -255,12 +350,22 @@ const TerrainProfile: React.FC = () => {
             onClick={handleCanvasClick}
             style={{ border: '1px solid #ddd', borderRadius: 8, cursor: 'crosshair', maxWidth: '100%' }}
           />
-          <Button variant="outlined" size="small" onClick={() => { setPointA(null); setPointB(null); }}>
-            重置剖面线
-          </Button>
+          <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+            <Button variant="outlined" size="small" onClick={() => { setPointA(null); setPointB(null); setElevationPoints([]); }}>
+              重置剖面线
+            </Button>
+            <Button variant="outlined" size="small" color="warning" onClick={() => setElevationPoints([])}>
+              清除高程点
+            </Button>
+            {elevationPoints.length > 0 && (
+              <Typography variant="body2" sx={{ color: '#757575', alignSelf: 'center' }}>
+                已标注 {elevationPoints.length} 个高程点
+              </Typography>
+            )}
+          </Box>
         </Box>
 
-        {/* Right: Profile */}
+        {/* Right: Profile + Tips */}
         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 1 }}>
           <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>地形剖面图</Typography>
           <canvas
@@ -269,9 +374,47 @@ const TerrainProfile: React.FC = () => {
             height={PROFILE_H}
             style={{ border: '1px solid #ddd', borderRadius: 8, maxWidth: '100%', backgroundColor: '#f9f9f9' }}
           />
-          <Typography variant="body2" sx={{ color: '#757575', mt: 1 }}>
-            {preset.name}：{preset.description}
-          </Typography>
+          
+          {/* Vertical exaggeration */}
+          <Box>
+            <Typography variant="subtitle2" sx={{ fontWeight: 600, fontSize: '0.85rem' }}>
+              📐 垂直夸大系数
+            </Typography>
+            <Slider
+              value={verticalExag}
+              onChange={(_, v) => setVerticalExag(v as number)}
+              min={0.5}
+              max={3}
+              step={0.25}
+              valueLabelDisplay="auto"
+              marks={[{ value: 1, label: '×1' }, { value: 2, label: '×2' }, { value: 3, label: '×3' }]}
+              size="small"
+            />
+            <Typography variant="body2" sx={{ color: '#757575', fontSize: '0.75rem' }}>
+              垂直夸大使地形起伏更明显，便于判读（实际地形×{verticalExag.toFixed(2)}）
+            </Typography>
+          </Box>
+
+          {/* Terrain interpretation tips */}
+          <Box sx={{ bgcolor: '#FFF8E1', p: 1.5, borderRadius: 2, border: '1px solid #FFE082' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 0.5 }}>
+              📖 等高线判读技巧
+            </Typography>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+              {terrainTips.map((tip, i) => (
+                <Chip key={i} label={tip} size="small" variant="outlined" sx={{ bgcolor: '#fff', fontSize: '0.7rem' }} />
+              ))}
+            </Box>
+          </Box>
+
+          <Box sx={{ bgcolor: '#E8F5E9', p: 1.5, borderRadius: 2 }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 0.5 }}>
+              {preset.name}：{preset.description}
+            </Typography>
+            <Typography variant="body2" sx={{ color: '#757575' }}>
+              最大高差约 {preset.peakHeight}m · 剖面图展示水平距离与垂直高度的关系
+            </Typography>
+          </Box>
         </Box>
       </Box>
     </ToolPageLayout>

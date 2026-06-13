@@ -3,8 +3,8 @@ import { Box, Typography, TextField, Button } from '@mui/material';
 import ToolPageLayout from '@/components/shared/ToolPageLayout';
 import { calcSunAltitude, calcDeclination, getDayOfYear } from '@/utils/geoCalculations';
 
-const CANVAS_W = 500;
-const CANVAS_H = 350;
+const CANVAS_W = 520;
+const CANVAS_H = 380;
 
 const SunAltitude: React.FC = () => {
   const exportRef = useRef<HTMLDivElement>(null);
@@ -13,9 +13,17 @@ const SunAltitude: React.FC = () => {
   const [month, setMonth] = useState(6);
   const [day, setDay] = useState(22);
   const [altitude, setAltitude] = useState<number | null>(null);
+  const [shadowRatio, setShadowRatio] = useState<number | null>(null);
 
   const dayOfYear = getDayOfYear(month, day);
   const declination = calcDeclination(dayOfYear);
+
+  // Shadow length ratio: shadow_length / pole_height = cot(altitude)
+  const calcShadow = (alt: number): number => {
+    if (alt <= 0) return Infinity;
+    const altRad = alt * (Math.PI / 180);
+    return 1 / Math.tan(altRad); // cot(alt)
+  };
 
   const drawDiagram = useCallback(() => {
     const canvas = canvasRef.current;
@@ -63,15 +71,54 @@ const SunAltitude: React.FC = () => {
       const sunX = centerX + rayLen * Math.cos(altRad);
       const sunY = groundY - rayLen * Math.sin(altRad);
 
+      // Draw pole (vertical reference)
+      const poleHeight = 80;
+      ctx.fillStyle = '#555';
+      ctx.fillRect(centerX - 3, groundY - poleHeight, 6, poleHeight);
+      ctx.fillStyle = '#333';
+      ctx.font = '9px sans-serif';
+      ctx.fillText('标杆', centerX - 10, groundY - poleHeight - 4);
+
       // Sun ray line
       ctx.strokeStyle = '#F57C00';
-      ctx.lineWidth = 2;
+      ctx.lineWidth = 2.5;
       ctx.setLineDash([5, 3]);
       ctx.beginPath();
-      ctx.moveTo(centerX, groundY);
+      ctx.moveTo(centerX, groundY - poleHeight); // from top of pole
       ctx.lineTo(sunX, sunY);
       ctx.stroke();
       ctx.setLineDash([]);
+
+      // Shadow on ground (from base of pole extending opposite to sun)
+      if (shadowRatio !== null && shadowRatio !== Infinity) {
+        const shadowLen = Math.min(poleHeight * shadowRatio, 250);
+        const shadowEndX = centerX - shadowLen; // shadow goes opposite direction on ground
+        
+        // Shadow polygon
+        ctx.fillStyle = 'rgba(0,0,0,0.1)';
+        ctx.beginPath();
+        ctx.moveTo(centerX, groundY);
+        ctx.lineTo(shadowEndX, groundY);
+        ctx.lineTo(shadowEndX, groundY + 2);
+        ctx.lineTo(centerX, groundY + 2);
+        ctx.closePath();
+        ctx.fill();
+        
+        // Shadow edge
+        ctx.strokeStyle = '#666';
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([2, 2]);
+        ctx.beginPath();
+        ctx.moveTo(centerX, groundY);
+        ctx.lineTo(shadowEndX, groundY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Shadow length label
+        ctx.fillStyle = '#666';
+        ctx.font = '9px sans-serif';
+        ctx.fillText(`影长≈${(shadowRatio * 100).toFixed(0)}cm (1m标杆)`, centerX - shadowLen / 2 - 30, groundY + 16);
+      }
 
       // Sun
       ctx.fillStyle = '#FFD54F';
@@ -82,39 +129,61 @@ const SunAltitude: React.FC = () => {
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      // Angle arc
+      // Sun rays
+      ctx.strokeStyle = '#FFD54F';
+      ctx.lineWidth = 1;
+      for (let i = 0; i < 6; i++) {
+        const ra = (i / 6) * Math.PI * 2;
+        ctx.beginPath();
+        ctx.moveTo(sunX + 20 * Math.cos(ra), sunY + 20 * Math.sin(ra));
+        ctx.lineTo(sunX + 27 * Math.cos(ra), sunY + 27 * Math.sin(ra));
+        ctx.stroke();
+      }
+
+      // Angle arc from horizontal to sun ray
       ctx.strokeStyle = '#F57C00';
-      ctx.lineWidth = 1.5;
+      ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.arc(centerX, groundY, 50, -altRad, 0);
+      ctx.arc(centerX, groundY - poleHeight, 40, -altRad, 0);
       ctx.stroke();
 
       // Angle label
       const labelAngle = -altRad / 2;
       ctx.fillStyle = '#F57C00';
       ctx.font = 'bold 13px sans-serif';
-      ctx.fillText(`H = ${altitude.toFixed(1)}°`, centerX + 55 * Math.cos(labelAngle), groundY + 55 * Math.sin(labelAngle));
+      ctx.fillText(`H = ${altitude.toFixed(1)}°`, centerX + 45 * Math.cos(labelAngle), groundY - poleHeight + 45 * Math.sin(labelAngle));
 
-      // Horizontal reference
+      // Horizontal reference line through top of pole
       ctx.strokeStyle = '#999';
       ctx.lineWidth = 1;
       ctx.setLineDash([3, 3]);
       ctx.beginPath();
-      ctx.moveTo(centerX, groundY);
-      ctx.lineTo(centerX + 120, groundY);
+      ctx.moveTo(centerX - 60, groundY - poleHeight);
+      ctx.lineTo(centerX + 120, groundY - poleHeight);
       ctx.stroke();
       ctx.setLineDash([]);
+      ctx.fillStyle = '#999';
+      ctx.font = '9px sans-serif';
+      ctx.fillText('水平面', centerX + 125, groundY - poleHeight + 4);
 
-      // Vertical reference
+      // Ground line extension
+      ctx.setLineDash([3, 3]);
       ctx.beginPath();
-      ctx.moveTo(centerX, groundY);
-      ctx.lineTo(centerX, groundY - 120);
+      ctx.moveTo(centerX + 120, groundY);
+      ctx.lineTo(centerX + 180, groundY);
       ctx.stroke();
+      ctx.setLineDash([]);
 
       // Zenith label
       ctx.fillStyle = '#666';
       ctx.font = '10px sans-serif';
-      ctx.fillText('天顶', centerX - 12, groundY - 125);
+      ctx.fillText('天顶 (Zenith)', centerX - 26, groundY - poleHeight - 50);
+
+      // Geometric labels
+      ctx.fillStyle = '#2E7D32';
+      ctx.font = 'bold 10px sans-serif';
+      ctx.fillText('H = 90° - |φ - δ|', 10, 30);
+      ctx.fillText(`φ(${latitude >= 0 ? 'N' : 'S'}${Math.abs(latitude)}°) — δ(${declination >= 0 ? 'N' : 'S'}${Math.abs(declination).toFixed(1)}°)`, 10, 48);
     } else {
       ctx.fillStyle = '#999';
       ctx.font = '14px sans-serif';
@@ -132,6 +201,7 @@ const SunAltitude: React.FC = () => {
   const handleCalc = () => {
     const h = calcSunAltitude(latitude, declination);
     setAltitude(h);
+    setShadowRatio(calcShadow(h));
   };
 
   return (
@@ -184,6 +254,16 @@ const SunAltitude: React.FC = () => {
               <Typography variant="body2" sx={{ mt: 1 }}>
                 直射点纬度 δ = {declination >= 0 ? 'N' : 'S'} {Math.abs(declination).toFixed(1)}°
               </Typography>
+              {shadowRatio !== null && (
+                <>
+                  <Typography variant="body2" sx={{ mt: 0.5 }}>
+                    📏 影长比值：1m标杆 → 影子 ≈ {(shadowRatio * 100).toFixed(0)}cm
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: '#757575', fontSize: '0.75rem' }}>
+                    公式：影长 = 物高 / tan(H)，正午影子最短
+                  </Typography>
+                </>
+              )}
             </Box>
           )}
 

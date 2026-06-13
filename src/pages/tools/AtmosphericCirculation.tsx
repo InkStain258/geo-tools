@@ -224,9 +224,60 @@ const AtmosphericCirculation: React.FC = () => {
             valueLabelFormat={(v) => `${v + 1}月`}
           />
         </Box>
-        <Box sx={{ display: 'flex', gap: 2, mt: 1 }}>
-          <Typography variant="body2" sx={{ color: '#ef5350' }}>● 低压带/上升气流</Typography>
-          <Typography variant="body2" sx={{ color: '#42A5F5' }}>● 高压带/下沉气流</Typography>
+        <Box sx={{ display: 'flex', gap: 2, mt: 1, flexWrap: 'wrap' }}>
+          <Typography variant="body2" sx={{ color: '#ef5350' }}>● 低压带/上升气流 → 多阴雨</Typography>
+          <Typography variant="body2" sx={{ color: '#42A5F5' }}>● 高压带/下沉气流 → 晴朗干燥</Typography>
+        </Box>
+
+        {/* Educational Content Panel */}
+        <Box sx={{ mt: 3, p: 2, bgcolor: '#f5f5f5', borderRadius: 2, border: '1px solid #e0e0e0' }}>
+          <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 1.5, color: '#2E7D32' }}>
+            📚 大气环流知识详解（高考必备）
+          </Typography>
+
+          <Typography variant="subtitle2" sx={{ fontWeight: 700, mt: 1.5, color: '#1565C0' }}>
+            一、三圈环流的形成机制
+          </Typography>
+          <Typography variant="body2" sx={{ mb: 1 }}>
+            太阳辐射在地表的纬度差异 → 赤道受热多、极地受热少 → 产生气压梯度力 → 驱动大气运动。
+            受地转偏向力影响，单一环流被打破，形成三个环流圈：<b>哈德莱环流</b>（低纬，热力环流）、
+            <b>费雷尔环流</b>（中纬，动力环流）、<b>极地环流</b>（高纬，热力环流）。
+          </Typography>
+
+          <Typography variant="subtitle2" sx={{ fontWeight: 700, mt: 1.5, color: '#1565C0' }}>
+            二、七个气压带和六个风带
+          </Typography>
+          <Typography variant="body2" sx={{ mb: 0.5 }}>
+            <b>气压带（由赤道向两极）：</b>赤道低压带（热力）→ 副热带高压带（动力，30°）→ 副极地低压带（动力，60°）→ 极地高压（热力）。
+          </Typography>
+          <Typography variant="body2" sx={{ mb: 1 }}>
+            <b>风带（北半球）：</b>东北信风带（0°-30°N）→ 盛行西风带（30°N-60°N）→ 极地东风带（60°N-90°N）。
+            南半球风带方向相反。风带名称由<b>风的来向</b>命名。
+          </Typography>
+
+          <Typography variant="subtitle2" sx={{ fontWeight: 700, mt: 1.5, color: '#1565C0' }}>
+            三、气压带风带的季节移动
+          </Typography>
+          <Typography variant="body2" sx={{ mb: 1 }}>
+            随太阳直射点的南北移动，气压带和风带也做季节性移动：<b>北半球夏季北移，冬季南移，移动幅度约5°-10°</b>。
+            这一规律决定了地中海气候（冬季受西风控制多雨，夏季受副高控制干燥）、
+            热带草原气候（夏季受赤道低压控制多雨，冬季受信风控制干燥）、
+            热带季风气候（夏季南半球东南信风越过赤道偏转为西南季风）的形成。
+          </Typography>
+
+          <Box sx={{ mt: 2, p: 1.5, bgcolor: '#fff8e1', borderRadius: 1, borderLeft: '4px solid #FF8F00' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#E65100', mb: 0.5 }}>
+              💡 学习提示 (Gaokao Tips)
+            </Typography>
+            <Typography variant="body2" component="div">
+              <ul style={{ margin: '4px 0', paddingLeft: 20 }}>
+                <li><b>记忆口诀：</b>"赤道低压是热因，副高下沉动生因；极地高压因寒冷，副低处于两锋间。"</li>
+                <li><b>解题关键：</b>判断某地气候特征的成因时，首先确定其所处的气压带/风带位置，再结合季节移动规律。</li>
+                <li><b>常见考点：</b>①用气压带风带解释气候类型分布；②用季风环流解释东亚/南亚季风；③结合洋流分析沿岸气候。</li>
+                <li><b>区分要点：</b>热力成因（赤道低压、极地高压）vs 动力成因（副热带高压、副极地低压）；信风/东风来自高纬→低纬，西风来自低纬→高纬。</li>
+              </ul>
+            </Typography>
+          </Box>
         </Box>
       </Box>
     </ToolPageLayout>

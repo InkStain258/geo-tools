@@ -17,6 +17,33 @@ const SunlightCalculator: React.FC = () => {
   const dayOfYear = getDayOfYear(month, day);
   const declination = calcDeclination(dayOfYear);
 
+  // Calculate sunrise/sunset times
+  const calcSunriseSunset = (lat: number, decl: number) => {
+    const latRad = lat * (Math.PI / 180);
+    const declRad = decl * (Math.PI / 180);
+    const cosHA = -Math.tan(latRad) * Math.tan(declRad);
+    
+    // Clip to [-1, 1]
+    const clipped = Math.max(-1, Math.min(1, cosHA));
+    const ha = Math.acos(clipped); // half-day arc in radians
+    const dayHours = (2 * ha * 12) / Math.PI; // convert to hours
+    
+    if (cosHA >= 1) return { sunrise: null, sunset: null, dayHours: 24, type: '极昼' };
+    if (cosHA <= -1) return { sunrise: null, sunset: null, dayHours: 0, type: '极夜' };
+    
+    const sunriseHour = 12 - dayHours / 2;
+    const sunsetHour = 12 + dayHours / 2;
+    
+    return {
+      sunrise: `${Math.floor(sunriseHour)}:${String(Math.round((sunriseHour % 1) * 60)).padStart(2, '0')}`,
+      sunset: `${Math.floor(sunsetHour)}:${String(Math.round((sunsetHour % 1) * 60)).padStart(2, '0')}`,
+      dayHours,
+      type: '正常',
+    };
+  };
+
+  const ssInfo = calcSunriseSunset(queryLat, declination);
+
   const drawSunlight = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -105,25 +132,45 @@ const SunlightCalculator: React.FC = () => {
     ctx.font = '10px sans-serif';
     ctx.fillText(`直射${declination >= 0 ? 'N' : 'S'}${Math.abs(declination).toFixed(1)}°`, cx + tiltOffset * 0.5 + 12, directY + 4);
 
-    // Latitude lines
-    const latLines = [0, 23.5, -23.5, 66.5, -66.5];
-    const latLabels = ['赤道', '北回归线', '南回归线', '北极圈', '南极圈'];
-    ctx.setLineDash([3, 3]);
-    ctx.strokeStyle = 'rgba(255,255,255,0.5)';
-    ctx.lineWidth = 0.8;
-    latLines.forEach((lat, i) => {
-      const ly = cy - (lat / 90) * radius;
+    // Latitude lines - key circles with clearer annotations
+    const latLines = [
+      { val: 0, label: '赤道 Equator', color: '#FF9800' },
+      { val: 23.5, label: '北回归线 Tropic of Cancer', color: '#F44336' },
+      { val: -23.5, label: '南回归线 Tropic of Capricorn', color: '#2196F3' },
+      { val: 66.5, label: '北极圈 Arctic Circle', color: '#9C27B0' },
+      { val: -66.5, label: '南极圈 Antarctic Circle', color: '#00BCD4' },
+    ];
+    
+    latLines.forEach((line) => {
+      const ly = cy - (line.val / 90) * radius;
+      ctx.setLineDash([4, 4]);
+      ctx.strokeStyle = line.color;
+      ctx.lineWidth = 1;
       ctx.beginPath();
       const halfW = Math.sqrt(Math.max(0, radius * radius - (ly - cy) * (ly - cy)));
       ctx.moveTo(cx - halfW, ly);
       ctx.lineTo(cx + halfW, ly);
       ctx.stroke();
+      ctx.setLineDash([]);
 
-      ctx.fillStyle = 'rgba(255,255,255,0.8)';
-      ctx.font = '9px sans-serif';
-      ctx.fillText(latLabels[i], cx + halfW + 3, ly + 3);
+      // Labels on right side
+      ctx.fillStyle = line.color;
+      ctx.font = 'bold 9px sans-serif';
+      ctx.fillText(line.label, cx + halfW + 4, ly + 3);
     });
-    ctx.setLineDash([]);
+
+    // Twilight zone (晨昏蒙影)
+    const twilightOffset = 18; // civil twilight is ~6°, but let's use 18 pixels visual
+    ctx.fillStyle = 'rgba(255, 193, 7, 0.15)';
+    ctx.beginPath();
+    ctx.ellipse(cx, cy, Math.abs(tiltOffset) + twilightOffset, radius + twilightOffset * 0.3, 0, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // Second twilight ring
+    ctx.fillStyle = 'rgba(255, 152, 0, 0.08)';
+    ctx.beginPath();
+    ctx.ellipse(cx, cy, Math.abs(tiltOffset) + twilightOffset * 2, radius + twilightOffset * 0.6, 0, 0, Math.PI * 2);
+    ctx.fill();
 
     // Info text
     ctx.fillStyle = '#333';
@@ -197,6 +244,30 @@ const SunlightCalculator: React.FC = () => {
             </Box>
           )}
           <Box sx={{ p: 1.5, bgcolor: '#fff3e0', borderRadius: 2 }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>日落日升时间 (纬度{queryLat}°)</Typography>
+            {ssInfo.type === '极昼' ? (
+              <Typography variant="body2" sx={{ fontWeight: 700, color: '#F57C00' }}>
+                🌞 极昼 — 太阳24小时不落
+              </Typography>
+            ) : ssInfo.type === '极夜' ? (
+              <Typography variant="body2" sx={{ fontWeight: 700, color: '#1565C0' }}>
+                🌑 极夜 — 太阳24小时不升
+              </Typography>
+            ) : (
+              <>
+                <Typography variant="body2">
+                  🌅 日出：{ssInfo.sunrise} | 🌇 日落：{ssInfo.sunset}
+                </Typography>
+                <Typography variant="body2" sx={{ mt: 0.5 }}>
+                  晨昏蒙影（twilight）：日出前/日落后各约30分钟
+                </Typography>
+              </>
+            )}
+            <Typography variant="body2" sx={{ color: '#757575', mt: 0.5 }}>
+              晨昏线（terminator）将地球分为昼半球与夜半球
+            </Typography>
+          </Box>
+          <Box sx={{ p: 1.5, bgcolor: '#e3f2fd', borderRadius: 2 }}>
             <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>公式</Typography>
             <Typography variant="body2" sx={{ fontFamily: '"JetBrains Mono", monospace' }}>
               昼长 = 2/15 × arccos(-tanφ × tanδ)

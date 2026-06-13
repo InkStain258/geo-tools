@@ -1,166 +1,186 @@
 import type { ClimateType } from '@/types';
 import { climateTypes } from '@/data/climateData';
 
-/** 判断推理步骤 */
 export interface JudgeStep {
   title: string;
   conclusion: string;
   detail: string;
 }
 
-/** 判断结果 */
 export interface JudgeResult {
   climate: ClimateType | null;
   steps: JudgeStep[];
   confidence: number;
+  candidates: { climate: ClimateType; confidence: number }[];
 }
 
-/**
- * 气候类型判断
- * 以气温定带 → 以降水定型
- */
 export function judgeClimate(monthlyTemps: number[], monthlyPrecips: number[]): JudgeResult {
   const steps: JudgeStep[] = [];
 
-  // 基本统计
   const maxTemp = Math.max(...monthlyTemps);
   const minTemp = Math.min(...monthlyTemps);
   const annualPrecip = monthlyPrecips.reduce((a, b) => a + b, 0);
-  const summerPrecip = monthlyPrecips.slice(5, 9).reduce((a, b) => a + b, 0);
-  const winterPrecip = monthlyPrecips.slice(10, 12).reduce((a, b) => a + b, 0) + monthlyPrecips[0];
-  const maxMonthlyPrecip = Math.max(...monthlyPrecips);
-  const minMonthlyPrecip = Math.min(...monthlyPrecips);
   const tempRange = maxTemp - minTemp;
 
-  // Step 1: 以气温定带（地理学界一般以18°C等温线划分热带）
+  // Seasonal analysis
+  const summerMonths = [5, 6, 7]; // JJA (June, July, August)
+  const winterMonths = [11, 0, 1]; // DJF (Dec, Jan, Feb)
+  const summerPrecip = summerMonths.reduce((s, m) => s + monthlyPrecips[m], 0);
+  const winterPrecip = winterMonths.reduce((s, m) => s + monthlyPrecips[m], 0);
+  const maxMonthlyPrecip = Math.max(...monthlyPrecips);
+  const minMonthlyPrecip = Math.min(...monthlyPrecips);
+
+  let candidates: { climate: ClimateType; confidence: number }[] = [];
+
+  // Step 1: Temperature band
   let tempBand = '';
   if (minTemp >= 18) {
     tempBand = '热带';
     steps.push({
       title: 'Step 1: 以气温定带',
       conclusion: '热带',
-      detail: `最冷月均温 ${minTemp.toFixed(1)}°C ≥ 18°C，判定为热带`,
+      detail: `最冷月均温 ${minTemp.toFixed(1)}°C ≥ 18°C，判定为热带。热带地区全年高温，最冷月也在18°C以上。`,
     });
-  } else if (minTemp > 0) {
-    tempBand = '亚热带';
+  } else if (minTemp >= 0) {
+    tempBand = '亚热带/温带海洋';
     steps.push({
       title: 'Step 1: 以气温定带',
-      conclusion: '亚热带/温带海洋性',
-      detail: `最冷月均温 ${minTemp.toFixed(1)}°C 在 0-18°C 之间，判定为亚热带或温带`,
+      conclusion: '亚热带或温带海洋性',
+      detail: `最冷月均温 ${minTemp.toFixed(1)}°C 在 0-18°C 之间。若年较差小、降水均匀则为温带海洋性；否则为亚热带。`,
     });
   } else {
-    tempBand = '温带';
+    tempBand = '温带/寒带';
     steps.push({
       title: 'Step 1: 以气温定带',
-      conclusion: '温带',
-      detail: `最冷月均温 ${minTemp.toFixed(1)}°C < 0°C，判定为温带`,
+      conclusion: '温带或寒带',
+      detail: `最冷月均温 ${minTemp.toFixed(1)}°C < 0°C，需结合最热月气温和年较差进一步判断。`,
     });
   }
 
-  // Step 2: 以降水定型
+  // Step 2: Precipitation pattern
+  const summerWinterRatio = winterPrecip > 0 ? summerPrecip / winterPrecip : 99;
+  const precipConcentration = maxMonthlyPrecip > 0 ? (maxMonthlyPrecip - minMonthlyPrecip) / annualPrecip * 12 : 0;
+
   let precipType = '';
-  if (annualPrecip < 200) {
-    precipType = '干旱';
+  if (summerWinterRatio > 3 && summerPrecip > winterPrecip * 2) {
+    precipType = '夏雨型(季风/草原)';
     steps.push({
       title: 'Step 2: 以降水定型',
-      conclusion: '干旱型',
-      detail: `年降水量 ${annualPrecip.toFixed(0)}mm < 200mm，判定为干旱型`,
+      conclusion: '夏雨型',
+      detail: `夏季降水 ${summerPrecip.toFixed(0)}mm 远大于冬季 ${winterPrecip.toFixed(0)}mm（比值 ${summerWinterRatio.toFixed(1)}:1），降水集中在夏季。这通常由季风环流或赤道低压带季节性移动引起。`,
     });
-  } else if (summerPrecip > winterPrecip * 2) {
-    // 季风型：夏半年降水远大于冬半年（区分热带/亚热带季风不再要求月峰>300mm）
-    precipType = '季风';
+  } else if (winterPrecip > summerPrecip * 1.5) {
+    precipType = '冬雨型(地中海)';
     steps.push({
       title: 'Step 2: 以降水定型',
-      conclusion: '季风型',
-      detail: `夏半年降水 ${summerPrecip.toFixed(0)}mm 远大于冬半年 ${winterPrecip.toFixed(0)}mm（>2倍），判定为季风型`,
+      conclusion: '冬雨型（地中海型）',
+      detail: `冬季降水 ${winterPrecip.toFixed(0)}mm 明显多于夏季 ${summerPrecip.toFixed(0)}mm（冬/夏比 ${(winterPrecip / summerPrecip).toFixed(1)}:1）。这是地中海气候的典型特征：夏季受副热带高压控制干燥，冬季受西风带影响多雨。`,
     });
-  } else if (tempBand !== '热带' && tempRange <= 15 && annualPrecip >= 500 && annualPrecip <= 1500) {
-    // 海洋性：排除热带（热带不可能有海洋性气候），放宽年较差阈值至15°C
-    precipType = '海洋性';
+  } else if (precipConcentration < 1.5 && annualPrecip > 400) {
+    precipType = '年雨型(均匀)';
     steps.push({
       title: 'Step 2: 以降水定型',
-      conclusion: '海洋性',
-      detail: `气温年较差 ${tempRange.toFixed(1)}°C 较小（≤15°C），年降水量 ${annualPrecip.toFixed(0)}mm 适中且各月均匀，判定为海洋性`,
+      conclusion: '年雨型（均匀）',
+      detail: `各月降水量差异小（变异系数 ${precipConcentration.toFixed(1)}），年降水量 ${annualPrecip.toFixed(0)}mm，降水季节分配均匀。这是热带雨林气候或温带海洋性气候的特征。`,
     });
-  } else if (annualPrecip > 2000 && minMonthlyPrecip > 60) {
-    precipType = '雨林';
+  } else if (annualPrecip < 200) {
+    precipType = '少雨型(干旱)';
     steps.push({
       title: 'Step 2: 以降水定型',
-      conclusion: '雨林型',
-      detail: `年降水量 ${annualPrecip.toFixed(0)}mm > 2000mm，且最干月降水 ${minMonthlyPrecip.toFixed(0)}mm > 60mm，判定为雨林型`,
-    });
-  } else if (summerPrecip > winterPrecip * 1.5 && maxMonthlyPrecip < 300) {
-    precipType = '草原';
-    steps.push({
-      title: 'Step 2: 以降水定型',
-      conclusion: '草原型',
-      detail: `干湿季分明但月最大降水 ${maxMonthlyPrecip.toFixed(0)}mm < 300mm，判定为草原型`,
+      conclusion: '少雨型（干旱）',
+      detail: `年降水量 ${annualPrecip.toFixed(0)}mm < 200mm，全年干燥。可能是热带沙漠、温带大陆性干旱区或寒带气候。`,
     });
   } else {
-    precipType = '过渡';
+    precipType = '过渡型';
     steps.push({
       title: 'Step 2: 以降水定型',
       conclusion: '过渡型',
-      detail: `降水特征不够典型，需综合判断`,
+      detail: `年降水量 ${annualPrecip.toFixed(0)}mm，季节分配特征不够典型，需综合气温和降水特征判断。`,
     });
   }
 
-  // Step 3: 综合判断
-  let matchedClimate: ClimateType | null = null;
-  let confidence = 0;
-
-  if (tempBand === '热带' && precipType === '雨林') {
-    matchedClimate = climateTypes.find((c) => c.id === 'tropical-rainforest') || null;
-    confidence = 95;
-  } else if (tempBand === '热带' && precipType === '草原') {
-    matchedClimate = climateTypes.find((c) => c.id === 'tropical-savanna') || null;
-    confidence = 85;
-  } else if (tempBand === '热带' && precipType === '干旱') {
-    matchedClimate = climateTypes.find((c) => c.id === 'tropical-desert') || null;
-    confidence = 90;
-  } else if (tempBand === '热带' && precipType === '季风') {
-    matchedClimate = climateTypes.find((c) => c.id === 'tropical-monsoon') || null;
-    confidence = 85;
-  } else if (tempBand === '亚热带' && precipType === '季风') {
-    matchedClimate = climateTypes.find((c) => c.id === 'subtropical-monsoon') || null;
-    confidence = 90;
-  } else if ((tempBand === '亚热带' || tempBand === '温带') && precipType === '海洋性') {
-    matchedClimate = climateTypes.find((c) => c.id === 'temperate-oceanic') || null;
-    confidence = 85;
-  } else if (tempBand === '热带' && precipType === '过渡') {
-    // 尝试更精细判断
-    if (annualPrecip > 1500 && summerPrecip > winterPrecip * 2) {
-      matchedClimate = climateTypes.find((c) => c.id === 'tropical-monsoon') || null;
-      confidence = 65;
-    } else if (annualPrecip > 1500) {
-      matchedClimate = climateTypes.find((c) => c.id === 'tropical-rainforest') || null;
-      confidence = 60;
+  // Step 3: Comprehensive matching with confidence scores
+  if (tempBand === '热带') {
+    if (annualPrecip > 2000 && minMonthlyPrecip > 60) {
+      candidates.push({ climate: climateTypes.find(c => c.id === 'tropical-rainforest')!, confidence: 95 });
+      candidates.push({ climate: climateTypes.find(c => c.id === 'tropical-monsoon')!, confidence: 40 });
+    } else if (annualPrecip < 200) {
+      candidates.push({ climate: climateTypes.find(c => c.id === 'tropical-desert')!, confidence: 90 });
+    } else if (summerWinterRatio > 5 && maxMonthlyPrecip > 250) {
+      candidates.push({ climate: climateTypes.find(c => c.id === 'tropical-monsoon')!, confidence: 90 });
+      candidates.push({ climate: climateTypes.find(c => c.id === 'tropical-savanna')!, confidence: 50 });
+    } else if (annualPrecip >= 500 && annualPrecip <= 1500) {
+      candidates.push({ climate: climateTypes.find(c => c.id === 'tropical-savanna')!, confidence: 85 });
+      candidates.push({ climate: climateTypes.find(c => c.id === 'tropical-monsoon')!, confidence: 40 });
     } else {
-      matchedClimate = climateTypes.find((c) => c.id === 'tropical-savanna') || null;
-      confidence = 55;
+      candidates.push({ climate: climateTypes.find(c => c.id === 'tropical-savanna')!, confidence: 55 });
     }
-  } else if (tempBand === '亚热带' && precipType === '过渡') {
-    // 亚热带过渡型：尝试按季风判断
-    if (summerPrecip > winterPrecip * 1.5) {
-      matchedClimate = climateTypes.find((c) => c.id === 'subtropical-monsoon') || null;
-      confidence = 60;
+  } else if (tempBand === '亚热带/温带海洋') {
+    if (winterPrecip > summerPrecip * 1.5 && summerPrecip < 50) {
+      candidates.push({ climate: climateTypes.find(c => c.id === 'mediterranean')!, confidence: 92 });
+    } else if (tempRange < 15 && precipConcentration < 2 && annualPrecip >= 500 && annualPrecip <= 1000 && maxTemp < 22) {
+      candidates.push({ climate: climateTypes.find(c => c.id === 'temperate-oceanic')!, confidence: 90 });
+    } else if (summerWinterRatio > 2) {
+      candidates.push({ climate: climateTypes.find(c => c.id === 'subtropical-monsoon')!, confidence: 90 });
+      candidates.push({ climate: climateTypes.find(c => c.id === 'temperate-oceanic')!, confidence: 30 });
+    } else {
+      candidates.push({ climate: climateTypes.find(c => c.id === 'subtropical-monsoon')!, confidence: 55 });
+    }
+  } else if (tempBand === '温带/寒带') {
+    if (maxTemp < 0) {
+      candidates.push({ climate: climateTypes.find(c => c.id === 'ice-cap')!, confidence: 95 });
+    } else if (maxTemp < 10) {
+      candidates.push({ climate: climateTypes.find(c => c.id === 'tundra')!, confidence: 90 });
+      candidates.push({ climate: climateTypes.find(c => c.id === 'ice-cap')!, confidence: 20 });
+    } else if (maxTemp < 20 && tempRange > 30) {
+      candidates.push({ climate: climateTypes.find(c => c.id === 'subarctic')!, confidence: 85 });
+    } else if (annualPrecip < 400 && tempRange > 25) {
+      candidates.push({ climate: climateTypes.find(c => c.id === 'temperate-continental')!, confidence: 85 });
+    } else if (summerWinterRatio > 3 && annualPrecip >= 400 && annualPrecip <= 800) {
+      candidates.push({ climate: climateTypes.find(c => c.id === 'temperate-monsoon')!, confidence: 88 });
+    } else if (tempRange > 20 && annualPrecip < 600) {
+      candidates.push({ climate: climateTypes.find(c => c.id === 'temperate-continental')!, confidence: 70 });
+      candidates.push({ climate: climateTypes.find(c => c.id === 'temperate-monsoon')!, confidence: 50 });
+    } else {
+      candidates.push({ climate: climateTypes.find(c => c.id === 'temperate-continental')!, confidence: 55 });
     }
   }
 
-  if (matchedClimate) {
+  // Also check for highland climate
+  if (tempRange < 20 && minTemp < 0 && maxTemp < 20 && annualPrecip < 1000) {
+    candidates.push({ climate: climateTypes.find(c => c.id === 'highland')!, confidence: 50 });
+  }
+
+  // Sort by confidence
+  candidates.sort((a, b) => b.confidence - a.confidence);
+
+  const best = candidates.length > 0 ? candidates[0] : null;
+
+  if (best && best.climate) {
     steps.push({
       title: 'Step 3: 综合判断',
-      conclusion: matchedClimate.name,
-      detail: `${tempBand} + ${precipType} → ${matchedClimate.name}（置信度 ${confidence}%）`,
+      conclusion: best.climate.name,
+      detail: `→ ${best.climate.name}（置信度 ${best.confidence}%）`,
+    });
+
+    // Add a detailed explanation step
+    steps.push({
+      title: 'Step 4: 成因分析',
+      conclusion: '',
+      detail: best.climate.description,
     });
   } else {
     steps.push({
       title: 'Step 3: 综合判断',
       conclusion: '无法确定',
-      detail: '当前数据特征不够典型，无法精确判断气候类型',
+      detail: '当前数据特征不够典型，请检查数据准确性或选择更典型的数据。',
     });
-    confidence = 0;
   }
 
-  return { climate: matchedClimate, steps, confidence };
+  return {
+    climate: best?.climate || null,
+    steps,
+    confidence: best?.confidence || 0,
+    candidates: candidates.slice(0, 3),
+  };
 }

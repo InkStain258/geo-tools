@@ -105,6 +105,11 @@ const AgriculturalLocation: React.FC = () => {
           </Box>
 
           <Box sx={{ p: 1.5, bgcolor: '#e8f5e9', borderRadius: 2 }}>
+            {agri.detailDesc && (
+              <Typography variant="body2" sx={{ mb: 1, fontStyle: 'italic' }}>
+                📖 {agri.detailDesc}
+              </Typography>
+            )}
             {agri.naturalFactors.map((f, i) => (
               <Typography key={`n${i}`} variant="body2" sx={{ mb: 0.3 }}>
                 <b>{f.name}</b>：{f.description}
@@ -116,6 +121,32 @@ const AgriculturalLocation: React.FC = () => {
               </Typography>
             ))}
           </Box>
+
+          {/* Examples */}
+          {agri.examples && agri.examples.length > 0 && (
+            <Box sx={{ mt: 2, p: 1.5, bgcolor: '#e8eaf6', borderRadius: 2 }}>
+              <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#283593', mb: 0.5 }}>
+                🌍 典型分布区域
+              </Typography>
+              {agri.examples.map((ex, i) => (
+                <Typography key={i} variant="body2" sx={{ mb: 0.3 }}>
+                  • {ex}
+                </Typography>
+              ))}
+            </Box>
+          )}
+
+          {/* Gaokao Tips */}
+          {agri.gaokaoTips && (
+            <Box sx={{ mt: 2, p: 1.5, bgcolor: '#fff8e1', borderRadius: 2, borderLeft: '4px solid #FF8F00' }}>
+              <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#E65100', mb: 0.5 }}>
+                💡 学习提示 (Gaokao Tips)
+              </Typography>
+              <Typography variant="body2">
+                {agri.gaokaoTips}
+              </Typography>
+            </Box>
+          )}
         </Box>
       </Box>
     </ToolPageLayout>

@@ -1,7 +1,29 @@
 import React, { useRef, useState } from 'react';
-import { Box, Typography, TextField, Button, Card, CardContent, ToggleButton, ToggleButtonGroup, Divider } from '@mui/material';
+import { Box, Typography, TextField, Button, Card, CardContent, ToggleButton, ToggleButtonGroup, Divider, Chip } from '@mui/material';
 import ToolPageLayout from '@/components/shared/ToolPageLayout';
 import { calcLocalTime, calcZoneTime, lngToTimezone } from '@/utils/geoCalculations';
+
+interface PresetCity {
+  name: string;
+  lng: number;
+  zone: number;
+  source: boolean;
+}
+
+const presetCities: PresetCity[] = [
+  { name: '北京', lng: 116.4, zone: 8, source: true },
+  { name: '纽约', lng: -74, zone: -5, source: false },
+  { name: '伦敦', lng: 0, zone: 0, source: false },
+  { name: '东京', lng: 139.7, zone: 9, source: false },
+  { name: '悉尼', lng: 151.2, zone: 10, source: false },
+  { name: '莫斯科', lng: 37.6, zone: 3, source: false },
+  { name: '开罗', lng: 31.2, zone: 2, source: false },
+  { name: '圣保罗', lng: -46.6, zone: -3, source: false },
+  { name: '洛杉矶', lng: -118.2, zone: -8, source: false },
+  { name: '新加坡', lng: 103.8, zone: 8, source: false },
+  { name: '巴黎', lng: 2.3, zone: 1, source: false },
+  { name: '迪拜', lng: 55.3, zone: 4, source: false },
+];
 
 const TimezoneCalculator: React.FC = () => {
   const exportRef = useRef<HTMLDivElement>(null);
@@ -14,6 +36,23 @@ const TimezoneCalculator: React.FC = () => {
   const [targetZone, setTargetZone] = useState(0);
   const [result, setResult] = useState<{ hour: number; minute: number } | null>(null);
   const [steps, setSteps] = useState<string[]>([]);
+
+  const handlePresetClick = (city: PresetCity) => {
+    if (mode === 'local') {
+      if (city.source) {
+        setSourceLng(city.lng);
+      } else {
+        setTargetLng(city.lng);
+        setTargetZone(city.zone);
+      }
+    } else {
+      if (city.source) {
+        setSourceZone(city.zone);
+      } else {
+        setTargetZone(city.zone);
+      }
+    }
+  };
 
   const handleCalc = () => {
     if (mode === 'local') {
@@ -142,6 +181,39 @@ const TimezoneCalculator: React.FC = () => {
 
         <Card variant="outlined" sx={{ mt: 2 }}>
           <CardContent>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 1 }}>🌍 快速选择城市</Typography>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.8, mb: 1.5 }}>
+              {presetCities.filter(c => c.source).map((city) => (
+                <Chip
+                  key={city.name}
+                  label={`📍 ${city.name}`}
+                  size="small"
+                  color="success"
+                  variant="outlined"
+                  onClick={() => handlePresetClick(city)}
+                  sx={{ cursor: 'pointer' }}
+                />
+              ))}
+            </Box>
+            <Divider sx={{ my: 1 }} />
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.8 }}>
+              {presetCities.filter(c => !c.source).map((city) => (
+                <Chip
+                  key={city.name}
+                  label={`${city.name} (${city.zone >= 0 ? '东' : '西'}${Math.abs(city.zone)}区)`}
+                  size="small"
+                  color="primary"
+                  variant="outlined"
+                  onClick={() => handlePresetClick(city)}
+                  sx={{ cursor: 'pointer' }}
+                />
+              ))}
+            </Box>
+          </CardContent>
+        </Card>
+
+        <Card variant="outlined" sx={{ mt: 2 }}>
+          <CardContent>
             <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>公式速查</Typography>
             <Typography variant="body2" sx={{ fontFamily: '"JetBrains Mono", monospace', mt: 0.5 }}>
               地方时：T₂ = T₁ + (λ₂ - λ₁) × 4min
@@ -151,6 +223,9 @@ const TimezoneCalculator: React.FC = () => {
             </Typography>
             <Typography variant="body2" sx={{ fontFamily: '"JetBrains Mono", monospace' }}>
               时区号：N = round(λ / 15)
+            </Typography>
+            <Typography variant="body2" sx={{ mt: 0.5, color: '#757575' }}>
+              💡 点击上方城市名称可快速填充经度/时区，然后点击"计算"
             </Typography>
           </CardContent>
         </Card>
