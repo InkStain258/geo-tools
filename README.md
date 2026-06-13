@@ -59,53 +59,29 @@ npm run preview
 
 ## GitHub Pages 部署
 
-### 方式一：直接部署 dist 目录
+### 方式一：使用 GitHub Actions 自动部署（推荐）
 
-1. 将 `dist/` 目录的内容推送到 GitHub 仓库
-2. 在仓库 Settings → Pages 中选择分支和目录
-3. 访问 `https://<username>.github.io/<repo-name>/`
+推送 `main` 分支后，GitHub Actions 自动构建并部署到 Pages。访问：
+`https://inkstain258.github.io/geo-tools/`
 
-### 方式二：使用 GitHub Actions 自动部署
+### 方式二：手动部署 dist 目录
 
-在仓库中创建 `.github/workflows/deploy.yml`：
+1. 运行 `npm run build` 生成 `dist/` 目录
+2. 将 `dist/` 的内容部署到任何静态托管服务
 
-```yaml
-name: Deploy to GitHub Pages
-
-on:
-  push:
-    branches: [main]
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-      - run: npm ci
-      - run: npm run build
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist
-      - uses: actions/deploy-pages@v4
-```
-
-> **注意**：如果仓库名不是根路径（如 `https://<username>.github.io/geo-tools/`），需要修改 `vite.config.ts` 中的 `base` 为 `'/geo-tools/'`。
+> **注意**：使用 HashRouter，SPA 路由不需要服务端配置。
 
 ## 项目结构
 
 ```
 geo-tools/
+├── .github/workflows/       # GitHub Actions 部署配置
+│   └── deploy.yml
 ├── docs/                    # 项目文档
 │   └── PRD.md
+├── public/                  # 静态资源
+│   ├── favicon.svg
+│   └── icons.svg
 ├── src/
 │   ├── components/
 │   │   ├── layout/          # 全局布局
@@ -134,20 +110,15 @@ geo-tools/
 │   ├── main.tsx             # 入口文件
 │   └── index.css            # 全局样式
 ├── dist/                    # 构建产物（部署包）
+├── .gitignore
 ├── package.json
 ├── vite.config.ts
 ├── tailwind.config.js
-└── tsconfig.app.json
+├── postcss.config.js
+├── tsconfig.json
+├── tsconfig.app.json
+└── tsconfig.node.json
 ```
-
-## 打包说明
-
-项目提供两种包：
-
-| 包类型 | 内容 | 用途 |
-|--------|------|------|
-| **dist 包** | `dist/` 目录 | 直接部署到 GitHub Pages 或任何静态托管 |
-| **源代码包** | 整个项目（不含 node_modules） | 本地开发、二次开发 |
 
 ## License
 
