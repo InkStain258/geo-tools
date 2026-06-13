@@ -223,6 +223,70 @@ const IndustrialLocation: React.FC = () => {
         </Box>
       </Box>
 
+      {/* 世界典型工业区案例对比 */}
+      <Box sx={{ mt: 3, width: '100%' }}>
+        <Typography variant="h6" sx={{ fontWeight: 700, mb: 1.5, color: '#7B1FA2' }}>
+          🌍 世界典型工业区案例对比（高考综合题高频考点）
+        </Typography>
+        <Typography variant="body2" sx={{ mb: 2, color: '#555' }}>
+          掌握世界典型工业区的<b>区位条件、产业特征和发展演变</b>，是高考工业地理综合题的重要素材。以下是四个最具代表性的案例。
+        </Typography>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+          {/* 鲁尔区 */}
+          <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 48%' }, p: 2, bgcolor: '#fce4ec', borderRadius: 2, border: '1px solid #f8bbd0' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#AD1457' }}>🏭 德国鲁尔区（传统工业区振兴典范）</Typography>
+            <Typography variant="caption" sx={{ color: '#AD1457', display: 'block', mb: 1 }}>世界著名传统工业区 · 高考五星考点</Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.75rem', color: '#555', lineHeight: 1.6 }}>
+              <b>区位优势：</b>①<b>煤炭资源丰富</b>（鲁尔煤田，欧洲最大煤田之一）；②水陆交通便利（莱茵河、鲁尔河水运+密集铁路网）；③靠近法国洛林铁矿（后期进口铁矿石）；④西欧巨大消费市场；⑤充沛的水源（鲁尔河、莱茵河）。<br/>
+              <b>产业特征：</b>以煤炭、钢铁、机械、化工为核心的<b>重工业体系</b>，曾占德国工业产值40%。<br/>
+              <b>衰落原因（20世纪60年代后）：</b>①煤炭地位下降（石油、天然气替代）；②铁矿枯竭（依赖进口→向沿海转移）；③产业结构单一（\"煤铁复合型\"）；④环境恶化；⑤新技术冲击。<br/>
+              <b>振兴措施（必背）：</b>①调整产业结构——发展高新技术和第三产业（电子信息、生物医药）；②治理环境污染（埃姆舍河生态修复）；③完善交通网络；④旧工业用地再利用（工业博物馆、文化创意园）。<br/>
+              <b>高考启示：</b>鲁尔区是<b>传统工业区衰落与转型</b>的标准案例，可与辽中南工业基地（东北振兴）进行对比分析。
+            </Typography>
+          </Box>
+
+          {/* 硅谷 */}
+          <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 48%' }, p: 2, bgcolor: '#e8eaf6', borderRadius: 2, border: '1px solid #c5cae9' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#283593' }}>💻 美国硅谷（高新技术工业区代表）</Typography>
+            <Typography variant="caption" sx={{ color: '#283593', display: 'block', mb: 1 }}>世界最大微电子工业基地 · 高考高频考点</Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.75rem', color: '#555', lineHeight: 1.6 }}>
+              <b>区位优势（独有的\"创新生态\"）：</b>①<b>斯坦福大学</b>——顶尖人才和技术来源（产学研结合）；②<b>风险资本</b>（Sand Hill Road）——硅谷创业公司的燃料；③宜人气候（地中海气候）和优美环境吸引人才；④<b>集聚效应</b>——世界高科技企业总部云集（Apple、Google、Meta、NVIDIA）；⑤<b>创新文化</b>（容忍失败、开放协作）；⑥临近旧金山国际机场（全球连接）。<br/>
+              <b>产业特征：</b>以<b>微电子（芯片）→计算机→互联网→AI</b>产业链为核心，辐射全球。集群效应极强。<br/>
+              <b>与传统工业区的本质区别：</b>①<b>不依赖自然资源</b>（无煤无铁）——依靠\"智力资源\"；②从业人员以<b>科学家和工程师</b>为主（高学历、高工资）；③产品\"轻、薄、短、小\"——航空运输替代水运/铁路；④环境质量要求高（洁净的空气和水是芯片制造的前提）。<br/>
+              <b>高考对比要点：</b>硅谷 vs 鲁尔区 = 知识导向型 vs 原料导向型；硅谷 vs 中关村/深圳 = 不同国家的创新路径比较。
+            </Typography>
+          </Box>
+
+          {/* 意大利新工业区 */}
+          <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 48%' }, p: 2, bgcolor: '#e0f2f1', borderRadius: 2, border: '1px solid #b2dfdb' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#00695C' }}>👗 意大利新工业区（中小企业集聚典范）</Typography>
+            <Typography variant="caption" sx={{ color: '#00695C', display: 'block', mb: 1 }}>东北部和中部——\"第三意大利\" · 高考必考</Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.75rem', color: '#555', lineHeight: 1.6 }}>
+              <b>区位特征：</b>①以<b>中小企业</b>为主（与传统大规模工厂不同）；②以<b>轻工业</b>为主（纺织、服装、陶瓷、家具、制鞋）；③高度<b>专业化分工</b>——一村一品/一镇一业（如普拉托毛纺织、萨索罗瓷砖）；④<b>分散布局</b>在小城镇和农村——\"工业小区\"模式；⑤形成生产—销售—服务网络。与温州模式非常相似。<br/>
+              <b>与传统工业区的区别：</b>①\"小\"而\"专\"——不是大企业寡头垄断，而是中小企业集群协作；②灵活性强——可根据市场快速调整产品；③<b>省去大型设备投资</b>（轻工业固定资产少）。<br/>
+              <b>高考命题模式：</b>常以意大利新工业区为案例，要求分析<b>中小企业集聚的优势</b>（信息共享、协作配套、品牌效应、降低运费），或与中国<b>浙江温州/义乌</b>模式进行中外对比。
+            </Typography>
+          </Box>
+
+          {/* 日本太平洋沿岸工业带 */}
+          <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 48%' }, p: 2, bgcolor: '#fff3e0', borderRadius: 2, border: '1px solid #ffcc80' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#E65100' }}>🚢 日本太平洋沿岸工业带（临港型工业代表）</Typography>
+            <Typography variant="caption" sx={{ color: '#E65100', display: 'block', mb: 1 }}>京滨—中京—阪神—濑户内—北九州 · 高考拓展</Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.75rem', color: '#555', lineHeight: 1.6 }}>
+              <b>形成背景（\"两头在外\"）：</b>日本矿产资源极度贫乏（煤、铁、石油几乎全部依赖进口），但拥有<b>优良港湾</b>和发达的造船业。因此工业布局选择<b>临港型</b>——工厂建在沿海港口附近，原料进口→加工→产品出口一步到位。<br/>
+              <b>区位优势：</b>①深水良港密集（东京湾、大阪湾、伊势湾）；②廉价海运（超级油轮/矿砂船）降低运输成本；③<b>高素质劳动力</b>和先进技术；④外向型经济（产品出口全球）。<br/>
+              <b>五大工业区（自东向西）：</b>京滨（东京-横滨，机械、电子）→中京（名古屋，汽车、航空）→阪神（大阪-神户，钢铁、造船）→濑户内（化工、钢铁）→北九州（钢铁、机械）。<br/>
+              <b>高考启示：</b>临港型工业布局反映了<b>\"移铁就港\"</b>的趋势（铁矿石海运成本降低后，钢铁工业从煤铁复合型→临港型），是工业区位演变的重要案例。
+            </Typography>
+          </Box>
+        </Box>
+        <Box sx={{ mt: 2, p: 1.5, bgcolor: '#fff8e1', borderRadius: 2, borderLeft: '4px solid #FF8F00' }}>
+          <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#E65100' }}>
+            <b>💡 四大案例对比规律：</b>鲁尔区（原料导向型→转型）→ 硅谷（技术导向型）→ 意大利新工业区（中小企业集群）→ 日本临港型（交通导向型）。这四种模式代表了工业布局主导因素的演变链：<b>原料→交通→市场→技术</b>。高考综合题常要求\"结合具体案例，分析区位因素的变化对工业布局的影响\"。
+          </Typography>
+        </Box>
+      </Box>
+
     </ToolPageLayout>
   );
 };

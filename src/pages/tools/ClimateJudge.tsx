@@ -204,8 +204,84 @@ const ClimateJudge: React.FC = () => {
             </Typography>
           </Box>
 
+          {/* 气候类型判断简化口诀（三步走） */}
+          <Box sx={{ p: 1.5, bgcolor: '#e8f5e9', borderRadius: 2, border: '1px solid #a5d6a7' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#2E7D32', mb: 1 }}>
+              🎯 气候类型判断口诀——「以温定带，以水定型」三步走
+            </Typography>
+            <Box sx={{ bgcolor: '#fff', p: 1.5, borderRadius: 1, mb: 1 }}>
+              <Typography variant="body2" sx={{ fontWeight: 700, color: '#1B5E20', mb: 0.8, fontSize: '0.9rem', textAlign: 'center' }}>
+                📖 判断口诀：以温定带 → 以水定型 → 综合判断
+              </Typography>
+              <Typography variant="body2" sx={{ fontWeight: 700, color: '#2E7D32', mb: 0.5 }}>
+                第一步：以「温」定带（看最冷月均温）
+              </Typography>
+              <Typography variant="body2" sx={{ fontSize: '0.75rem', mb: 0.5 }}>
+                · <b>最冷月 &gt; 15°C → 热带</b>（热带雨林/热带草原/热带季风/热带沙漠）<br/>
+                · <b>最冷月 0°C ~ 15°C → 亚热带</b>（亚热带季风/地中海/温带海洋性）<br/>
+                · <b>最冷月 &lt; 0°C → 温带</b>（温带季风/温带大陆性）<br/>
+                · <b>最热月 &lt; 10°C → 寒带</b>（苔原/冰原）
+              </Typography>
+              <Typography variant="body2" sx={{ fontWeight: 700, color: '#2E7D32', mb: 0.5 }}>
+                第二步：以「水」定型（看降水季节分配）
+              </Typography>
+              <Typography variant="body2" sx={{ fontSize: '0.75rem', mb: 0.5 }}>
+                · <b>年雨型</b>（各月降水均匀 &gt;50mm）：热带雨林（终年 &gt;2000mm）、温带海洋性（600-1000mm）<br/>
+                · <b>夏雨型</b>（夏季多雨，冬季少雨）：热带季风/草原、亚热带季风、温带季风<br/>
+                · <b>冬雨型</b>（冬季多雨，夏季干燥）：地中海气候（唯一冬雨型）<br/>
+                · <b>少雨型</b>（全年降水稀少）：热带沙漠、温带大陆性
+              </Typography>
+              <Typography variant="body2" sx={{ fontWeight: 700, color: '#2E7D32', mb: 0.5 }}>
+                第三步：综合判断（关键区分相似气候）
+              </Typography>
+              <Typography variant="body2" sx={{ fontSize: '0.75rem' }}>
+                · 热带季风 vs 热带草原：看降水峰值（季风&gt;600mm/月，草原&lt;400mm/月）<br/>
+                · 亚热带季风 vs 温带季风：看最冷月（亚热&gt;0°C，温带&lt;0°C）<br/>
+                · 温带海洋性 vs 温带季风：看降水分配（海洋性均匀，季风夏多冬少）<br/>
+                · 温带大陆性 vs 温带季风：看年降水量（大陆性&lt;400mm，季风&gt;400mm）
+              </Typography>
+            </Box>
+          </Box>
+
+          {/* 13种气候的典型植被/土壤对应 */}
+          <Box sx={{ p: 1.5, mt: 1, bgcolor: '#f3e5f5', borderRadius: 2, border: '1px solid #ce93d8' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#6A1B9A', mb: 1 }}>
+              🌿 13种气候的典型植被与土壤对应表（高考综合题必备）
+            </Typography>
+            <Box sx={{ overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '9px' }}>
+                <thead>
+                  <tr style={{ backgroundColor: '#e1bee7' }}>
+                    <th style={{ border: '1px solid #ce93d8', padding: '2px 4px', textAlign: 'center' }}>气候类型</th>
+                    <th style={{ border: '1px solid #ce93d8', padding: '2px 4px', textAlign: 'center' }}>典型植被</th>
+                    <th style={{ border: '1px solid #ce93d8', padding: '2px 4px', textAlign: 'center' }}>典型土壤</th>
+                    <th style={{ border: '1px solid #ce93d8', padding: '2px 4px', textAlign: 'center' }}>分布特征</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>热带雨林气候</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>热带雨林</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>砖红壤（酸性、贫瘠）</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>亚马孙、刚果、马来群岛</td></tr>
+                  <tr style={{ backgroundColor: '#f3e5f5' }}><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>热带草原气候</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>热带稀树草原（萨瓦纳）</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>燥红土</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>非洲、巴西高原、澳大利亚北部</td></tr>
+                  <tr><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>热带季风气候</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>热带季雨林</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>砖红壤性红壤</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>印度半岛、中南半岛、海南岛</td></tr>
+                  <tr style={{ backgroundColor: '#f3e5f5' }}><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>热带沙漠气候</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>荒漠植被（仙人掌、骆驼刺）</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>荒漠土（沙土、石质漠）</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>撒哈拉、阿拉伯、澳大利亚中西部</td></tr>
+                  <tr><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>亚热带季风气候</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>亚热带常绿阔叶林</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>红壤、黄壤（酸性）</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>中国秦岭—淮河以南、日本南部</td></tr>
+                  <tr style={{ backgroundColor: '#f3e5f5' }}><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>地中海气候</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>亚热带常绿硬叶林</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>褐土</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>地中海沿岸、加州、开普敦、智利</td></tr>
+                  <tr><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>温带季风气候</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>温带落叶阔叶林</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>棕壤、褐土（中性）</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>中国秦岭—淮河以北、朝鲜半岛</td></tr>
+                  <tr style={{ backgroundColor: '#f3e5f5' }}><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>温带海洋性气候</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>温带落叶阔叶林</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>棕壤（淋溶强、偏酸）</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>西欧、北美西海岸、新西兰</td></tr>
+                  <tr><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>温带大陆性气候</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>温带草原/荒漠</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>黑钙土（草原）、荒漠土</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>中亚、中国西北、北美内陆</td></tr>
+                  <tr style={{ backgroundColor: '#f3e5f5' }}><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>亚寒带针叶林气候</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>亚寒带针叶林（泰加林）</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>灰化土（强酸性、贫瘠）</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>西伯利亚、加拿大、阿拉斯加</td></tr>
+                  <tr><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>苔原气候</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>苔原（地衣、苔藓）</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>冰沼土（永冻层）</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>北冰洋沿岸、格陵兰沿海</td></tr>
+                  <tr style={{ backgroundColor: '#f3e5f5' }}><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>冰原气候</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>无植被（冰雪覆盖）</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>无土壤发育</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>南极洲、格陵兰内陆</td></tr>
+                  <tr><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>高原山地气候</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>垂直地带性植被</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>垂直地带性土壤</td><td style={{ border: '1px solid #ce93d8', padding: '2px 4px' }}>青藏高原、安第斯山、东非高原</td></tr>
+                </tbody>
+              </table>
+            </Box>
+            <Typography variant="body2" sx={{ color: '#757575', fontSize: '0.65rem', mt: 0.5 }}>
+              💡 高考综合题常考「气候—植被—土壤」三位一体的地域分异规律。记住核心对应：热带雨林→砖红壤；常绿阔叶林→红黄壤；落叶阔叶林→棕壤；草原→黑钙土；针叶林→灰化土。
+            </Typography>
+          </Box>
+
           {/* 气候成因总结 */}
-          <Box sx={{ p: 1.5, bgcolor: '#fce4ec', borderRadius: 2, border: '1px solid #f48fb1' }}>
+          <Box sx={{ p: 1.5, mt: 1, bgcolor: '#fce4ec', borderRadius: 2, border: '1px solid #f48fb1' }}>
             <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#880e4f', mb: 1 }}>
               🔑 气候成因四大要素总结（高考答题模板）
             </Typography>

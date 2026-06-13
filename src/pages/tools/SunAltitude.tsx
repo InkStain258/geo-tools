@@ -371,6 +371,36 @@ const SunAltitude: React.FC = () => {
               💡 高考常见考法：给出一地纬度，要求计算某日太阳能热水器集热板的最佳倾角。关键理解：倾角=纬度差=|φ-δ|。
             </Typography>
           </Box>
+
+          {/* 正午太阳高度角在生活中的应用 */}
+          <Box sx={{ p: 1.5, bgcolor: '#fce4ec', borderRadius: 2, mt: 1 }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#880e4f', mb: 1 }}>
+              🏗️ 正午太阳高度角在生活中的四大应用（高考应用题核心）
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.75rem', mb: 0.5, lineHeight: 1.6 }}>
+              <b>1. 楼间距（采光权）—— 最经典应用：</b>为保证后楼底层在<b>冬至日正午</b>（一年中太阳最低）能获得不少于1小时的日照，楼间距 L 需满足：<b>L ≥ h / tan H冬至</b>（h为前楼高度，H冬至为冬至日正午太阳高度角）。纬度越高 → H冬至越小 → tan H冬至越小 → 所需楼间距越大。我国《城市居住区规划设计标准》规定：大城市住宅日照标准为大寒日≥2小时（或冬至日≥1小时）。北方楼间距普遍大于南方就是这个原因。
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.75rem', mb: 0.5, lineHeight: 1.6 }}>
+              <b>2. 遮阳板设计：</b>遮阳板要兼顾<b>夏季遮阳</b>（太阳高，需要遮阳板水平伸出足够长）和<b>冬季采光</b>（太阳低，希望阳光能照入室内）。遮阳板的水平挑出长度应依据当地<b>夏至和冬至正午太阳高度角</b>确定。南方（H大）→遮阳板可较短；北方（H小）→如果遮阳板太长会遮挡冬季阳光→通常北方采用可调节式或垂直遮阳。
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.75rem', mb: 0.5, lineHeight: 1.6 }}>
+              <b>3. 太阳能安装：</b>太阳能电池板或热水器集热板的<b>最佳倾角</b>取决于纬度与直射点纬度之差：θ=|φ-δ|。为实现全年综合最佳效果，固定式安装通常取<b>当地纬度</b>（φ）作为倾角。全年可调节支架可在夏季放平（θ小）、冬季陡立（θ大）。高考常以太阳能路灯/信号灯/热水器为背景命题。
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.75rem', lineHeight: 1.6 }}>
+              <b>4. 采光权法律与城市规划：</b>《民法典》第293条规定：建造建筑物不得妨碍相邻建筑物的<b>通风、采光和日照</b>。城市规划中，建筑间距须满足日照标准。开发商若遮挡他人采光→需赔偿。高中地理中常将此与「城市热岛效应」「通风廊道」等知识点串联考查。计算题实例：已知北楼高30m、冬至日H=30°，问两楼最小间距？→ L=30/tan30°=30/0.577≈52m。
+            </Typography>
+            <Box sx={{ mt: 1, p: 1, bgcolor: '#fff', borderRadius: 1 }}>
+              <Typography variant="body2" sx={{ fontWeight: 700, color: '#c62828', fontSize: '0.75rem' }}>
+                📐 四大应用统一公式推导：
+              </Typography>
+              <Typography variant="body2" sx={{ fontSize: '0.7rem', fontFamily: '"JetBrains Mono", monospace' }}>
+                · 楼间距 L = h · cot H = h / tan H<br/>
+                · 遮阳板挑出长度 D = d · cot H（d为窗户上沿到遮阳板垂直距离）<br/>
+                · 太阳能倾角 θ = 90°−H = |φ−δ|<br/>
+                · 采光判断：若前楼影长 &lt; 楼间距 → 不遮挡（满足采光权）
+              </Typography>
+            </Box>
+          </Box>
         </Box>
       </Box>
     </ToolPageLayout>

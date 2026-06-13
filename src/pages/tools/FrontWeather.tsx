@@ -484,6 +484,89 @@ const FrontWeather: React.FC = () => {
               原因：冷气团密度大，推进时底部摩擦大导致锋面陡峭；暖气团主动爬升于冷气团之上，坡度平缓。冷锋坡度陡 → 天气剧烈短暂；暖锋坡度缓 → 天气温和持久。
             </Typography>
           </Box>
+
+          {/* 锋面天气符号图例说明 */}
+          <Box sx={{ mt: 2, p: 1.5, bgcolor: '#f3e5f5', borderRadius: 2, border: '1px solid #ce93d8' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#6A1B9A', mb: 1 }}>
+              🎨 锋面天气符号图例说明（高考必识）
+            </Typography>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5 }}>
+              <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 45%' }, p: 1, bgcolor: '#e1bee7', borderRadius: 1 }}>
+                <Typography variant="body2" sx={{ fontWeight: 700, color: '#4A148C' }}>🔺 冷锋符号（蓝色三角形）</Typography>
+                <Typography variant="body2" sx={{ fontSize: '0.7rem' }}>
+                  · 三角形指向<b>暖气团一侧</b>（即锋面移动方向）<br/>
+                  · <b>蓝色</b>表示冷气团（冷色调），三角形为实心填充<br/>
+                  · 在地面天气图上，冷锋线标蓝色三角符号<br/>
+                  · 口诀：「冷锋三角尖向前，蓝色代表冷气团」
+                </Typography>
+              </Box>
+              <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 45%' }, p: 1, bgcolor: '#ffcdd2', borderRadius: 1 }}>
+                <Typography variant="body2" sx={{ fontWeight: 700, color: '#b71c1c' }}>🔴 暖锋符号（红色半圆）</Typography>
+                <Typography variant="body2" sx={{ fontSize: '0.7rem' }}>
+                  · 半圆凸向<b>冷气团一侧</b>（即锋面移动方向）<br/>
+                  · <b>红色</b>表示暖气团（暖色调），半圆为空心<br/>
+                  · 在地面天气图上，暖锋线标红色半圆符号<br/>
+                  · 口诀：「暖锋半圆红向前，红色代表暖气团」
+                </Typography>
+              </Box>
+              <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 45%' }, p: 1, bgcolor: '#cfd8dc', borderRadius: 1 }}>
+                <Typography variant="body2" sx={{ fontWeight: 700, color: '#37474f' }}>⚫ 准静止锋符号（红蓝交替）</Typography>
+                <Typography variant="body2" sx={{ fontSize: '0.7rem' }}>
+                  · 冷锋侧的<b>蓝色三角</b>与暖锋侧的<b>红色半圆</b>交替排列<br/>
+                  · 两者指向相反方向（表示冷暖势力相当，锋面不动）<br/>
+                  · 颜色含义同冷锋/暖锋：蓝=冷气团，红=暖气团
+                </Typography>
+              </Box>
+              <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 45%' }, p: 1, bgcolor: '#fff9c4', borderRadius: 1 }}>
+                <Typography variant="body2" sx={{ fontWeight: 700, color: '#f57f17' }}>📖 锢囚锋符号（紫色）</Typography>
+                <Typography variant="body2" sx={{ fontSize: '0.7rem' }}>
+                  · 冷锋追上暖锋后形成锢囚锋，符号为<b>紫色</b>三角+半圆同侧排列<br/>
+                  · 高考偶有涉及：冷式锢囚锋（冷锋爬升） vs 暖式锢囚锋（暖锋爬升）
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
+
+          {/* 世界主要锋面带分布 */}
+          <Box sx={{ mt: 2, p: 1.5, bgcolor: '#e8eaf6', borderRadius: 2, border: '1px solid #9fa8da' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#283593', mb: 1 }}>
+              🌍 世界主要锋面带分布（高考拓展）
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 0.5 }}>
+              <b>1. 极锋（Polar Front）—— 最重要：</b>位于<b>南北纬60°附近</b>的副极地低压带，是极地冷气团（极地东风）与中纬度暖气团（盛行西风）的交汇地带。北半球极锋是<b>温带气旋</b>的摇篮（如阿留申低压、冰岛低压），也是地球上天气变化最剧烈的区域之一。南半球极锋环绕南极洲，形成"咆哮西风带"。
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 0.5 }}>
+              <b>2. 副热带锋（Subtropical Front）：</b>位于<b>南北纬30°附近</b>的副热带高压带边缘，是热带气团与中纬度气团的过渡带。锋面较弱，但在特定条件下（如高空槽影响）可激发出强烈天气。
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 0.5 }}>
+              <b>3. 赤道辐合带（ITCZ）：</b>位于赤道附近的低压带（非严格锋面），是南北半球信风交汇地带，终年高温多雨，是全球热带气旋（台风/飓风）的重要发源地。
+            </Typography>
+            <Typography variant="body2">
+              <b>4. 热带锋：</b>位于热带与副热带过渡区，如<b>南岭准静止锋</b>（冬季）、<b>华南准静止锋</b>即属此类。中国南方冬半年的持续阴雨多与此锋面系统有关。
+            </Typography>
+          </Box>
+
+          {/* 中国锋面活动季节规律 */}
+          <Box sx={{ mt: 2, p: 1.5, bgcolor: '#fff3e0', borderRadius: 2, border: '1px solid #ffb74d' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#e65100', mb: 1 }}>
+              🇨🇳 中国锋面活动季节规律（高考时间轴必记）
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 0.5 }}>
+              <b>冬季（12月-2月）：</b>冷锋活动<b>最频繁、最强烈</b>。蒙古-西伯利亚冷高压强大，冷锋频繁南下，带来<b>寒潮、大风、降温、沙尘暴</b>。昆明准静止锋形成（云贵高原），华南准静止锋活跃。
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 0.5 }}>
+              <b>春季（3月-5月）：</b>冷暖气团交替频繁，<b>冷锋仍活跃</b>但强度减弱。北方多沙尘天气，南方<b>华南准静止锋</b>造成低温阴雨。暖锋开始出现（但中国仍以冷锋为主）。
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 0.5 }}>
+              <b>夏季（6月-8月）：</b>冷锋势力大减，<b>准静止锋为主</b>。6月中旬-7月上旬「江淮准静止锋」造成<b>梅雨</b>（高考五星考点）；7-8月副高北跳控制长江中下游（伏旱），锋面移至华北、东北。热带气旋（台风）锋面活跃于华南。
+            </Typography>
+            <Typography variant="body2">
+              <b>秋季（9月-11月）：</b>冷空气势力恢复，<b>冷锋增多</b>。9月副高南退，「华西秋雨」（准静止锋影响）；10月后冷锋南下次数增多，北方进入霜冻期。
+            </Typography>
+            <Typography variant="body2" sx={{ color: '#757575', fontSize: '0.7rem', mt: 0.5 }}>
+              💡 全年规律：中国以<b>冷锋</b>为主（占80%以上），暖锋次之；准静止锋主要集中在<b>冬半年（南岭/昆明）</b>和<b>初夏（江淮梅雨）</b>。锋面活动与<b>副高（西太平洋副热带高压）</b>的季节进退密切相关。
+            </Typography>
+          </Box>
         </Box>
       </Box>
     </ToolPageLayout>

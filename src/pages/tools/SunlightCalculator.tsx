@@ -311,6 +311,29 @@ const SunlightCalculator: React.FC = () => {
             </Typography>
           </Box>
 
+          {/* 极昼极夜范围计算公式 */}
+          <Box sx={{ p: 1.5, bgcolor: '#e8eaf6', borderRadius: 2, mt: 1 }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#283593', mb: 1 }}>
+              🔬 极昼极夜范围计算公式（高考计算题必备）
+            </Typography>
+            <Typography variant="body2" sx={{ fontFamily: '"JetBrains Mono", monospace', fontSize: '0.85rem', mb: 0.5 }}>
+              太阳直射北纬 δ° 时：
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 0.5 }}>
+              · <b>北纬 (90°−δ) 以北 → 极昼</b>（24小时太阳不落）<br/>
+              · <b>南纬 (90°−δ) 以南 → 极夜</b>（24小时太阳不升）
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 0.5 }}>
+              <b>实例验证：</b>夏至日 δ=23.5°N → 北纬 90°−23.5°=<b>66.5°N</b>（北极圈）以北极昼，南纬 66.5°S 以南极夜。冬至日 δ=23.5°S → 北极圈以北极夜，南极圈以南<b>极昼</b>。
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 0.3 }}>
+              <b>春秋分 δ=0°：</b>90°−0°=<b>90°</b>，即只有极点本身（90°N/S）满足条件，但此时全球昼夜等长，无极昼极夜。
+            </Typography>
+            <Typography variant="body2" sx={{ color: '#757575', fontSize: '0.7rem' }}>
+              💡 解题模板：①确定直射点纬度δ→②计算临界纬度90°−|δ|→③判断某地与临界纬度的关系：纬度&gt;90°−|δ|且与δ同半球→极昼；纬度&gt;90°−|δ|且与δ异半球→极夜。口诀：「直射北纬δ，北纬90°−δ以北是极昼」。
+            </Typography>
+          </Box>
+
           {/* 全球昼夜长短分布规律 */}
           <Box sx={{ p: 1.5, bgcolor: '#e8f5e9', borderRadius: 2, mt: 1 }}>
             <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#2E7D32', mb: 1 }}>

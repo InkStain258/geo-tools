@@ -335,6 +335,133 @@ const AtmosphericCirculation: React.FC = () => {
               <b>高纬极地东风带（60°-90°）：</b>北半球为<b>东北风（NE）</b>，南半球为<b>东南风（SE）</b>。风力较弱，寒冷干燥。
             </Typography>
           </Box>
+
+          {/* 气压带风带对气候的影响速查表 */}
+          <Box sx={{ mt: 2, p: 1.5, bgcolor: '#e0f2f1', borderRadius: 2, border: '1px solid #80cbc4' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#00695c', mb: 1 }}>
+              🔗 气压带风带对气候的影响速查表（高考核心）
+            </Typography>
+            <Box sx={{ overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '10px' }}>
+                <thead>
+                  <tr style={{ backgroundColor: '#b2dfdb' }}>
+                    <th style={{ border: '1px solid #80cbc4', padding: '3px 5px', textAlign: 'center' }}>气压带/风带</th>
+                    <th style={{ border: '1px solid #80cbc4', padding: '3px 5px', textAlign: 'center' }}>纬度位置</th>
+                    <th style={{ border: '1px solid #80cbc4', padding: '3px 5px', textAlign: 'center' }}>气流方向</th>
+                    <th style={{ border: '1px solid #80cbc4', padding: '3px 5px', textAlign: 'center' }}>对气候的影响</th>
+                    <th style={{ border: '1px solid #80cbc4', padding: '3px 5px', textAlign: 'center' }}>典型气候区</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}><b>赤道低压带</b></td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px', textAlign: 'center' }}>0°</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px', textAlign: 'center' }}>上升↑</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}>终年高温多雨（对流雨）</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}>热带雨林气候</td>
+                  </tr>
+                  <tr style={{ backgroundColor: '#e0f2f1' }}>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}><b>信风带</b></td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px', textAlign: 'center' }}>0°-30°</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px', textAlign: 'center' }}>高纬→低纬</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}>大陆西岸：干燥少雨（离岸风）；大陆东岸：带来水汽</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}>热带沙漠（西岸）；热带季风（东岸）</td>
+                  </tr>
+                  <tr>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}><b>副热带高压带</b></td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px', textAlign: 'center' }}>30°</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px', textAlign: 'center' }}>下沉↓</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}>终年干燥少雨（晴朗）</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}>热带沙漠气候、地中海气候(夏)</td>
+                  </tr>
+                  <tr style={{ backgroundColor: '#e0f2f1' }}>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}><b>盛行西风带</b></td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px', textAlign: 'center' }}>30°-60°</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px', textAlign: 'center' }}>低纬→高纬</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}>大陆西岸：温和多雨（向岸风）</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}>温带海洋性气候、地中海气候(冬)</td>
+                  </tr>
+                  <tr>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}><b>副极地低压带</b></td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px', textAlign: 'center' }}>60°</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px', textAlign: 'center' }}>上升↑</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}>多阴雨天气（极锋气旋）</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}>亚寒带针叶林气候</td>
+                  </tr>
+                  <tr style={{ backgroundColor: '#e0f2f1' }}>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}><b>极地东风带</b></td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px', textAlign: 'center' }}>60°-90°</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px', textAlign: 'center' }}>高纬→低纬</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}>寒冷干燥</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}>苔原气候、冰原气候</td>
+                  </tr>
+                  <tr>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}><b>极地高压带</b></td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px', textAlign: 'center' }}>90°</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px', textAlign: 'center' }}>下沉↓</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}>终年严寒干燥</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}>冰原气候</td>
+                  </tr>
+                </tbody>
+              </table>
+            </Box>
+            <Typography variant="body2" sx={{ color: '#757575', fontSize: '0.65rem', mt: 0.5 }}>
+              💡 速记规律：「低压上升多雨，高压下沉少雨；低纬→高纬（西风）带来水汽多雨，高纬→低纬（信风/东风）干燥少雨」
+            </Typography>
+          </Box>
+
+          {/* 季风环流与三圈环流对比 */}
+          <Box sx={{ mt: 2, p: 1.5, bgcolor: '#fff3e0', borderRadius: 2, border: '1px solid #ffb74d' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#e65100', mb: 1 }}>
+              ⚖️ 季风环流与三圈环流对比（高考区分题核心）
+            </Typography>
+            <Box sx={{ overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '10px' }}>
+                <thead>
+                  <tr style={{ backgroundColor: '#ffe0b2' }}>
+                    <th style={{ border: '1px solid #ffb74d', padding: '3px 5px', textAlign: 'center' }}>对比维度</th>
+                    <th style={{ border: '1px solid #ffb74d', padding: '3px 5px', textAlign: 'center' }}>三圈环流（行星风系）</th>
+                    <th style={{ border: '1px solid #ffb74d', padding: '3px 5px', textAlign: 'center' }}>季风环流</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style={{ border: '1px solid #ffb74d', padding: '3px 5px' }}><b>根本成因</b></td>
+                    <td style={{ border: '1px solid #ffb74d', padding: '3px 5px' }}>太阳辐射纬度差异 → 气压梯度力</td>
+                    <td style={{ border: '1px solid #ffb74d', padding: '3px 5px' }}><b>海陆热力性质差异</b>（+ 气压带风带季节移动）</td>
+                  </tr>
+                  <tr style={{ backgroundColor: '#fff8e1' }}>
+                    <td style={{ border: '1px solid #ffb74d', padding: '3px 5px' }}><b>空间尺度</b></td>
+                    <td style={{ border: '1px solid #ffb74d', padding: '3px 5px' }}><b>全球性</b>，覆盖整个纬度带</td>
+                    <td style={{ border: '1px solid #ffb74d', padding: '3px 5px' }}><b>区域性</b>，仅在大陆东岸显著（东亚、南亚为最强）</td>
+                  </tr>
+                  <tr>
+                    <td style={{ border: '1px solid #ffb74d', padding: '3px 5px' }}><b>风向稳定性</b></td>
+                    <td style={{ border: '1px solid #ffb74d', padding: '3px 5px' }}>全年风向稳定（信风、西风、东风恒定）</td>
+                    <td style={{ border: '1px solid #ffb74d', padding: '3px 5px' }}>随季节<b>反向</b>（夏季:海洋→陆/偏南风；冬季:陆地→海/偏北风）</td>
+                  </tr>
+                  <tr style={{ backgroundColor: '#fff8e1' }}>
+                    <td style={{ border: '1px solid #ffb74d', padding: '3px 5px' }}><b>典型影响区</b></td>
+                    <td style={{ border: '1px solid #ffb74d', padding: '3px 5px' }}>大陆西岸（西欧、北美西岸）、大洋中部</td>
+                    <td style={{ border: '1px solid #ffb74d', padding: '3px 5px' }}>东亚（中国东部、日本、韩国）、南亚（印度、孟加拉）、东南亚</td>
+                  </tr>
+                  <tr>
+                    <td style={{ border: '1px solid #ffb74d', padding: '3px 5px' }}><b>代表气候</b></td>
+                    <td style={{ border: '1px solid #ffb74d', padding: '3px 5px' }}>地中海气候（西风+副高交替）、温带海洋性（终年西风）、热带沙漠（副高+信风）</td>
+                    <td style={{ border: '1px solid #ffb74d', padding: '3px 5px' }}>亚热带季风、温带季风、热带季风</td>
+                  </tr>
+                  <tr style={{ backgroundColor: '#fff8e1' }}>
+                    <td style={{ border: '1px solid #ffb74d', padding: '3px 5px' }}><b>降水特征</b></td>
+                    <td style={{ border: '1px solid #ffb74d', padding: '3px 5px' }}>受气压带风带控制，季节分配与气压带移动一致</td>
+                    <td style={{ border: '1px solid #ffb74d', padding: '3px 5px' }}><b>雨热同期</b>（夏季高温多雨，冬季低温少雨）——季风区最显著特征</td>
+                  </tr>
+                </tbody>
+              </table>
+            </Box>
+            <Typography variant="body2" sx={{ color: '#757575', fontSize: '0.65rem', mt: 0.5 }}>
+              💡 高考区分关键：①大陆西岸→三圈环流（行星风系）控制；②大陆东岸→季风环流控制（东亚/南亚）。若题目给出「海陆热力差异」「雨热同期」「风向季节反转」→必是季风环流。
+            </Typography>
+          </Box>
         </Box>
       </Box>
     </ToolPageLayout>

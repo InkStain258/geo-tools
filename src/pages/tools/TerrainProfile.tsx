@@ -484,6 +484,72 @@ const TerrainProfile: React.FC = () => {
               💡 在剖面图中，坡度由线段斜率决定。垂直夸大系数会影响视觉坡度，实际坡度=tan⁻¹(高差/水平距离)。高考常考利用等高线图计算两地间坡度。
             </Typography>
           </Box>
+
+          {/* 五种基本地形特征速查 */}
+          <Box sx={{ bgcolor: '#e0f2f1', p: 1.5, mt: 1, borderRadius: 2, border: '1px solid #80cbc4' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 1, color: '#00695c' }}>
+              🗺️ 五种基本地形特征速查（高考必背）
+            </Typography>
+            <Box sx={{ overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '10px' }}>
+                <thead>
+                  <tr style={{ backgroundColor: '#b2dfdb' }}>
+                    <th style={{ border: '1px solid #80cbc4', padding: '3px 5px', textAlign: 'center' }}>地形类型</th>
+                    <th style={{ border: '1px solid #80cbc4', padding: '3px 5px', textAlign: 'center' }}>海拔高度</th>
+                    <th style={{ border: '1px solid #80cbc4', padding: '3px 5px', textAlign: 'center' }}>等高线特征</th>
+                    <th style={{ border: '1px solid #80cbc4', padding: '3px 5px', textAlign: 'center' }}>地面起伏</th>
+                    <th style={{ border: '1px solid #80cbc4', padding: '3px 5px', textAlign: 'center' }}>中国典型代表</th>
+                    <th style={{ border: '1px solid #80cbc4', padding: '3px 5px', textAlign: 'center' }}>适宜利用</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px', fontWeight: 700 }}>平原</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px', textAlign: 'center' }}>&lt;200m</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}>稀疏，等高线平直</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}>宽广平坦，起伏极小</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}>东北平原、华北平原、长江中下游平原</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}>农耕、城市、交通（人口密集区）</td>
+                  </tr>
+                  <tr style={{ backgroundColor: '#e0f2f1' }}>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px', fontWeight: 700 }}>丘陵</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px', textAlign: 'center' }}>&lt;500m</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}>较密集，等高线弯曲</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}>起伏和缓，坡度较小</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}>东南丘陵（江南/浙闽/两广）、山东丘陵、辽东丘陵</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}>梯田耕作、林果业、茶园</td>
+                  </tr>
+                  <tr>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px', fontWeight: 700 }}>山地</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px', textAlign: 'center' }}>&gt;500m</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}>密集，等高线弯曲明显</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}>起伏大，坡度陡，山峰耸立</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}>秦岭、太行山、横断山脉、天山</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}>林业、水电站、旅游、矿产</td>
+                  </tr>
+                  <tr style={{ backgroundColor: '#e0f2f1' }}>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px', fontWeight: 700 }}>高原</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px', textAlign: 'center' }}>&gt;500m（顶面平坦）</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}>顶部稀疏（平坦），边缘密集（陡峭）</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}>顶面宽广平坦，边缘陡峭下降</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}>青藏高原、内蒙古高原、黄土高原、云贵高原</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}>畜牧业（草原）、河谷农业</td>
+                  </tr>
+                  <tr>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px', fontWeight: 700 }}>盆地</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px', textAlign: 'center' }}>不定</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}>闭合等高线，内低外高</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}>四周高中间低，呈盆状</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}>四川盆地、塔里木盆地、准噶尔盆地、柴达木盆地</td>
+                    <td style={{ border: '1px solid #80cbc4', padding: '3px 5px' }}>底部平坦→农耕（成都平原）；沙漠盆地→矿产/绿洲</td>
+                  </tr>
+                </tbody>
+              </table>
+            </Box>
+            <Typography variant="body2" sx={{ color: '#757575', fontSize: '0.65rem', mt: 0.5 }}>
+              💡 速记口诀：「平丘山高盆」——平原&lt;200m、丘陵&lt;500m、山地&gt;500m、高原&gt;500m顶面平、盆地四周高中间低。中国地形特征：<b>西高东低，呈三级阶梯</b>（青藏高原→中部山地高原→东部平原丘陵）。
+            </Typography>
+          </Box>
         </Box>
       </Box>
     </ToolPageLayout>

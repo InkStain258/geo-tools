@@ -720,6 +720,58 @@ const ChartReading: React.FC = () => {
               />
             ))}
           </Box>
+
+          {/* 图表判读口诀 */}
+          <Box sx={{ mt: 2, p: 1.5, bgcolor: '#fff8e1', borderRadius: 2, borderLeft: '4px solid #FF8F00' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#E65100', mb: 0.5 }}>
+              🎯 图表判读通用口诀（高考答题模板）
+            </Typography>
+            <Box sx={{ bgcolor: '#fff', p: 1.5, borderRadius: 1, mb: 1, textAlign: 'center' }}>
+              <Typography variant="body2" sx={{ fontWeight: 800, color: '#E65100', fontSize: '0.95rem', letterSpacing: 1 }}>
+                读图名 → 看坐标 → 析趋势 → 找特征 → 得结论
+              </Typography>
+            </Box>
+            <Typography variant="body2" sx={{ fontSize: '0.75rem', mb: 0.3 }}>
+              <b>第一步 · 读图名：</b>明确图表主题（是什么图？气温曲线+降水柱状图？等压线图？人口金字塔？产业结构图？）。图名包含<b>核心地理信息</b>——时间（年/月/季节）、地点（城市/区域/国家）、统计指标。忽略图名是入门级错误。
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.75rem', mb: 0.3 }}>
+              <b>第二步 · 看坐标：</b>横轴和纵轴各代表什么？（时间-月份？空间-经度/纬度？数量-温度°C/降水量mm/人口万人？单位注意：是‰还是%？是mm还是m？）。特别注意<b>双纵轴</b>图表——左右轴可能表示不同量纲（如气温用左轴°C、降水用右轴mm）。
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.75rem', mb: 0.3 }}>
+              <b>第三步 · 析趋势：</b>整体变化趋势——上升？下降？波动？周期性？阶段性？如气温曲线呈"单峰型"（夏高冬低）→大陆性/季风气候；"平缓型"→海洋性/热带气候。识别趋势中的<b>拐点</b>（突变时间/地点）往往是关键考点。
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.75rem', mb: 0.3 }}>
+              <b>第四步 · 找特征：</b>找极值（最大值/最小值出现的时间和数值）、找异常（偏离趋势的点）、找对比（不同曲线/柱体间的差异）、找特殊值（0°C线、800mm线、临界值）。如最冷月&gt;15°C→热带，最冷月0-15°C→亚热带，最冷月&lt;0°C→温带。
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.75rem' }}>
+              <b>第五步 · 得结论：</b>将特征还原为地理规律 → 判断气候类型/地形部位/人口模式/经济阶段 → 用<b>地理术语</b>规范表述（"受XX控制""体现了XX规律""符合XX分布特征"）。结论必须<b>基于图表数据</b>，不能凭空套用记忆中的模板。
+            </Typography>
+          </Box>
+
+          {/* 常见图表判读陷阱 */}
+          <Box sx={{ mt: 2, p: 1.5, bgcolor: '#fce4ec', borderRadius: 2, border: '1px solid #f48fb1' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#880e4f', mb: 1 }}>
+              ⚠️ 常见图表判读陷阱（高考易错点汇总）
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.7rem', mb: 0.3 }}>
+              <b>❌ 陷阱1——忽略图名/图例：</b>直接看数据而忽略图名→误判图表类型。如把"某地各月降水量图"当成"年降水量分布图"→得出空间规律却忽略了时间变化。解法：<b>先看图名，再看图例，再读数据</b>。
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.7rem', mb: 0.3 }}>
+              <b>❌ 陷阱2——混淆双纵轴：</b>气温用左轴°C、降水用右轴mm→看到冬季降水柱"高"就以为多雨（实际可能只有几十mm）。解法：<b>看清每个纵轴的名称、单位和刻度范围</b>。
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.7rem', mb: 0.3 }}>
+              <b>❌ 陷阱3——比例尺/刻度变形：</b>纵轴刻度的压缩或拉伸会夸大/缩小变化幅度。如纵轴从0开始vs从100开始→同一组数据看起来差异巨大。解法：<b>查看纵轴起点和刻度间距</b>，不要仅凭视觉判断。
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.7rem', mb: 0.3 }}>
+              <b>❌ 陷阱4——等值线判读方向错误：</b>等高线向高值凸→山谷（凸高为谷）；向低值凸→山脊（凸低为脊）。常考反记。解法：口诀<b>"凸高为谷，凸低为脊"</b>或"等高线弯曲指向海拔低处→山脊（水往两侧流）"。
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.7rem', mb: 0.3 }}>
+              <b>❌ 陷阱5——人口金字塔误判：</b>只看底部宽窄就判断增长型/缩减型，忽略了<b>性别比异常</b>可能反映的移民/战争因素。解法：综合看塔形+性别比+顶部宽度+中间凸凹。
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.7rem' }}>
+              <b>❌ 陷阱6——产业结构饼图惯性思维：</b>看到"第三产业&gt;50%"就判断为发达国家，但忽略了可能是<b>旅游型小国</b>（如马尔代夫、塞舌尔——第三产业主要是旅游，工业化程度实际很低）。解法：结合<b>人均GDP、城市化率、工业化水平</b>综合判断。
+            </Typography>
+          </Box>
         </Box>
       </Box>
     </ToolPageLayout>

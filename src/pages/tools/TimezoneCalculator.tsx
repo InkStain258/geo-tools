@@ -353,6 +353,35 @@ const TimezoneCalculator: React.FC = () => {
           </CardContent>
         </Card>
 
+        {/* 时区计算常见错误 */}
+        <Card variant="outlined" sx={{ mt: 2 }}>
+          <CardContent>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 1, color: '#c62828' }}>
+              ⚠️ 时区计算常见错误（高考易错点汇总）
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.75rem', mb: 0.5, lineHeight: 1.6 }}>
+              <b>❌ 错误1——跨日界线忘记±1天：</b>这是时区计算<b>最高频错误</b>。当计算结果的小时 &lt; 0 或 ≥ 24 时，说明跨越了日界线。规则：小时≥24 → 小时−24，日期<b>+1天</b>；小时&lt;0 → 小时+24，日期<b>−1天</b>。例如：北京时间12:00求纽约时间：12−(8−(−5))=12−13=−1→−1+24=23时，日期减1天→昨天23:00。<b>口诀：「超了24加一天，不够0时减一天」。</b>
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.75rem', mb: 0.5, lineHeight: 1.6 }}>
+              <b>❌ 错误2——东西方向搞反（最致命）：</b>混淆"东加西减"的方向。<b>求东侧地点时间用加法，求西侧用减法</b>。易混淆场景：已知西侧时间求东侧→用加法；已知东侧时间求西侧→用减法。判断东西：时区号大的在东侧（东8区在东9区的西侧）。验证：北京(东8)12:00→东京(东9)=13:00（东侧加1h）；北京12:00→伦敦(0区)=4:00（西侧减8h）。口诀：「求东就加，求西就减；区号越大越在东」。
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.75rem', mb: 0.5, lineHeight: 1.6 }}>
+              <b>❌ 错误3——时区差计算错误（同减异加搞混）：</b>同在<b>东时区</b>或同在<b>西时区</b>→大号减小号（相减）；一个在东时区、一个在西时区→区号绝对值和（相加）。例：东8区和东3区（同在东西区）→差=8−3=5小时；东8区和西5区（跨东西区）→差=8+5=13小时。
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.75rem', mb: 0.5, lineHeight: 1.6 }}>
+              <b>❌ 错误4——地方时与区时混淆：</b>地方时基于经度（每1°差4分钟），区时基于时区（每1时区差1小时）。给定的"北京时间"是指东八区<b>区时</b>（120°E的地方时），而非北京本地（116.4°E）的地方时。高考题目严格区分"地方时"和"区时"，互换使用会导致约14分钟的误差。
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.75rem', lineHeight: 1.6 }}>
+              <b>❌ 错误5——飞行时间题中的"到达时间"判断：</b>题型：飞机A地起飞→飞行N小时→B地到达。求到达时B地当地时间。步骤：①起飞时B地时间=A地时间±时区差→②到达时B地时间=①+N小时（飞行时间）。常见错误：先把A地时间+N小时（飞行后时间），再换算时区——两种顺序结果相同但第一种更直观。口诀：「先转时区再加飞行」。
+            </Typography>
+            <Box sx={{ mt: 1.5, p: 1, bgcolor: '#e8f5e9', borderRadius: 1 }}>
+              <Typography variant="body2" sx={{ fontSize: '0.75rem', color: '#2E7D32', fontWeight: 700 }}>
+                ✅ 正确解题步骤：①确定两地时区号（分清东西）→②计算时区差（「同减异加」）→③「东加西减」→④若跨日期（结果&lt;0或≥24），调整日期 ±1天 → ⑤检查结果是否合理（东侧应早于西侧）。
+              </Typography>
+            </Box>
+          </CardContent>
+        </Card>
+
       </Box>
     </ToolPageLayout>
   );

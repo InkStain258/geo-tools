@@ -1032,6 +1032,82 @@ const RiverBasin: React.FC = () => {
             </Typography>
           </Box>
 
+          {/* 河流阶地、河漫滩、三角洲形成过程 */}
+          <Box sx={{ p: 1.5, mt: 1, bgcolor: '#fce4ec', borderRadius: 2, border: '1px solid #f48fb1' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#880e4f', mb: 1 }}>
+              🏞️ 河流阶地·河漫滩·三角洲形成过程简述（高考地貌核心）
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.7rem', mb: 0.5 }}>
+              <b>1. 河流阶地（River Terrace）：</b>地壳抬升（或侵蚀基准面下降）→ 河流下切侵蚀加强 → 原河漫滩抬升脱离洪水影响 → 形成阶地。阶地级数反映地壳抬升次数：一级阶地最年轻（最低），越高级数越古老。河岸两侧阶地对称分布，是研究<b>新构造运动</b>的重要证据。高考常考：「阶地级数=地壳抬升次数」、「阶地越高越古老」。
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.7rem', mb: 0.5 }}>
+              <b>2. 河漫滩（Floodplain）：</b>河流侧蚀拓宽河谷 → 凸岸泥沙淤积形成边滩 → 洪水期泛滥，泥沙在两岸堆积 → 枯水期出露形成河漫滩。河漫滩由<b>河床相（下部粗粒）</b>与<b>河漫滩相（上部细粒）</b>二元结构组成。河漫滩土质肥沃、地势平坦，是重要的农业区（如长江中下游平原）。
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.7rem' }}>
+              <b>3. 三角洲（Delta）：</b>河流挟带大量泥沙入海（湖） → 流速骤减、泥沙沉积 → 形成扇形堆积体 → 河道分汊入海。形成条件：①河流含沙量大（如黄河、尼罗河）；②河口处海水较浅、潮汐弱（海水顶托利于沉积）；③河流流量较为稳定。三角洲是<b>流水堆积地貌</b>的典型代表，也是人口密集区和重要农业区（如长三角、珠三角、尼罗河三角洲）。
+            </Typography>
+          </Box>
+
+          {/* 河流侵蚀与堆积地貌对比 */}
+          <Box sx={{ p: 1.5, mt: 1, bgcolor: '#e8eaf6', borderRadius: 2, border: '1px solid #9fa8da' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#283593', mb: 1 }}>
+              ⚡ 河流侵蚀与堆积地貌对比（高考必考）
+            </Typography>
+            <Box sx={{ overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '9px' }}>
+                <thead>
+                  <tr style={{ backgroundColor: '#c5cae9' }}>
+                    <th style={{ border: '1px solid #9fa8da', padding: '2px 3px', textAlign: 'center' }}>地貌类型</th>
+                    <th style={{ border: '1px solid #9fa8da', padding: '2px 3px', textAlign: 'center' }}>成因</th>
+                    <th style={{ border: '1px solid #9fa8da', padding: '2px 3px', textAlign: 'center' }}>形态特征</th>
+                    <th style={{ border: '1px solid #9fa8da', padding: '2px 3px', textAlign: 'center' }}>分布位置</th>
+                    <th style={{ border: '1px solid #9fa8da', padding: '2px 3px', textAlign: 'center' }}>人类活动</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style={{ border: '1px solid #9fa8da', padding: '2px 3px', fontWeight: 600 }}>峡谷（V形谷）</td>
+                    <td style={{ border: '1px solid #9fa8da', padding: '2px 3px' }}>河流下切侵蚀（下蚀为主）</td>
+                    <td style={{ border: '1px solid #9fa8da', padding: '2px 3px' }}>谷壁陡峭、谷底狭窄，呈V字形</td>
+                    <td style={{ border: '1px solid #9fa8da', padding: '2px 3px' }}>上游山区（长江三峡、科罗拉多大峡谷）</td>
+                    <td style={{ border: '1px solid #9fa8da', padding: '2px 3px' }}>建水电站（落差大）、旅游</td>
+                  </tr>
+                  <tr style={{ backgroundColor: '#e8eaf6' }}>
+                    <td style={{ border: '1px solid #9fa8da', padding: '2px 3px', fontWeight: 600 }}>曲流（河曲）</td>
+                    <td style={{ border: '1px solid #9fa8da', padding: '2px 3px' }}>河流侧蚀为主，凹岸侵蚀、凸岸堆积</td>
+                    <td style={{ border: '1px solid #9fa8da', padding: '2px 3px' }}>河道弯曲呈S形，凸岸有边滩</td>
+                    <td style={{ border: '1px solid #9fa8da', padding: '2px 3px' }}>中下游平原（荆江"九曲回肠"）</td>
+                    <td style={{ border: '1px solid #9fa8da', padding: '2px 3px' }}>凸岸建聚落/港口（水流缓）、凹岸需护岸</td>
+                  </tr>
+                  <tr>
+                    <td style={{ border: '1px solid #9fa8da', padding: '2px 3px', fontWeight: 600 }}>冲积扇</td>
+                    <td style={{ border: '1px solid #9fa8da', padding: '2px 3px' }}>河流出山口，流速骤减，泥沙堆积</td>
+                    <td style={{ border: '1px solid #9fa8da', padding: '2px 3px' }}>扇形堆积体，自扇顶→扇缘粒径由粗变细</td>
+                    <td style={{ border: '1px solid #9fa8da', padding: '2px 3px' }}>山前地带（太行山东麓、祁连山北麓）</td>
+                    <td style={{ border: '1px solid #9fa8da', padding: '2px 3px' }}>扇缘地下水丰富→绿洲（河西走廊）</td>
+                  </tr>
+                  <tr style={{ backgroundColor: '#e8eaf6' }}>
+                    <td style={{ border: '1px solid #9fa8da', padding: '2px 3px', fontWeight: 600 }}>三角洲</td>
+                    <td style={{ border: '1px solid #9fa8da', padding: '2px 3px' }}>河口泥沙沉积，河道分汊入海</td>
+                    <td style={{ border: '1px solid #9fa8da', padding: '2px 3px' }}>扇形或鸟足状（密西西比），地势低平</td>
+                    <td style={{ border: '1px solid #9fa8da', padding: '2px 3px' }}>河流入海口（长三角、珠三角、尼罗河三角洲）</td>
+                    <td style={{ border: '1px solid #9fa8da', padding: '2px 3px' }}>人口密集、经济发达、农业高产</td>
+                  </tr>
+                  <tr>
+                    <td style={{ border: '1px solid #9fa8da', padding: '2px 3px', fontWeight: 600 }}>河流阶地</td>
+                    <td style={{ border: '1px solid #9fa8da', padding: '2px 3px' }}>地壳抬升+河流下切，原河漫滩抬升</td>
+                    <td style={{ border: '1px solid #9fa8da', padding: '2px 3px' }}>阶梯状台地，多级阶地平行排列</td>
+                    <td style={{ border: '1px solid #9fa8da', padding: '2px 3px' }}>河谷两侧（黄河中游、长江上游）</td>
+                    <td style={{ border: '1px solid #9fa8da', padding: '2px 3px' }}>聚落选址（防洪、取水便利）、古人类遗址</td>
+                  </tr>
+                </tbody>
+              </table>
+            </Box>
+            <Typography variant="body2" sx={{ color: '#757575', fontSize: '0.65rem', mt: 0.5 }}>
+              💡 核心区分：侵蚀地貌（峡谷、曲流）由河流侵蚀作用主导；堆积地貌（冲积扇、三角洲、河漫滩）由河流堆积作用主导。阶地是侵蚀+构造抬升的复合产物。
+            </Typography>
+          </Box>
+
           {/* 河流补给类型说明 */}
           <Box sx={{ p: 1.5, mt: 1, bgcolor: '#E8F5E9', borderRadius: 2, border: '1px solid #A5D6A7' }}>
             <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#2E7D32', mb: 1 }}>

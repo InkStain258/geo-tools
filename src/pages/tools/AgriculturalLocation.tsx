@@ -285,6 +285,125 @@ const AgriculturalLocation: React.FC = () => {
         </Box>
       </Box>
 
+      {/* 美国农业带分布 */}
+      <Box sx={{ mt: 3, width: '100%' }}>
+        <Typography variant="h6" sx={{ fontWeight: 700, mb: 1.5, color: '#2E7D32' }}>
+          🇺🇸 美国农业带分布（高考世界地理必考）
+        </Typography>
+        <Typography variant="body2" sx={{ mb: 2, color: '#555' }}>
+          美国农业地域专业化程度世界最高，形成<b>因地制宜、高度商品化</b>的农业带格局。掌握各农业带的空间分布和区位条件，是高考读图题的必备知识。
+        </Typography>
+        <Box sx={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '10px' }}>
+            <thead>
+              <tr style={{ backgroundColor: '#c8e6c9' }}>
+                <th style={{ border: '1px solid #a5d6a7', padding: '4px 6px', textAlign: 'center' }}>农业带</th>
+                <th style={{ border: '1px solid #a5d6a7', padding: '4px 6px', textAlign: 'center' }}>分布位置</th>
+                <th style={{ border: '1px solid #a5d6a7', padding: '4px 6px', textAlign: 'center' }}>自然条件</th>
+                <th style={{ border: '1px solid #a5d6a7', padding: '4px 6px', textAlign: 'center' }}>主要产品</th>
+                <th style={{ border: '1px solid #a5d6a7', padding: '4px 6px', textAlign: 'center' }}>区位核心因素</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px', fontWeight: 700 }}>🥛 乳畜带</td>
+                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>五大湖及东北部地区</td>
+                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>气候湿冷（适合牧草生长）、土壤贫瘠</td>
+                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>牛奶、乳制品（鲜奶为主）</td>
+                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px', color: '#c62828' }}><b>市场</b>（城市群密集+冷冻技术）</td>
+              </tr>
+              <tr style={{ backgroundColor: '#e8f5e9' }}>
+                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px', fontWeight: 700 }}>🌽 玉米带</td>
+                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>乳畜带以南、中央低平原中北部</td>
+                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>温带大陆性气候、夏季高温多雨、土壤肥沃（黑钙土）</td>
+                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>玉米（全球最大生产/出口国）</td>
+                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>自然条件优越+畜牧业饲料需求</td>
+              </tr>
+              <tr>
+                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px', fontWeight: 700 }}>🌾 小麦带</td>
+                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>大平原北部（春小麦）和南部（冬小麦）</td>
+                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>地势平坦开阔、半干旱气候、机械化条件好</td>
+                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>小麦（全球最大出口国之一）</td>
+                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>地形+机械化+国际市场</td>
+              </tr>
+              <tr style={{ backgroundColor: '#e8f5e9' }}>
+                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px', fontWeight: 700 }}>🌿 棉花带</td>
+                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>东南部（北纬35°以南的东部地区）</td>
+                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>亚热带湿润气候、热量充足、生长期长</td>
+                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>棉花（历史棉区→向西迁移至德州）</td>
+                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>热量+劳动力（历史因素）</td>
+              </tr>
+              <tr>
+                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px', fontWeight: 700 }}>🐄 混合农业带</td>
+                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>玉米带以南、棉花带以北</td>
+                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>过渡地带，气候温和、降水适中</td>
+                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>玉米+大豆+养猪（种养结合）</td>
+                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>多样化经营抗风险+市场灵活</td>
+              </tr>
+              <tr style={{ backgroundColor: '#e8f5e9' }}>
+                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px', fontWeight: 700 }}>🏜️ 畜牧与灌溉农业带</td>
+                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>西部落基山脉及山间高原盆地</td>
+                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>干旱少雨、地广人稀、草原/荒漠</td>
+                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>肉牛、绵羊（粗放畜牧业）</td>
+                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>水源（灌溉决定农业分布）</td>
+              </tr>
+            </tbody>
+          </table>
+        </Box>
+        <Typography variant="body2" sx={{ color: '#757575', fontSize: '0.7rem', mt: 0.5 }}>
+          💡 美国农业带核心规律：<b>从东向西</b>——乳畜带→玉米带→小麦带→畜牧/灌溉带，体现了<b>水分递减</b>（降水从1000mm→250mm）和<b>热量纬度差异</b>的综合作用。农业专门化程度世界最高，商品率&gt;95%。
+        </Typography>
+      </Box>
+
+      {/* 澳大利亚混合农业 */}
+      <Box sx={{ mt: 3, width: '100%' }}>
+        <Typography variant="h6" sx={{ fontWeight: 700, mb: 1.5, color: '#2E7D32' }}>
+          🇦🇺 澳大利亚混合农业——小麦-牧羊模式详解（高考经典案例）
+        </Typography>
+        <Typography variant="body2" sx={{ mb: 2, color: '#555' }}>
+          澳大利亚东南部和西南部的<b>小麦-牧羊混合农业</b>是世界混合农业的典范，被誉为高考农业地理的"经典母题"。掌握其区位条件、经营特点和优势，是农业区位分析的必修课。
+        </Typography>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+          <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 48%' }, p: 2, bgcolor: '#e8f5e9', borderRadius: 2, border: '1px solid #a5d6a7' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#2E7D32' }}>📋 基本特征</Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.75rem', color: '#555', lineHeight: 1.7 }}>
+              <b>分布：</b>澳大利亚东南部墨累-达令河流域（温带地区）和西南部（地中海气候区）。<br/>
+              <b>经营模式：</b>一块土地上<b>混合种植小麦和饲养绵羊</b>。农场规模大（平均数千公顷），家庭经营为主，机械化程度极高。<br/>
+              <b>轮作制度：</b>小麦与牧草（豆科）轮作——种几年小麦→牧草恢复地力→放牧绵羊→再种小麦。形成\"<b>小麦→牧草→羊→小麦</b>\"的良性循环。
+            </Typography>
+          </Box>
+          <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 48%' }, p: 2, bgcolor: '#fff3e0', borderRadius: 2, border: '1px solid #ffcc80' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#E65100' }}>🎯 区位优势分析</Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.75rem', color: '#555', lineHeight: 1.7 }}>
+              <b>① 自然条件：</b>地势平坦开阔（大自流盆地），利于大规模机械化耕作。温带气候，冬季温和、夏季不太炎热，适合小麦生长。降水300-600mm（处于旱作农业的边界）。<br/>
+              <b>② 社会经济：</b>地广人稀（平均人口密度约3人/km²）、<b>机械化程度极高</b>（一个家庭可管理数千公顷）。距港口较近，出口便利。<br/>
+              <b>③ 政策支持：</b>政府鼓励农牧结合，提供农业补贴和技术推广。
+            </Typography>
+          </Box>
+          <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 48%' }, p: 2, bgcolor: '#e8eaf6', borderRadius: 2, border: '1px solid #c5cae9' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#283593' }}>✅ 三大优势（高考必背）</Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.75rem', color: '#555', lineHeight: 1.7 }}>
+              <b>1. 时间互补——忙闲错开：</b>小麦种植的忙季（播种秋季、收获春夏）与牧羊忙季（剪羊毛春季、配种秋季）在不同月份，劳动力全年均衡利用，没有明显的农闲期。<br/>
+              <b>2. 风险对冲——\"东方不亮西方亮\"：</b>小麦和羊毛/羊肉是两个独立市场。小麦丰收→收入增加；若小麦歉收（干旱）→牧羊可弥补收入。经济弹性极强。<br/>
+              <b>3. 生态循环——可持续农业：</b>小麦秸秆用作饲料→羊粪还田作为有机肥→豆科牧草固氮恢复地力→减少化肥使用。实现<b>\"以农养牧、以牧促农\"</b>的良性生态循环。
+            </Typography>
+          </Box>
+          <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 48%' }, p: 2, bgcolor: '#fce4ec', borderRadius: 2, border: '1px solid #f8bbd0' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#AD1457' }}>⚠️ 制约因素</Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.75rem', color: '#555', lineHeight: 1.7 }}>
+              <b>1. 水资源短缺：</b>墨累-达令河流域降水偏少（300-600mm），位于旱作农业的边界。过度引水灌溉导致<b>土壤盐碱化</b>，是最大的生态威胁。<br/>
+              <b>2. 距国际市场远：</b>小麦和羊毛主要面向出口，澳大利亚距欧美主要市场遥远，运输成本高。<br/>
+              <b>3. 干旱风险：</b>受厄尔尼诺现象影响，澳大利亚东南部常遭遇周期性干旱（如\"千年干旱\"2003-2012），对小麦产量影响巨大。
+            </Typography>
+          </Box>
+        </Box>
+        <Box sx={{ mt: 2, p: 1.5, bgcolor: '#fff8e1', borderRadius: 2, borderLeft: '4px solid #FF8F00' }}>
+          <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#E65100' }}>
+            <b>💡 高考经典命题角度：</b>①分析墨累-达令盆地混合农业的区位条件；②说明农牧混合的时间互补优势；③对比澳大利亚混合农业与中国北方农牧交错带（如内蒙古）的异同；④\"为什么说混合农业是可持续农业的典范？\"——从生态循环、经济弹性、劳力安排三个角度作答。
+          </Typography>
+        </Box>
+      </Box>
+
     </ToolPageLayout>
   );
 };
