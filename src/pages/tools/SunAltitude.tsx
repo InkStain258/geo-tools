@@ -300,6 +300,77 @@ const SunAltitude: React.FC = () => {
               })}
             </Box>
           )}
+
+          {/* 四季太阳高度变化表（北京 40°N） */}
+          <Box sx={{ p: 1.5, bgcolor: '#e8f5e9', borderRadius: 2, mt: 1 }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#2E7D32', mb: 1 }}>
+              📅 北京(40°N)四季正午太阳高度角变化
+            </Typography>
+            <Box sx={{ overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '11px' }}>
+                <thead>
+                  <tr style={{ backgroundColor: '#c8e6c9' }}>
+                    <th style={{ border: '1px solid #a5d6a7', padding: '3px 5px', textAlign: 'center' }}>节气</th>
+                    <th style={{ border: '1px solid #a5d6a7', padding: '3px 5px', textAlign: 'center' }}>日期</th>
+                    <th style={{ border: '1px solid #a5d6a7', padding: '3px 5px', textAlign: 'center' }}>直射点纬度</th>
+                    <th style={{ border: '1px solid #a5d6a7', padding: '3px 5px', textAlign: 'center' }}>H公式</th>
+                    <th style={{ border: '1px solid #a5d6a7', padding: '3px 5px', textAlign: 'center' }}>太阳高度角</th>
+                    <th style={{ border: '1px solid #a5d6a7', padding: '3px 5px', textAlign: 'center' }}>昼长(约)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td style={{ border: '1px solid #a5d6a7', padding: '3px 5px', textAlign: 'center' }}>春分</td><td style={{ border: '1px solid #a5d6a7', padding: '3px 5px', textAlign: 'center' }}>3月21日</td><td style={{ border: '1px solid #a5d6a7', padding: '3px 5px', textAlign: 'center' }}>0°(赤道)</td><td style={{ border: '1px solid #a5d6a7', padding: '3px 5px', textAlign: 'center' }}>90°-|40°-0°|</td><td style={{ border: '1px solid #a5d6a7', padding: '3px 5px', textAlign: 'center' }}><b>50°</b></td><td style={{ border: '1px solid #a5d6a7', padding: '3px 5px', textAlign: 'center' }}>12h</td></tr>
+                  <tr style={{ backgroundColor: '#e8f5e9' }}><td style={{ border: '1px solid #a5d6a7', padding: '3px 5px', textAlign: 'center' }}>夏至</td><td style={{ border: '1px solid #a5d6a7', padding: '3px 5px', textAlign: 'center' }}>6月22日</td><td style={{ border: '1px solid #a5d6a7', padding: '3px 5px', textAlign: 'center' }}>23.5°N</td><td style={{ border: '1px solid #a5d6a7', padding: '3px 5px', textAlign: 'center' }}>90°-|40°-23.5°|</td><td style={{ border: '1px solid #a5d6a7', padding: '3px 5px', textAlign: 'center' }}><b>73.5°</b></td><td style={{ border: '1px solid #a5d6a7', padding: '3px 5px', textAlign: 'center' }}>~15h</td></tr>
+                  <tr><td style={{ border: '1px solid #a5d6a7', padding: '3px 5px', textAlign: 'center' }}>秋分</td><td style={{ border: '1px solid #a5d6a7', padding: '3px 5px', textAlign: 'center' }}>9月23日</td><td style={{ border: '1px solid #a5d6a7', padding: '3px 5px', textAlign: 'center' }}>0°(赤道)</td><td style={{ border: '1px solid #a5d6a7', padding: '3px 5px', textAlign: 'center' }}>90°-|40°-0°|</td><td style={{ border: '1px solid #a5d6a7', padding: '3px 5px', textAlign: 'center' }}><b>50°</b></td><td style={{ border: '1px solid #a5d6a7', padding: '3px 5px', textAlign: 'center' }}>12h</td></tr>
+                  <tr style={{ backgroundColor: '#e8f5e9' }}><td style={{ border: '1px solid #a5d6a7', padding: '3px 5px', textAlign: 'center' }}>冬至</td><td style={{ border: '1px solid #a5d6a7', padding: '3px 5px', textAlign: 'center' }}>12月22日</td><td style={{ border: '1px solid #a5d6a7', padding: '3px 5px', textAlign: 'center' }}>23.5°S</td><td style={{ border: '1px solid #a5d6a7', padding: '3px 5px', textAlign: 'center' }}>90°-|40°-(-23.5°)|</td><td style={{ border: '1px solid #a5d6a7', padding: '3px 5px', textAlign: 'center' }}><b>26.5°</b></td><td style={{ border: '1px solid #a5d6a7', padding: '3px 5px', textAlign: 'center' }}>~9h</td></tr>
+                </tbody>
+              </table>
+            </Box>
+            <Typography variant="body2" sx={{ color: '#757575', mt: 0.5, fontSize: '0.7rem' }}>
+              💡 规律：北京夏至正午太阳高度最高（73.5°），冬至最低（26.5°），年变化幅度=47°（=2×23.5°黄赤交角）。
+            </Typography>
+          </Box>
+
+          {/* 建筑物间距计算 */}
+          <Box sx={{ p: 1.5, bgcolor: '#fff3e0', borderRadius: 2, mt: 1 }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#E65100', mb: 1 }}>
+              🏗️ 太阳高度角与建筑物间距计算（高考应用题）
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 0.5 }}>
+              <b>核心公式：</b>楼间距 L = 楼高 h / tan(H<sub>冬至</sub>)，其中 H<sub>冬至</sub> 为冬至日正午太阳高度角。
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 0.5 }}>
+              <b>计算依据：</b>以冬至日（一年中正午太阳高度最低）正午前楼影子不遮挡后楼一层为准。
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 0.3 }}>
+              <b>举例——北京(40°N)，楼高20m：</b> H<sub>冬至</sub>=26.5°，间距L = 20 / tan(26.5°) ≈ <b>40m</b>（约楼高的2倍）。
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 0.3 }}>
+              <b>特例——H=45°时：</b>间距 = 楼高 / tan(45°) = 楼高 / 1 = <b>楼高</b>。即当冬至正午太阳高度恰好为45°时，楼间距恰好等于楼高。
+            </Typography>
+            <Typography variant="body2" sx={{ color: '#757575', fontSize: '0.7rem' }}>
+              💡 纬度越高→冬至H越小→所需楼间距越大。哈尔滨(45.8°N)比广州(23.1°N)的楼间距要求大得多。这也是北方住宅楼间距普遍大于南方的原因。
+            </Typography>
+          </Box>
+
+          {/* 太阳能热水器安装角度 */}
+          <Box sx={{ p: 1.5, bgcolor: '#e3f2fd', borderRadius: 2, mt: 1 }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#1565C0', mb: 0.5 }}>
+              ☀️ 太阳能热水器安装角度计算
+            </Typography>
+            <Typography variant="body2" sx={{ fontFamily: '"JetBrains Mono", monospace', fontSize: '0.85rem', mb: 0.5 }}>
+              集热板倾角 θ = |φ - δ| （φ=当地纬度，δ=直射点纬度）
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 0.5 }}>
+              <b>原理：</b>为使集热板与太阳光线垂直，集热板与地面的夹角应等于正午太阳高度角的余角。而H=90°-|φ-δ|，所以θ=90°-H=|φ-δ|。即<b>安装角度 = 纬度 - 直射点纬度</b>。
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 0.3 }}>
+              <b>北京(40°N)实例：</b>夏至θ=|40°-23.5°|=16.5°（板面较平）；冬至θ=|40°-(-23.5°)|=63.5°（板面陡立）；春秋分θ=40°。实际安装取中间值或可调节支架。
+            </Typography>
+            <Typography variant="body2" sx={{ color: '#757575', fontSize: '0.7rem' }}>
+              💡 高考常见考法：给出一地纬度，要求计算某日太阳能热水器集热板的最佳倾角。关键理解：倾角=纬度差=|φ-δ|。
+            </Typography>
+          </Box>
         </Box>
       </Box>
     </ToolPageLayout>

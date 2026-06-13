@@ -18,7 +18,7 @@ ChartJS.register(
   LineElement, Title, Tooltip, Legend, Filler, ArcElement, RadialLinearScale,
 );
 
-type ChartType = 'climate' | 'isotherm' | 'precip-compare' | 'population-pyramid' | 'industry-pie';
+type ChartType = 'climate' | 'isotherm' | 'precip-compare' | 'population-pyramid' | 'industry-pie' | 'isohyet' | 'temp-curve-compare';
 
 interface QuizQuestion {
   type: ChartType;
@@ -33,6 +33,10 @@ interface QuizQuestion {
   popPyramidData?: { ages: string[]; male: number[]; female: number[]; answer: string };
   // industry pie
   industryData?: { labels: string[]; values: number[]; answer: string };
+  // isohyet
+  isohyetData?: { cities: { name: string; lat: number; precip: number }[]; season: string };
+  // temp curve compare
+  tempCurveData?: { cities: { name: string; climate: string; temps: number[] }[] };
   answer: string;
   steps: string[];
 }
@@ -119,6 +123,57 @@ const INDUSTRY_PIES = [
   },
 ];
 
+const ISOHYET_DATA = [
+  {
+    answer: '中国年等降水量线分布',
+    season: 'annual',
+    cities: [
+      { name: '台北', lat: 25.0, precip: 2400 },
+      { name: '广州', lat: 23.1, precip: 1700 },
+      { name: '武汉', lat: 30.6, precip: 1300 },
+      { name: '北京', lat: 39.9, precip: 580 },
+      { name: '呼和浩特', lat: 40.8, precip: 400 },
+      { name: '乌鲁木齐', lat: 43.8, precip: 290 },
+      { name: '喀什', lat: 39.5, precip: 65 },
+    ],
+  },
+  {
+    answer: '等降水量线判读——季风影响',
+    season: 'annual',
+    cities: [
+      { name: '孟买', lat: 19.1, precip: 2200 },
+      { name: '加尔各答', lat: 22.6, precip: 1600 },
+      { name: '新德里', lat: 28.6, precip: 800 },
+      { name: '斋浦尔', lat: 26.9, precip: 650 },
+      { name: '卡拉奇', lat: 24.9, precip: 200 },
+    ],
+  },
+];
+
+const TEMP_CURVE_COMPARE = [
+  {
+    answer: '温带季风 vs 温带海洋性气候——气温曲线对比',
+    cities: [
+      { name: '北京', climate: '温带季风气候', temps: [-4, -1, 6, 14, 20, 25, 27, 25, 20, 13, 4, -2] },
+      { name: '伦敦', climate: '温带海洋性气候', temps: [5, 5, 7, 9, 12, 15, 17, 17, 14, 11, 7, 5] },
+    ],
+  },
+  {
+    answer: '大陆性 vs 海洋性气候——气温年较差对比',
+    cities: [
+      { name: '莫斯科', climate: '温带大陆性气候', temps: [-9, -7, -2, 6, 14, 17, 19, 17, 11, 5, -1, -6] },
+      { name: '都柏林', climate: '温带海洋性气候', temps: [5, 5, 7, 8, 11, 13, 15, 15, 13, 10, 7, 5] },
+    ],
+  },
+  {
+    answer: '同纬度——海拔对气温的影响',
+    cities: [
+      { name: '重庆(259m)', climate: '亚热带季风(低海拔)', temps: [8, 10, 15, 20, 24, 27, 30, 30, 25, 19, 14, 9] },
+      { name: '昆明(1891m)', climate: '亚热带季风(高原)', temps: [8, 10, 14, 17, 19, 20, 20, 20, 18, 15, 12, 8] },
+    ],
+  },
+];
+
 function generateQuiz(): QuizQuestion {
   const types: ChartType[] = ['climate', 'isotherm', 'precip-compare', 'population-pyramid', 'industry-pie'];
   const type = types[Math.floor(Math.random() * types.length)];
@@ -192,6 +247,34 @@ function generateQuiz(): QuizQuestion {
           'Step 2: 看第二产业占比 → >40%为工业化阶段',
           'Step 3: 看第三产业占比 → >60%为发达国家水平',
           'Step 4: 综合判断 → 三>二>一 = 发达 / 二>三>一 = 发展中工业国',
+        ],
+      };
+    }
+    case 'isohyet': {
+      const iso = ISOHYET_DATA[Math.floor(Math.random() * ISOHYET_DATA.length)];
+      return {
+        type: 'isohyet',
+        isohyetData: { cities: iso.cities, season: iso.season },
+        answer: iso.answer,
+        steps: [
+          'Step 1: 观察降水量整体范围 → 判断干湿区（>800mm湿润，400-800mm半湿润，200-400mm半干旱，<200mm干旱）',
+          'Step 2: 查找降水空间变化规律 → 从沿海向内陆递减？从低纬向高纬递减？',
+          'Step 3: 注意特殊值 → 800mm等降水量线（秦岭—淮河线）、400mm等降水量线（季风区与非季风区分界）',
+          'Step 4: 结合海陆位置和地形 → 判断降水分布成因（距海远近、地形抬升/雨影效应、洋流影响）',
+        ],
+      };
+    }
+    case 'temp-curve-compare': {
+      const tc = TEMP_CURVE_COMPARE[Math.floor(Math.random() * TEMP_CURVE_COMPARE.length)];
+      return {
+        type: 'temp-curve-compare',
+        tempCurveData: { cities: tc.cities },
+        answer: tc.answer,
+        steps: [
+          'Step 1: 比较两条曲线的最冷月气温 → 判断气候带（>15°C热带，0-15°C亚热带/温带海洋，<0°C温带/寒带）',
+          'Step 2: 比较气温年较差 → 年较差大=大陆性；年较差小=海洋性',
+          'Step 3: 观察曲线形状 → \"尖峰\"=大陆性特征；\"平缓\"=海洋性特征',
+          'Step 4: 结合地理因素 → 海陆位置、海拔高度、纬度等综合分析成因',
         ],
       };
     }
@@ -311,6 +394,90 @@ const IndustryPieChart: React.FC<{ labels: string[]; values: number[] }> = ({ la
   );
 };
 
+const IsohyetChart: React.FC<{ cities: { name: string; lat: number; precip: number }[] }> = ({ cities }) => {
+  const data = {
+    labels: cities.map((c) => c.name),
+    datasets: [
+      {
+        type: 'bar' as const,
+        label: '年降水量 (mm)',
+        data: cities.map((c) => c.precip),
+        backgroundColor: cities.map((c) =>
+          c.precip > 1600 ? 'rgba(21,101,192,0.8)' :
+          c.precip > 800 ? 'rgba(46,125,50,0.7)' :
+          c.precip > 400 ? 'rgba(255,152,0,0.6)' :
+          'rgba(244,67,54,0.5)'
+        ),
+        borderColor: '#333',
+        borderWidth: 1,
+      },
+      {
+        type: 'line' as const,
+        label: '趋势线',
+        data: cities.map((c) => c.precip),
+        borderColor: '#D32F2F',
+        backgroundColor: 'transparent',
+        borderWidth: 2,
+        pointRadius: 0,
+        tension: 0.3,
+      },
+    ],
+  };
+  return (
+    <div style={{ height: 280 }}>
+      <Chart type="bar" data={data} options={{
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: true, position: 'top' as const },
+          tooltip: {
+            callbacks: {
+              afterLabel: (ctx) => `干湿区: ${Number(ctx.parsed.y) > 800 ? '湿润区' : Number(ctx.parsed.y) > 400 ? '半湿润区' : Number(ctx.parsed.y) > 200 ? '半干旱区' : '干旱区'}`,
+            },
+          },
+        },
+        scales: { y: { title: { display: true, text: 'mm' } } },
+      }} />
+    </div>
+  );
+};
+
+const TempCurveCompareChart: React.FC<{ cities: { name: string; climate: string; temps: number[] }[] }> = ({ cities }) => {
+  const months = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+  const colors = ['#F44336', '#1565C0', '#2E7D32'];
+  const datasets = cities.map((city, i) => ({
+    label: `${city.name} (${city.climate})`,
+    data: city.temps,
+    borderColor: colors[i % colors.length],
+    backgroundColor: 'transparent',
+    borderWidth: 2.5,
+    pointRadius: 4,
+    pointHoverRadius: 6,
+    tension: 0.4,
+  }));
+  const data = { labels: months, datasets };
+  return (
+    <div style={{ height: 280 }}>
+      <Chart type="line" data={data} options={{
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: true, position: 'bottom' as const },
+          tooltip: {
+            callbacks: {
+              afterLabel: () => '提示：年较差=最热月-最冷月，越大=大陆性越强',
+            },
+          },
+        },
+        scales: {
+          y: {
+            title: { display: true, text: '°C' },
+            grid: { color: (ctx) => ctx.tick.value === 0 ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0.05)' },
+          },
+        },
+      }} />
+    </div>
+  );
+};
+
 // ---- Quiz Guide Cards ----
 const quizGuides: Record<ChartType, { title: string; icon: string; desc: string }> = {
   climate: { title: '气候统计图', icon: '🌡️', desc: '通过气温-降水柱状/曲线图判断气候类型' },
@@ -318,6 +485,8 @@ const quizGuides: Record<ChartType, { title: string; icon: string; desc: string 
   'precip-compare': { title: '降水量柱状比较', icon: '🌧️', desc: '通过多城市降水量比较判断气候区' },
   'population-pyramid': { title: '人口金字塔', icon: '👥', desc: '通过年龄结构判断人口增长模式' },
   'industry-pie': { title: '产业结构饼图', icon: '🏭', desc: '通过三次产业占比判断经济发展阶段' },
+  isohyet: { title: '等降水量线图', icon: '💧', desc: '通过等降水量线空间变化判断降水分布规律' },
+  'temp-curve-compare': { title: '气温曲线对比', icon: '📈', desc: '比较两条气温曲线判断气候类型差异' },
 };
 
 const ChartReading: React.FC = () => {
@@ -368,6 +537,10 @@ const ChartReading: React.FC = () => {
         return <PopulationPyramid ages={quiz.popPyramidData!.ages} male={quiz.popPyramidData!.male} female={quiz.popPyramidData!.female} />;
       case 'industry-pie':
         return <IndustryPieChart labels={quiz.industryData!.labels} values={quiz.industryData!.values} />;
+      case 'isohyet':
+        return <IsohyetChart cities={quiz.isohyetData!.cities} />;
+      case 'temp-curve-compare':
+        return <TempCurveCompareChart cities={quiz.tempCurveData!.cities} />;
     }
   };
 
@@ -419,6 +592,32 @@ const ChartReading: React.FC = () => {
             <Typography variant="body2">三产排序：{quiz.industryData!.values[2] > quiz.industryData!.values[1] ? '三>二>一' : '二>三>一'}</Typography>
           </>
         );
+      case 'isohyet':
+        const isoMax = Math.max(...quiz.isohyetData!.cities.map(c => c.precip));
+        const isoMin = Math.min(...quiz.isohyetData!.cities.map(c => c.precip));
+        return (
+          <>
+            <Typography variant="body2">城市数：{quiz.isohyetData!.cities.length} 个</Typography>
+            <Typography variant="body2">最大降水量：{isoMax}mm（{isoMax > 800 ? '湿润区' : isoMax > 400 ? '半湿润区' : isoMax > 200 ? '半干旱区' : '干旱区'}）</Typography>
+            <Typography variant="body2">最小降水量：{isoMin}mm（{isoMin > 800 ? '湿润区' : isoMin > 400 ? '半湿润区' : isoMin > 200 ? '半干旱区' : '干旱区'}）</Typography>
+            <Typography variant="body2">降水空间变化：从东南沿海向西北内陆递减（体现海陆位置影响）</Typography>
+          </>
+        );
+      case 'temp-curve-compare':
+        const city1Range = Math.max(...quiz.tempCurveData!.cities[0].temps) - Math.min(...quiz.tempCurveData!.cities[0].temps);
+        const city2Range = Math.max(...quiz.tempCurveData!.cities[1].temps) - Math.min(...quiz.tempCurveData!.cities[1].temps);
+        return (
+          <>
+            <Typography variant="body2">{quiz.tempCurveData!.cities[0].name} 年较差：{city1Range.toFixed(0)}°C</Typography>
+            <Typography variant="body2">{quiz.tempCurveData!.cities[1].name} 年较差：{city2Range.toFixed(0)}°C</Typography>
+            <Typography variant="body2">
+              差异原因：{city1Range > city2Range ?
+                `${quiz.tempCurveData!.cities[0].name}大陆性更强（距海远/海拔高）` :
+                `${quiz.tempCurveData!.cities[1].name}大陆性更强`}
+            </Typography>
+            <Typography variant="body2">气候类型判断：年较差大→大陆性气候；年较差小→海洋性气候</Typography>
+          </>
+        );
     }
   };
 
@@ -430,7 +629,7 @@ const ChartReading: React.FC = () => {
             <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
               {guide.icon} {guide.title} · 请判读以下图表
             </Typography>
-            <Chip label={quiz.type === 'climate' ? '气候图' : quiz.type === 'isotherm' ? '等温线' : quiz.type === 'precip-compare' ? '降水柱状' : quiz.type === 'population-pyramid' ? '人口金字塔' : '产业结构'} size="small" color="success" variant="outlined" />
+            <Chip label={quiz.type === 'climate' ? '气候图' : quiz.type === 'isotherm' ? '等温线' : quiz.type === 'precip-compare' ? '降水柱状' : quiz.type === 'population-pyramid' ? '人口金字塔' : quiz.type === 'industry-pie' ? '产业结构' : quiz.type === 'isohyet' ? '等降水量线' : '气温曲线对比'} size="small" color="success" variant="outlined" />
           </Box>
           <Typography variant="body2" sx={{ color: '#757575', mb: 1 }}>
             {guide.desc}

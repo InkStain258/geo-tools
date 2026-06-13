@@ -399,6 +399,91 @@ const FrontWeather: React.FC = () => {
               </ul>
             </Typography>
           </Box>
+
+          {/* 锋面过境前后对比表 */}
+          <Box sx={{ mt: 2, p: 1.5, bgcolor: '#e8eaf6', borderRadius: 2, border: '1px solid #9fa8da' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#283593', mb: 1 }}>
+              📊 锋面过境前后对比表（高考必背）
+            </Typography>
+            <Box sx={{ overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px' }}>
+                <thead>
+                  <tr style={{ backgroundColor: '#c5cae9' }}>
+                    <th style={{ border: '1px solid #9fa8da', padding: '4px 6px', textAlign: 'center' }}>要素</th>
+                    <th style={{ border: '1px solid #9fa8da', padding: '4px 6px', textAlign: 'center' }}>冷锋过境前</th>
+                    <th style={{ border: '1px solid #9fa8da', padding: '4px 6px', textAlign: 'center' }}>冷锋过境后</th>
+                    <th style={{ border: '1px solid #9fa8da', padding: '4px 6px', textAlign: 'center' }}>暖锋过境前</th>
+                    <th style={{ border: '1px solid #9fa8da', padding: '4px 6px', textAlign: 'center' }}>暖锋过境后</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style={{ border: '1px solid #9fa8da', padding: '4px 6px', textAlign: 'center' }}><b>气温</b></td>
+                    <td style={{ border: '1px solid #9fa8da', padding: '4px 6px', textAlign: 'center' }}>高（暖气团控制）</td>
+                    <td style={{ border: '1px solid #9fa8da', padding: '4px 6px', textAlign: 'center' }}>骤降（冷气团控制）</td>
+                    <td style={{ border: '1px solid #9fa8da', padding: '4px 6px', textAlign: 'center' }}>低（冷气团控制）</td>
+                    <td style={{ border: '1px solid #9fa8da', padding: '4px 6px', textAlign: 'center' }}>升高（暖气团控制）</td>
+                  </tr>
+                  <tr style={{ backgroundColor: '#e8eaf6' }}>
+                    <td style={{ border: '1px solid #9fa8da', padding: '4px 6px', textAlign: 'center' }}><b>气压</b></td>
+                    <td style={{ border: '1px solid #9fa8da', padding: '4px 6px', textAlign: 'center' }}>低</td>
+                    <td style={{ border: '1px solid #9fa8da', padding: '4px 6px', textAlign: 'center' }}>急升</td>
+                    <td style={{ border: '1px solid #9fa8da', padding: '4px 6px', textAlign: 'center' }}>高</td>
+                    <td style={{ border: '1px solid #9fa8da', padding: '4px 6px', textAlign: 'center' }}>下降</td>
+                  </tr>
+                  <tr>
+                    <td style={{ border: '1px solid #9fa8da', padding: '4px 6px', textAlign: 'center' }}><b>风向</b></td>
+                    <td style={{ border: '1px solid #9fa8da', padding: '4px 6px', textAlign: 'center' }}>偏南风</td>
+                    <td style={{ border: '1px solid #9fa8da', padding: '4px 6px', textAlign: 'center' }}>转偏北风</td>
+                    <td style={{ border: '1px solid #9fa8da', padding: '4px 6px', textAlign: 'center' }}>偏北风</td>
+                    <td style={{ border: '1px solid #9fa8da', padding: '4px 6px', textAlign: 'center' }}>转偏南风</td>
+                  </tr>
+                  <tr style={{ backgroundColor: '#e8eaf6' }}>
+                    <td style={{ border: '1px solid #9fa8da', padding: '4px 6px', textAlign: 'center' }}><b>降水</b></td>
+                    <td style={{ border: '1px solid #9fa8da', padding: '4px 6px', textAlign: 'center' }}>无/少</td>
+                    <td style={{ border: '1px solid #9fa8da', padding: '4px 6px', textAlign: 'center' }}>锋后阵性降水</td>
+                    <td style={{ border: '1px solid #9fa8da', padding: '4px 6px', textAlign: 'center' }}>无/少</td>
+                    <td style={{ border: '1px solid #9fa8da', padding: '4px 6px', textAlign: 'center' }}>锋前连续性降水</td>
+                  </tr>
+                </tbody>
+              </table>
+            </Box>
+          </Box>
+
+          {/* 中国典型锋面案例 */}
+          <Box sx={{ mt: 2, p: 1.5, bgcolor: '#fce4ec', borderRadius: 2, border: '1px solid #f48fb1' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#880e4f', mb: 1 }}>
+              🇨🇳 中国典型锋面案例（高考高频考点）
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 0.5 }}>
+              <b>1. 江淮梅雨 — 准静止锋：</b>每年6月中旬至7月上旬，冷暖气团在江淮地区势均力敌，形成江淮准静止锋，造成持续阴雨天气，降水量占全年40%以上。若夏季风势力强（或弱），则出现"空梅"（或"涝梅"）。
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 0.5 }}>
+              <b>2. 北方沙尘暴 — 冷锋：</b>冬春季节，蒙古-西伯利亚冷高压南下，冷锋过境带来大风降温，若途经沙漠/沙地（如内蒙古、甘肃），则形成沙尘暴。冷锋移动快、风力大，是沙尘暴的主要天气系统。
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 0.5 }}>
+              <b>3. 华南准静止锋：</b>冬半年（11月-次年4月），南岭以南的冷暖气团在华南对峙，形成华南准静止锋（又称南岭准静止锋），导致华南地区阴雨连绵、低温寡照。
+            </Typography>
+            <Typography variant="body2">
+              <b>4. 昆明准静止锋：</b>冬半年云贵高原上，北方冷空气受地形阻挡与西南暖湿气流相遇，锋面在昆明-贵阳之间停滞，昆明一侧晴朗温暖（"春城"），贵阳一侧阴雨湿冷（"天无三日晴"）。
+            </Typography>
+          </Box>
+
+          {/* 锋面坡度公式 */}
+          <Box sx={{ mt: 2, p: 1.5, bgcolor: '#e0f2f1', borderRadius: 2, border: '1px solid #80cbc4' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#00695c', mb: 0.5 }}>
+              📐 锋面坡度公式（地理拓展）
+            </Typography>
+            <Typography variant="body2" sx={{ fontFamily: '"JetBrains Mono", monospace', fontSize: '0.8rem', mb: 0.5 }}>
+              tan α = (f/g) · (ΔT·Tm)  （Margules锋面坡度公式）
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 0.5 }}>
+              <b>实际近似坡度：</b>冷锋 ≈ <b>1:50</b>（坡度较陡，锋面与地面夹角约1°），暖锋 ≈ <b>1:300</b>（坡度平缓，锋面与地面夹角约0.2°）。冷锋坡度约为暖锋的<b>6倍</b>。
+            </Typography>
+            <Typography variant="body2" sx={{ color: '#757575', fontSize: '0.75rem' }}>
+              原因：冷气团密度大，推进时底部摩擦大导致锋面陡峭；暖气团主动爬升于冷气团之上，坡度平缓。冷锋坡度陡 → 天气剧烈短暂；暖锋坡度缓 → 天气温和持久。
+            </Typography>
+          </Box>
         </Box>
       </Box>
     </ToolPageLayout>

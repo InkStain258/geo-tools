@@ -433,6 +433,57 @@ const TerrainProfile: React.FC = () => {
               </Typography>
             ))}
           </Box>
+
+          {/* 等高线地图判读步骤 */}
+          <Box sx={{ bgcolor: '#FFF3E0', p: 1.5, mt: 1, borderRadius: 2, border: '1px solid #FFE082' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 1, color: '#E65100' }}>
+              📖 等高线地图判读五步法（答题规范）
+            </Typography>
+            {[
+              { step: 'Step 1', title: '看图名和图例', desc: '了解地图类型（地形图/分层设色图/地形剖面图），明确图例符号的含义（等高线、河流、居民点等）。' },
+              { step: 'Step 2', title: '看等高距', desc: '确定相邻两条等高线的高程差。等高距越小，地形表示越精确。中国1:5万地形图等高距通常为10m或20m。' },
+              { step: 'Step 3', title: '判读地形部位', desc: '识别山峰(▲)、山脊(凸低为脊)、山谷(凸高为谷)、鞍部(两峰间低洼)、陡崖(等高线重合)、盆地(闭合内低外高)等地形部位。' },
+              { step: 'Step 4', title: '计算高差', desc: '相对高度 = 最高点海拔 - 最低点海拔。陡崖相对高度范围：(n-1)×d ≤ H < (n+1)×d（n为重叠等高线条数，d为等高距）。' },
+              { step: 'Step 5', title: '确定方向', desc: '利用指向标或"上北下南左西右东"原则确定方向，分析地形对河流流向、聚落分布、交通线路的影响。' },
+            ].map((item, i) => (
+              <Box key={i} sx={{ mb: 0.8 }}>
+                <Typography variant="body2" sx={{ fontWeight: 700, color: '#BF360C', fontSize: '0.75rem' }}>
+                  {item.step}：{item.title}
+                </Typography>
+                <Typography variant="body2" sx={{ color: '#555', fontSize: '0.7rem', ml: 0.5 }}>
+                  {item.desc}
+                </Typography>
+              </Box>
+            ))}
+          </Box>
+
+          {/* 坡度计算显示 */}
+          <Box sx={{ bgcolor: '#E8F5E9', p: 1.5, mt: 1, borderRadius: 2, border: '1px solid #A5D6A7' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 1, color: '#2E7D32' }}>
+              📐 坡度计算（地形剖面图分析）
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 0.5 }}>
+              <b>坡度公式：</b>tan α = 高差 / 水平距离，或坡度(%) = (高差 ÷ 水平距离) × 100%。
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 0.3 }}>
+              <b>坡度等级（高考常考）：</b>
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.7rem', mb: 0.3 }}>
+              · 平坡(0°-5°)：坡度＜9%，适合城市建设、农耕
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.7rem', mb: 0.3 }}>
+              · 缓坡(5°-15°)：坡度9%-27%，梯田耕作、低层建筑
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.7rem', mb: 0.3 }}>
+              · 陡坡(15°-25°)：坡度27%-47%，限制耕作、需水土保持
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.7rem', mb: 0.5 }}>
+              · 急坡(＞25°)：坡度＞47%，退耕还林还草，禁止开垦（中国《水土保持法》规定25°以上坡耕地须退耕）
+            </Typography>
+            <Typography variant="body2" sx={{ color: '#757575', fontSize: '0.65rem' }}>
+              💡 在剖面图中，坡度由线段斜率决定。垂直夸大系数会影响视觉坡度，实际坡度=tan⁻¹(高差/水平距离)。高考常考利用等高线图计算两地间坡度。
+            </Typography>
+          </Box>
         </Box>
       </Box>
     </ToolPageLayout>

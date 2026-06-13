@@ -167,6 +167,62 @@ const ClimateJudge: React.FC = () => {
             </Box>
           )}
         </Box>
+
+        {/* 气候分布简图 + 成因总结 */}
+        <Box sx={{ mt: 1, display: 'flex', flexDirection: 'column', gap: 1 }}>
+          {/* 气候分布简图 */}
+          <Box sx={{ p: 1.5, bgcolor: '#e8eaf6', borderRadius: 2, border: '1px solid #9fa8da' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#283593', mb: 1 }}>
+              🗺️ 世界气候分布简图（大陆位置模型）
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.7rem', mb: 0.5, color: '#555' }}>
+              以理想大陆（北半球中纬度为例）东西两岸+内陆布局：
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.7rem', mb: 0.2 }}>
+              <b>大陆西岸（30°-40°）：</b>地中海气候（夏干冬雨，副高+西风交替）
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.7rem', mb: 0.2 }}>
+              <b>大陆西岸（40°-60°）：</b>温带海洋性气候（终年温和多雨，西风控制）
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.7rem', mb: 0.2 }}>
+              <b>大陆东岸（25°-35°）：</b>亚热带季风气候（夏雨冬干，海陆热力差异）
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.7rem', mb: 0.2 }}>
+              <b>大陆东岸（35°-55°）：</b>温带季风气候（夏雨冬干，四季分明）
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.7rem', mb: 0.2 }}>
+              <b>大陆内陆（中纬度）：</b>温带大陆性气候（干燥少雨，年较差大）
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.7rem', mb: 0.2 }}>
+              <b>赤道两侧（0°-10°）：</b>热带雨林气候（终年高温多雨，赤道低压）
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.7rem', mb: 0.2 }}>
+              <b>回归线附近大陆西岸+内陆：</b>热带沙漠气候（副高+信风，极端干燥）
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.7rem' }}>
+              <b>极地附近（60°-90°）：</b>亚寒带针叶林→苔原→冰原（热量递减）
+            </Typography>
+          </Box>
+
+          {/* 气候成因总结 */}
+          <Box sx={{ p: 1.5, bgcolor: '#fce4ec', borderRadius: 2, border: '1px solid #f48fb1' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#880e4f', mb: 1 }}>
+              🔑 气候成因四大要素总结（高考答题模板）
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.7rem', mb: 0.3 }}>
+              <b>1. 气压带与风带（大气环流）：</b>最核心因素。如热带雨林→赤道低压控制上升气流；地中海→副高+西风交替；温带海洋→终年西风。
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.7rem', mb: 0.3 }}>
+              <b>2. 海陆位置（海陆热力性质差异）：</b>决定季风气候。大陆东岸受季风影响显著（夏季海洋→陆地、冬季陆地→海洋）；大陆西岸受海洋调节、西风影响；内陆干燥、温差大。
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.7rem', mb: 0.3 }}>
+              <b>3. 地形：</b>海拔升高→气温降低（0.6°C/100m）；迎风坡多雨（地形雨）、背风坡少雨（雨影效应/焚风）；山脉阻挡气流、改变气候分布。
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.7rem' }}>
+              <b>4. 洋流：</b>暖流增温增湿（如北大西洋暖流→西欧温暖湿润）；寒流降温减湿（如秘鲁寒流→南美西岸沙漠逼近赤道）。洋流影响沿海气候和降水分布。
+            </Typography>
+          </Box>
+        </Box>
       </Box>
     </ToolPageLayout>
   );

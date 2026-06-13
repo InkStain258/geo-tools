@@ -278,6 +278,63 @@ const AtmosphericCirculation: React.FC = () => {
               </ul>
             </Typography>
           </Box>
+
+          {/* 三圈环流形成原因详解 */}
+          <Box sx={{ mt: 2, p: 1.5, bgcolor: '#e8eaf6', borderRadius: 2, border: '1px solid #9fa8da' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#283593', mb: 1 }}>
+              🔬 三圈环流形成原因详解
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 0.5 }}>
+              <b>根本原因：</b>太阳辐射纬度差异 → 赤道地区受热多、温度高 → 空气膨胀上升 → 近地面形成赤道低压带；极地地区受热少、温度低 → 空气冷却下沉 → 近地面形成极地高压带。
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 0.5 }}>
+              <b>直接原因：</b>赤道与极地之间的<b>气压梯度力</b>驱动大气从高压流向低压，在单一均匀地球假设下应形成"单圈环流"（赤道上空→极地上空→极地近地面→赤道近地面）。
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 0.5 }}>
+              <b>关键因素——地转偏向力（科里奥利力）：</b>地球自转使运动的大气发生偏转（北半球右偏、南半球左偏），将单圈环流"撕裂"为三圈：
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 0.3 }}>
+              · <b>哈德莱环流（低纬 0°-30°）：</b>热力驱动。赤道上升→高空向北（南半球向南）→受地转偏向力偏转为西风→30°堆积下沉→近地面向赤道回流→偏转为信风（东北信风/东南信风）。
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 0.3 }}>
+              · <b>费雷尔环流（中纬 30°-60°）：</b>动力驱动。由两侧环流"搓动"形成，30°下沉气流一部分向高纬流动→偏转为盛行西风→在60°与极地冷空气相遇被迫抬升。
+            </Typography>
+            <Typography variant="body2">
+              · <b>极地环流（高纬 60°-90°）：</b>热力驱动。极地冷却下沉→近地面向低纬流动→偏转为极地东风→在60°与西风相遇形成极锋。
+            </Typography>
+          </Box>
+
+          {/* 气压带成因分类 + 风带实际风向 */}
+          <Box sx={{ mt: 2, p: 1.5, bgcolor: '#fce4ec', borderRadius: 2, border: '1px solid #f48fb1' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#880e4f', mb: 1 }}>
+              📋 气压带成因分类 & 风带实际风向（高考必背）
+            </Typography>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#c62828', mb: 0.5 }}>
+              一、七个气压带按成因分类
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 0.3 }}>
+              <b>热力成因（thermal）：</b>
+              · <b>赤道低压带（0°）：</b>赤道终年高温，空气受热膨胀上升，近地面形成低压（热低压）。
+              · <b>极地高压带（90°N/S）：</b>极地终年严寒，空气冷却收缩下沉，近地面形成高压（冷高压）。
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 0.5 }}>
+              <b>动力成因（dynamic）：</b>
+              · <b>副热带高压带（30°N/S）：</b>高空西风在30°堆积下沉，形成动力高压（暖性高压），如北太平洋副高、北大西洋副高（即"副高"）。
+              · <b>副极地低压带（60°N/S）：</b>盛行西风与极地东风在此交汇，暖空气被迫抬升，形成动力低压。
+            </Typography>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#c62828', mb: 0.5 }}>
+              二、六个风带实际风向
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 0.3 }}>
+              <b>低纬信风带（0°-30°）：</b>北半球为<b>东北信风</b>（NE Trade Winds），南半球为<b>东南信风</b>（SE Trade Winds）。风向稳定、风力不大（3-4级），是古代帆船贸易的主要动力，"信风"即"可信赖的风"。
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 0.3 }}>
+              <b>中纬盛行西风带（30°-60°）：</b>北半球为<b>西南风（SW）</b>，南半球为<b>西北风（NW）</b>。南半球因海洋面积大，西风强劲稳定（"咆哮西风带"），风力常达7-8级。
+            </Typography>
+            <Typography variant="body2">
+              <b>高纬极地东风带（60°-90°）：</b>北半球为<b>东北风（NE）</b>，南半球为<b>东南风（SE）</b>。风力较弱，寒冷干燥。
+            </Typography>
+          </Box>
         </Box>
       </Box>
     </ToolPageLayout>

@@ -957,6 +957,102 @@ const RiverBasin: React.FC = () => {
               所有降水在边界内汇入该河流。分水岭两侧的水流向不同的河流系统。
             </Typography>
           </Box>
+
+          {/* 河流水文特征对比表 */}
+          <Box sx={{ p: 1.5, mt: 1, bgcolor: '#E3F2FD', borderRadius: 2, border: '1px solid #90CAF9' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#1565C0', mb: 1 }}>
+              📊 六大河流水文特征对比表（高考必背）
+            </Typography>
+            <Box sx={{ overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '10px' }}>
+                <thead>
+                  <tr style={{ backgroundColor: '#bbdefb' }}>
+                    <th style={{ border: '1px solid #90caf9', padding: '2px 4px', textAlign: 'center' }}>河流</th>
+                    <th style={{ border: '1px solid #90caf9', padding: '2px 4px', textAlign: 'center' }}>流量</th>
+                    <th style={{ border: '1px solid #90caf9', padding: '2px 4px', textAlign: 'center' }}>水位变化</th>
+                    <th style={{ border: '1px solid #90caf9', padding: '2px 4px', textAlign: 'center' }}>含沙量</th>
+                    <th style={{ border: '1px solid #90caf9', padding: '2px 4px', textAlign: 'center' }}>结冰期</th>
+                    <th style={{ border: '1px solid #90caf9', padding: '2px 4px', textAlign: 'center' }}>流速/水能</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style={{ border: '1px solid #90caf9', padding: '2px 4px' }}><b>长江</b></td>
+                    <td style={{ border: '1px solid #90caf9', padding: '2px 4px' }}>极大（世界第三）</td>
+                    <td style={{ border: '1px solid #90caf9', padding: '2px 4px' }}>夏丰冬枯，6-9月汛期</td>
+                    <td style={{ border: '1px solid #90caf9', padding: '2px 4px' }}>较大（中游荆江段淤积）</td>
+                    <td style={{ border: '1px solid #90caf9', padding: '2px 4px' }}>无（亚热带，最冷月&gt;0°C）</td>
+                    <td style={{ border: '1px solid #90caf9', padding: '2px 4px' }}>上游急（峡谷多），中下游缓</td>
+                  </tr>
+                  <tr style={{ backgroundColor: '#e3f2fd' }}>
+                    <td style={{ border: '1px solid #90caf9', padding: '2px 4px' }}><b>黄河</b></td>
+                    <td style={{ border: '1px solid #90caf9', padding: '2px 4px' }}>较小（仅为长江1/20）</td>
+                    <td style={{ border: '1px solid #90caf9', padding: '2px 4px' }}>夏丰冬枯，7-10月汛期；春有凌汛</td>
+                    <td style={{ border: '1px solid #90caf9', padding: '2px 4px' }}><b>极大（世界之最）</b></td>
+                    <td style={{ border: '1px solid #90caf9', padding: '2px 4px' }}>有（1-2月封冻，上游最长）</td>
+                    <td style={{ border: '1px solid #90caf9', padding: '2px 4px' }}>上游急（多峡谷），下游缓（地上河）</td>
+                  </tr>
+                  <tr>
+                    <td style={{ border: '1px solid #90caf9', padding: '2px 4px' }}><b>珠江</b></td>
+                    <td style={{ border: '1px solid #90caf9', padding: '2px 4px' }}>大（仅次于长江）</td>
+                    <td style={{ border: '1px solid #90caf9', padding: '2px 4px' }}>汛期长（4-9月），受台风影响大</td>
+                    <td style={{ border: '1px solid #90caf9', padding: '2px 4px' }}>较小（植被覆盖好）</td>
+                    <td style={{ border: '1px solid #90caf9', padding: '2px 4px' }}>无（亚热带/热带）</td>
+                    <td style={{ border: '1px solid #90caf9', padding: '2px 4px' }}>上游急（云贵高原），三角洲平缓</td>
+                  </tr>
+                  <tr style={{ backgroundColor: '#e3f2fd' }}>
+                    <td style={{ border: '1px solid #90caf9', padding: '2px 4px' }}><b>亚马孙河</b></td>
+                    <td style={{ border: '1px solid #90caf9', padding: '2px 4px' }}><b>极大（世界第一）</b></td>
+                    <td style={{ border: '1px solid #90caf9', padding: '2px 4px' }}>全年丰水，5-6月洪峰</td>
+                    <td style={{ border: '1px solid #90caf9', padding: '2px 4px' }}>较大（热带雨林侵蚀）</td>
+                    <td style={{ border: '1px solid #90caf9', padding: '2px 4px' }}>无（热带，终年高温）</td>
+                    <td style={{ border: '1px solid #90caf9', padding: '2px 4px' }}>上游急（安第斯山），中下游极缓</td>
+                  </tr>
+                  <tr>
+                    <td style={{ border: '1px solid #90caf9', padding: '2px 4px' }}><b>尼罗河</b></td>
+                    <td style={{ border: '1px solid #90caf9', padding: '2px 4px' }}>较小（流经沙漠）</td>
+                    <td style={{ border: '1px solid #90caf9', padding: '2px 4px' }}>7-10月汛期（青尼罗河洪水），白尼罗河稳定</td>
+                    <td style={{ border: '1px solid #90caf9', padding: '2px 4px' }}>上游大、下游小（阿斯旺坝拦截）</td>
+                    <td style={{ border: '1px solid #90caf9', padding: '2px 4px' }}>无（热带/亚热带）</td>
+                    <td style={{ border: '1px solid #90caf9', padding: '2px 4px' }}>上游急（高原），下游平缓</td>
+                  </tr>
+                  <tr style={{ backgroundColor: '#e3f2fd' }}>
+                    <td style={{ border: '1px solid #90caf9', padding: '2px 4px' }}><b>密西西比河</b></td>
+                    <td style={{ border: '1px solid #90caf9', padding: '2px 4px' }}>大（北美第一）</td>
+                    <td style={{ border: '1px solid #90caf9', padding: '2px 4px' }}>双汛期：春汛（融雪3-6月）+夏汛（暴雨）</td>
+                    <td style={{ border: '1px solid #90caf9', padding: '2px 4px' }}>中等</td>
+                    <td style={{ border: '1px solid #90caf9', padding: '2px 4px' }}>中上游有（冬季封冻）</td>
+                    <td style={{ border: '1px solid #90caf9', padding: '2px 4px' }}>中上游较急，下游平缓</td>
+                  </tr>
+                </tbody>
+              </table>
+            </Box>
+            <Typography variant="body2" sx={{ color: '#757575', fontSize: '0.65rem', mt: 0.5 }}>
+              💡 水文特征五要素：流量（大小及季节变化）、水位变化（汛期/枯水期）、含沙量、结冰期（有无及长短）、流速/水能（落差大小）。
+            </Typography>
+          </Box>
+
+          {/* 河流补给类型说明 */}
+          <Box sx={{ p: 1.5, mt: 1, bgcolor: '#E8F5E9', borderRadius: 2, border: '1px solid #A5D6A7' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#2E7D32', mb: 1 }}>
+              💧 河流补给类型说明（高考高频考点）
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.7rem', mb: 0.3 }}>
+              <b>1. 雨水补给（最主要）：</b>降水形成地表径流汇入河流。流量随降雨季节变化——季风区夏丰冬枯，地中海气候区冬丰夏枯。我国东部季风区河流以雨水补给为主（占70%-90%）。
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.7rem', mb: 0.3 }}>
+              <b>2. 季节性积雪融水补给：</b>春季气温回升，冬季积雪融化补给河流，形成<b>春汛</b>（凌汛）。我国东北地区河流（松花江、黑龙江）有典型春汛（4-5月）。
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.7rem', mb: 0.3 }}>
+              <b>3. 冰川/永久积雪融水补给：</b>夏季高温时冰川融化补给，流量与气温正相关——气温越高、融水越多。我国西北内陆河流（塔里木河、伊犁河）主要依赖冰川融水，夏季为汛期。
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.7rem', mb: 0.3 }}>
+              <b>4. 湖泊/沼泽补给：</b>湖泊（如洞庭湖、鄱阳湖对长江的调节）和沼泽对河流有削峰补枯作用——汛期蓄水、枯水期放水，使河流流量趋于均匀。
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.7rem' }}>
+              <b>5. 地下水补给：</b>地下水稳定补给河流（常年性补给），是河流最可靠的补给来源。枯水期地下水位高于河水位时补给河流，是河流基流的主要来源。流量小而稳定。
+            </Typography>
+          </Box>
         </Box>
       </Box>
     </ToolPageLayout>

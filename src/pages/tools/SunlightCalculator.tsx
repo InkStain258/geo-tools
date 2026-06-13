@@ -310,6 +310,72 @@ const SunlightCalculator: React.FC = () => {
               φ = 纬度，δ = 直射点纬度 = {declination.toFixed(1)}°
             </Typography>
           </Box>
+
+          {/* 全球昼夜长短分布规律 */}
+          <Box sx={{ p: 1.5, bgcolor: '#e8f5e9', borderRadius: 2, mt: 1 }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#2E7D32', mb: 1 }}>
+              🌐 全球昼夜长短分布规律（高考必背）
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 0.3 }}>
+              <b>1. 赤道（0°）：</b>全年昼夜等长，各12小时。太阳终年近乎直射，是地球上唯一全年昼夜平分的地带。
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 0.3 }}>
+              <b>2. 极圈内（≥66.5°）：</b>存在极昼和极夜现象。北极圈（66.5°N），夏至日太阳24小时不落（极昼），冬至日太阳24小时不升（极夜）。纬度越高，极昼/极夜天数越多，极点处各约半年。
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 0.3 }}>
+              <b>3. 夏至日（6月22日前后）：</b>北半球昼最长、夜最短，且纬度越高昼越长（北极圈内极昼）；南半球反之。北回归线以北地区正午太阳高度达全年最大。
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 0.3 }}>
+              <b>4. 冬至日（12月22日前后）：</b>北半球昼最短、夜最长，且纬度越高昼越短（北极圈内极夜）；南半球反之。
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 0.3 }}>
+              <b>5. 春秋分（3月21日/9月23日前后）：</b>全球昼夜等长（各12小时），太阳直射赤道，晨昏线经过南北极点。
+            </Typography>
+            <Typography variant="body2" sx={{ color: '#757575', fontSize: '0.7rem' }}>
+              💡 口诀："赤道终年等，极圈有极昼；夏至北长南短，冬至北短南长；纬度越高差越大。"
+            </Typography>
+          </Box>
+
+          {/* 多纬度昼长对比卡 */}
+          <Box sx={{ p: 1.5, bgcolor: '#f3e5f5', borderRadius: 2, mt: 1 }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#7B1FA2', mb: 1 }}>
+              📊 {month}月{day}日 · 不同纬度昼长对比
+            </Typography>
+            <Typography variant="body2" sx={{ color: '#757575', mb: 1, fontSize: '0.7rem' }}>
+              直射点纬度 δ = {declination >= 0 ? 'N' : 'S'} {Math.abs(declination).toFixed(1)}°
+            </Typography>
+            {[
+              { lat: 0, label: '赤道 0°' },
+              { lat: 23.5, label: '北回归线 23.5°N' },
+              { lat: 40, label: '北京 40°N' },
+              { lat: 50, label: '漠河 50°N' },
+              { lat: 66.5, label: '北极圈 66.5°N' },
+            ].map((loc) => {
+              const dl = calcDayLength(loc.lat, declination);
+              const nightLen = 24 - dl;
+              return (
+                <Box key={loc.lat} sx={{ mb: 0.5 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Typography variant="caption" sx={{ minWidth: 130, fontWeight: 600, fontSize: '0.7rem' }}>
+                      {loc.label}
+                    </Typography>
+                    <Box sx={{ flex: 1, height: 14, bgcolor: '#eee', borderRadius: 7, overflow: 'hidden', display: 'flex' }}>
+                      <Box sx={{ width: `${(dl / 24) * 100}%`, height: '100%', bgcolor: '#FFD54F', borderRadius: '7px 0 0 7px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        {dl >= 4 && <Typography variant="caption" sx={{ fontSize: '0.55rem', color: '#333', fontWeight: 700 }}>☀ {dl.toFixed(1)}h</Typography>}
+                      </Box>
+                      <Box sx={{ flex: 1, height: '100%', bgcolor: '#37474F', borderRadius: '0 7px 7px 0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        {nightLen >= 4 && <Typography variant="caption" sx={{ fontSize: '0.55rem', color: '#fff' }}>🌙 {nightLen.toFixed(1)}h</Typography>}
+                      </Box>
+                    </Box>
+                    <Typography variant="caption" sx={{ minWidth: 60, fontSize: '0.65rem', color: dl > 12 ? '#F57C00' : dl < 12 ? '#1565C0' : '#333', fontWeight: 700 }}>
+                      {dl > 12 ? '昼长夜短' : dl < 12 ? '昼短夜长' : '昼夜等长'}
+                      {dl === 24 ? '·极昼' : dl === 0 ? '·极夜' : ''}
+                    </Typography>
+                  </Box>
+                </Box>
+              );
+            })}
+          </Box>
         </Box>
       </Box>
     </ToolPageLayout>
