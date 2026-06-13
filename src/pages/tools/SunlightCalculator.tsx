@@ -214,6 +214,40 @@ const SunlightCalculator: React.FC = () => {
           </Box>
         </Box>
         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 2 }}>
+          {/* Key dates quick select */}
+          <Box sx={{ display: 'flex', gap: 0.5, flexWrap: 'wrap' }}>
+            {[
+              { label: '春分 3/21', m: 3, d: 21, tip: '赤道' },
+              { label: '夏至 6/22', m: 6, d: 22, tip: '北回归线' },
+              { label: '秋分 9/23', m: 9, d: 23, tip: '赤道' },
+              { label: '冬至 12/22', m: 12, d: 22, tip: '南回归线' },
+            ].map((d) => (
+              <Box key={d.label}
+                onClick={() => { setMonth(d.m); setDay(d.d); }}
+                sx={{
+                  px: 1.5, py: 0.5, borderRadius: 1, cursor: 'pointer',
+                  bgcolor: month===d.m && day===d.d ? '#e8f5e9' : '#f5f5f5',
+                  border: '1px solid', borderColor: month===d.m && day===d.d ? '#2E7D32' : '#e0e0e0',
+                  fontSize: 11, textAlign: 'center',
+                  '&:hover': { bgcolor: '#e8f5e9' },
+                }}
+              >
+                <Typography variant="caption" sx={{ fontWeight: 700 }}>{d.label}</Typography>
+                <Typography variant="caption" sx={{ display: 'block', color: '#757575', fontSize: 9 }}>直射{d.tip}</Typography>
+              </Box>
+            ))}
+          </Box>
+          {/* Seasons explanation */}
+          <Box sx={{ p: 1.5, bgcolor: '#e3f2fd', borderRadius: 2 }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>🌍 四季成因</Typography>
+            <Typography variant="body2" sx={{ fontSize: 12 }}>
+              地球自转轴与公转轨道面呈<b>66.5°夹角</b>（即黄赤交角23.5°）。
+              太阳直射点在南北回归线之间往返移动，导致各地昼夜长短和正午太阳高度角的季节变化，形成四季。{'\n'}
+              <b>春分/秋分</b>：太阳直射赤道，全球昼夜等长（各12小时）；{'\n'}
+              <b>夏至</b>：直射北回归线23.5°N，北半球昼最长夜最短，北极圈内极昼；{'\n'}
+              <b>冬至</b>：直射南回归线23.5°S，北半球昼最短夜最长，北极圈内极夜。
+            </Typography>
+          </Box>
           <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>昼夜长短计算</Typography>
           <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
             <TextField

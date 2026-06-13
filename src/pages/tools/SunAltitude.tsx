@@ -268,14 +268,38 @@ const SunAltitude: React.FC = () => {
           )}
 
           <Box sx={{ p: 1.5, bgcolor: '#fff3e0', borderRadius: 2 }}>
-            <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>公式</Typography>
-            <Typography variant="body2" sx={{ fontFamily: '"JetBrains Mono", monospace' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>公式推导</Typography>
+            <Typography variant="body2" sx={{ fontFamily: 'JetBrains Mono, monospace' }}>
               H = 90° - |φ - δ|
             </Typography>
-            <Typography variant="body2" sx={{ color: '#757575', mt: 0.5 }}>
-              φ = 纬度({latitude}°)，δ = 直射点纬度({declination.toFixed(1)}°)
+            <Typography variant="body2" sx={{ color: '#757575', mt: 0.5, fontSize: 12 }}>
+              推导：正午太阳高度角 H = 90° - (当地纬度φ与直射点纬度δ的纬度差)。纬度差取绝对值|φ-δ|。
+              当φ=δ（直射当地）时H=90°（太阳在头顶）；当|φ-δ|=90°时H=0°（太阳在地平线上）。
             </Typography>
           </Box>
+
+          {/* Comparison table */}
+          {altitude !== null && (
+            <Box sx={{ p: 1.5, bgcolor: '#f3e5f5', borderRadius: 2 }}>
+              <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 1 }}>同一天各纬度正午太阳高度角对比</Typography>
+              {[0, 23.5, 30, 40, 50, 66.5, 90].map((lat) => {
+                const h = 90 - Math.abs(lat - declination);
+                return (
+                  <Box key={lat} sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.3 }}>
+                    <Typography variant="caption" sx={{ minWidth: 70, fontWeight: 600 }}>
+                      {lat === 0 ? '赤道 0°' : lat < 90 ? `N${lat}°` : '北极 90°N'}
+                    </Typography>
+                    <Box sx={{ flex: 1, height: 6, bgcolor: '#eee', borderRadius: 3, overflow: 'hidden' }}>
+                      <Box sx={{ width: `${Math.max(0, Math.min(100, h / 90 * 100))}%`, height: '100%', bgcolor: lat === latitude ? '#F57C00' : '#9C27B0', borderRadius: 3 }} />
+                    </Box>
+                    <Typography variant="caption" sx={{ minWidth: 40, textAlign: 'right', fontWeight: lat === latitude ? 700 : 400 }}>
+                      {h <= 0 ? '0° (极夜)' : `${h.toFixed(1)}°`}
+                    </Typography>
+                  </Box>
+                );
+              })}
+            </Box>
+          )}
         </Box>
       </Box>
     </ToolPageLayout>

@@ -284,6 +284,26 @@ const CityHierarchy: React.FC = () => {
         <Typography variant="body2" sx={{ color: '#999', mt: 1, fontSize: '0.75rem' }}>
           💡 克里斯泰勒中心地理论：六边形是最优服务范围形状，拖动节点可调整位置
         </Typography>
+
+        {/* 克里斯泰勒理论详解 */}
+        <Box sx={{ bgcolor: '#E8F5E9', p: 1.5, borderRadius: 2, mt: 2 }}>
+          <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 1 }}>📖 克里斯泰勒中心地理论</Typography>
+          <Typography variant="body2" sx={{ fontSize: 12, mb: 0.5 }}>
+            <b>提出者：</b>德国地理学家沃尔特·克里斯泰勒（Walter Christaller），1933年发表《南德的中心地》。
+          </Typography>
+          <Typography variant="body2" sx={{ fontSize: 12, mb: 0.5 }}>
+            <b>核心思想：</b>城市等级越高，服务范围越大，数量越少，彼此距离越远。高级中心提供高级商品和服务，低级中心提供日常必需品。
+          </Typography>
+          <Typography variant="body2" sx={{ fontSize: 12, mb: 0.5 }}>
+            <b>K=3 市场原则：</b>高级中心服务范围包含3个次一级中心的服务区。中国实例：上海→长三角城市群（南京/杭州/苏州等）。
+          </Typography>
+          <Typography variant="body2" sx={{ fontSize: 12, mb: 0.5 }}>
+            <b>K=4 交通原则：</b>高级中心位于六边形边的中点上，利于交通线路布局。沿铁路/公路发展。
+          </Typography>
+          <Typography variant="body2" sx={{ fontSize: 12 }}>
+            <b>K=7 行政原则：</b>高级中心完全包含低级中心服务区，行政管理便利。中国实例：省会→地级市→县级市。
+          </Typography>
+        </Box>
       </Box>
     </ToolPageLayout>
   );

@@ -415,6 +415,24 @@ const TerrainProfile: React.FC = () => {
               最大高差约 {preset.peakHeight}m · 剖面图展示水平距离与垂直高度的关系
             </Typography>
           </Box>
+
+          {/* 高考考点 */}
+          <Box sx={{ bgcolor: '#E3F2FD', p: 1.5, borderRadius: 2, border: '1px solid #90CAF9' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 1, color: '#1565C0' }}>🎓 高考考点：等高线判读</Typography>
+            {[
+              '等高线密集→坡度陡（陡坡）；稀疏→坡度缓（缓坡）',
+              '等高线向高值凸出→山谷（凸高为谷，可能有河流）',
+              '等高线向低值凸出→山脊（凸低为脊，常为分水岭）',
+              '两山顶之间相对低洼处→鞍部（翻山通道）',
+              '多条等高线重合→陡崖（适合攀岩/瀑布，可计算相对高度）',
+              '闭合等高线，内高外低→山峰；内低外高→盆地/洼地',
+              '等高距 = (最大海拔 - 最小海拔) / (等高线条数 - 1)',
+            ].map((tip, i) => (
+              <Typography key={i} variant="body2" sx={{ fontSize: 11, mb: 0.3, '&::before': { content: '"▸ "' } }}>
+                {tip}
+              </Typography>
+            ))}
+          </Box>
         </Box>
       </Box>
     </ToolPageLayout>
