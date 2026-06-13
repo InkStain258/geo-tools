@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { Box, Typography, Slider } from '@mui/material';
 import ToolPageLayout from '@/components/shared/ToolPageLayout';
+import { getCanvasCoords } from '@/utils/canvasHelper';
 
 const CANVAS_W = 600;
 const CANVAS_H = 500;
@@ -123,9 +124,7 @@ const CityHierarchy: React.FC = () => {
   useEffect(() => { drawScene(); }, [drawScene]);
 
   const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const mx = e.clientX - rect.left;
-    const my = e.clientY - rect.top;
+    const { x: mx, y: my } = getCanvasCoords(e.currentTarget, e);
     const idx = cities.findIndex((c) => Math.sqrt((mx - c.x) ** 2 + (my - c.y) ** 2) < 20);
     if (idx >= 0) {
       setDragIdx(idx);
@@ -135,9 +134,7 @@ const CityHierarchy: React.FC = () => {
 
   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (dragIdx === null) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const mx = e.clientX - rect.left;
-    const my = e.clientY - rect.top;
+    const { x: mx, y: my } = getCanvasCoords(e.currentTarget, e);
     setCities((prev) => {
       const next = [...prev];
       next[dragIdx] = { ...next[dragIdx], x: mx - offset.x, y: my - offset.y };

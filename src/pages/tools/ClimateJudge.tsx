@@ -5,7 +5,6 @@ import ClimateChart from '@/components/shared/ClimateChart';
 import { exampleClimateData } from '@/data/climateData';
 import { judgeClimate } from '@/utils/climateJudge';
 import type { JudgeResult } from '@/utils/climateJudge';
-import type { ClimateType } from '@/types';
 
 const defaultTemps = [4, 5, 10, 16, 21, 25, 29, 28, 24, 18, 12, 6];
 const defaultPrecips = [50, 60, 90, 110, 130, 180, 150, 140, 120, 70, 55, 45];

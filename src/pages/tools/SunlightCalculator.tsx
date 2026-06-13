@@ -154,11 +154,13 @@ const SunlightCalculator: React.FC = () => {
             style={{ border: '1px solid #ddd', borderRadius: 8, maxWidth: '100%' }}
           />
           <Box sx={{ mt: 1 }}>
-            <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>日期选择</Typography>
-            <Box sx={{ display: 'flex', gap: 2 }}>
-              <Slider value={month} onChange={(_, v) => setMonth(v as number)} min={1} max={12} step={1}
-                marks valueLabelDisplay="auto" valueLabelFormat={(v) => `${v}月`} />
-            </Box>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>月份选择</Typography>
+            <Slider value={month} onChange={(_, v) => setMonth(v as number)} min={1} max={12} step={1}
+              marks valueLabelDisplay="auto" valueLabelFormat={(v) => `${v}月`} />
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, mt: 1 }}>日期选择</Typography>
+            <Slider value={day} onChange={(_, v) => setDay(v as number)} min={1} max={31} step={1}
+              marks={[{ value: 1, label: '1' }, { value: 15, label: '15' }, { value: 31, label: '31' }]}
+              valueLabelDisplay="auto" valueLabelFormat={(v) => `${v}日`} />
             <Typography variant="body2" sx={{ color: '#757575' }}>
               太阳直射点：{declination >= 0 ? '北纬' : '南纬'} {Math.abs(declination).toFixed(1)}°
             </Typography>

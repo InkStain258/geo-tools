@@ -19,6 +19,20 @@ const frontLabels: Record<FrontType, string> = {
   stationary: '准静止锋',
 };
 
+// Stable rain drop positions (avoid Math.random in draw)
+function generateRainDrops(count: number): { rx: number; ry: number }[] {
+  const drops: { rx: number; ry: number }[] = [];
+  for (let i = 0; i < count; i++) {
+    drops.push({
+      rx: Math.random(),
+      ry: Math.random(),
+    });
+  }
+  return drops;
+}
+
+const rainDrops = generateRainDrops(12);
+
 const FrontWeather: React.FC = () => {
   const exportRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -28,12 +42,27 @@ const FrontWeather: React.FC = () => {
   const [speed, setSpeed] = useState(1);
   const [progress, setProgress] = useState(0);
 
-  const drawFront = useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+  const progressRef = useRef(0);
+  const playingRef = useRef(true);
+  const speedRef = useRef(1);
+  const frontTypeRef = useRef<FrontType>('cold');
 
+  useEffect(() => { playingRef.current = playing; }, [playing]);
+  useEffect(() => { speedRef.current = speed; }, [speed]);
+  useEffect(() => { frontTypeRef.current = frontType; }, [frontType]);
+
+  function drawCloud(ctx: CanvasRenderingContext2D, x: number, y: number, size: number, color: string) {
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(x, y, size * 0.4, 0, Math.PI * 2);
+    ctx.arc(x + size * 0.3, y - size * 0.15, size * 0.35, 0, Math.PI * 2);
+    ctx.arc(x + size * 0.6, y, size * 0.3, 0, Math.PI * 2);
+    ctx.arc(x + size * 0.3, y + size * 0.1, size * 0.25, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // Draw function - reads from params, no state/ref dependencies
+  const drawFront = useCallback((ctx: CanvasRenderingContext2D, ft: FrontType, p: number) => {
     ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
 
     // Sky gradient
@@ -47,10 +76,10 @@ const FrontWeather: React.FC = () => {
     ctx.fillStyle = '#a5d6a7';
     ctx.fillRect(0, CANVAS_H * 0.6, CANVAS_W, CANVAS_H * 0.4);
 
-    const frontX = 100 + (progress / 100) * 400;
+    const frontX = 100 + (p / 100) * 400;
 
-    if (frontType === 'cold') {
-      // Cold air mass (blue, pushing from left)
+    if (ft === 'cold') {
+      // Cold air mass
       ctx.fillStyle = 'rgba(66,165,245,0.3)';
       ctx.beginPath();
       ctx.moveTo(0, CANVAS_H * 0.3);
@@ -60,7 +89,7 @@ const FrontWeather: React.FC = () => {
       ctx.closePath();
       ctx.fill();
 
-      // Warm air mass (red, being pushed up)
+      // Warm air mass
       ctx.fillStyle = 'rgba(239,83,80,0.3)';
       ctx.beginPath();
       ctx.moveTo(frontX, CANVAS_H * 0.15);
@@ -70,7 +99,7 @@ const FrontWeather: React.FC = () => {
       ctx.closePath();
       ctx.fill();
 
-      // Cold front line (triangle markers)
+      // Cold front line
       ctx.strokeStyle = '#1565C0';
       ctx.lineWidth = 3;
       ctx.beginPath();
@@ -78,7 +107,7 @@ const FrontWeather: React.FC = () => {
       ctx.lineTo(frontX, CANVAS_H * 0.6);
       ctx.stroke();
 
-      // Triangle markers on front line
+      // Triangle markers
       for (let y = CANVAS_H * 0.28; y < CANVAS_H * 0.58; y += 25) {
         ctx.fillStyle = '#1565C0';
         ctx.beginPath();
@@ -89,32 +118,31 @@ const FrontWeather: React.FC = () => {
         ctx.fill();
       }
 
-      // Clouds (cumulonimbus)
+      // Clouds
       drawCloud(ctx, frontX - 20, CANVAS_H * 0.12, 40, '#78909c');
       drawCloud(ctx, frontX - 50, CANVAS_H * 0.08, 35, '#90a4ae');
       drawCloud(ctx, frontX + 10, CANVAS_H * 0.1, 30, '#78909c');
 
-      // Rain
+      // Rain with stable positions
       ctx.strokeStyle = '#42A5F5';
       ctx.lineWidth = 1;
-      for (let i = 0; i < 8; i++) {
-        const rx = frontX - 30 + Math.random() * 50;
-        const ry = CANVAS_H * 0.2 + Math.random() * CANVAS_H * 0.35;
+      rainDrops.forEach((drop) => {
+        const rx = frontX - 30 + drop.rx * 50;
+        const ry = CANVAS_H * 0.2 + drop.ry * CANVAS_H * 0.35;
         ctx.beginPath();
         ctx.moveTo(rx, ry);
         ctx.lineTo(rx - 2, ry + 8);
         ctx.stroke();
-      }
+      });
 
-      // Labels
       ctx.fillStyle = '#1565C0';
       ctx.font = 'bold 13px sans-serif';
       ctx.fillText('冷气团', frontX - 80, CANVAS_H * 0.45);
       ctx.fillStyle = '#c62828';
       ctx.fillText('暖气团', frontX + 40, CANVAS_H * 0.45);
 
-    } else if (frontType === 'warm') {
-      // Warm front - warm air overruns cold air
+    } else if (ft === 'warm') {
+      // Cold air mass
       ctx.fillStyle = 'rgba(66,165,245,0.3)';
       ctx.beginPath();
       ctx.moveTo(0, CANVAS_H * 0.45);
@@ -124,6 +152,7 @@ const FrontWeather: React.FC = () => {
       ctx.closePath();
       ctx.fill();
 
+      // Warm air mass
       ctx.fillStyle = 'rgba(239,83,80,0.3)';
       ctx.beginPath();
       ctx.moveTo(0, CANVAS_H * 0.15);
@@ -133,7 +162,7 @@ const FrontWeather: React.FC = () => {
       ctx.closePath();
       ctx.fill();
 
-      // Warm front line (semicircle markers)
+      // Warm front line
       ctx.strokeStyle = '#c62828';
       ctx.lineWidth = 3;
       ctx.beginPath();
@@ -141,10 +170,11 @@ const FrontWeather: React.FC = () => {
       ctx.lineTo(frontX, CANVAS_H * 0.6);
       ctx.stroke();
 
+      // Warm front semicircle markers (pointing right = clockwise from PI to 2*PI)
       for (let y = CANVAS_H * 0.28; y < CANVAS_H * 0.58; y += 25) {
         ctx.fillStyle = '#c62828';
         ctx.beginPath();
-        ctx.arc(frontX, y + 8, 6, Math.PI, 0);
+        ctx.arc(frontX, y + 8, 6, Math.PI, 0, false);
         ctx.fill();
       }
 
@@ -175,7 +205,6 @@ const FrontWeather: React.FC = () => {
       ctx.lineTo(sx, CANVAS_H * 0.6);
       ctx.stroke();
 
-      // Alternating markers
       for (let y = CANVAS_H * 0.28; y < CANVAS_H * 0.55; y += 30) {
         ctx.fillStyle = '#1565C0';
         ctx.beginPath();
@@ -187,7 +216,7 @@ const FrontWeather: React.FC = () => {
 
         ctx.fillStyle = '#c62828';
         ctx.beginPath();
-        ctx.arc(sx, y + 23, 5, Math.PI, 0);
+        ctx.arc(sx, y + 23, 5, Math.PI, 0, false);
         ctx.fill();
       }
 
@@ -201,33 +230,47 @@ const FrontWeather: React.FC = () => {
       ctx.fillText('暖气团', sx + 40, CANVAS_H * 0.5);
     }
 
-    // Title
     ctx.fillStyle = '#333';
     ctx.font = 'bold 14px sans-serif';
-    ctx.fillText(`${frontLabels[frontType]}过境模拟`, 10, 20);
-  }, [frontType, progress]);
+    ctx.fillText(`${frontLabels[ft]}过境模拟`, 10, 20);
+  }, []); // Stable - no state deps
 
-  function drawCloud(ctx: CanvasRenderingContext2D, x: number, y: number, size: number, color: string) {
-    ctx.fillStyle = color;
-    ctx.beginPath();
-    ctx.arc(x, y, size * 0.4, 0, Math.PI * 2);
-    ctx.arc(x + size * 0.3, y - size * 0.15, size * 0.35, 0, Math.PI * 2);
-    ctx.arc(x + size * 0.6, y, size * 0.3, 0, Math.PI * 2);
-    ctx.arc(x + size * 0.3, y + size * 0.1, size * 0.25, 0, Math.PI * 2);
-    ctx.fill();
-  }
-
+  // Animation loop - stable
   useEffect(() => {
     const animate = () => {
-      if (playing) {
-        setProgress((p) => (p + 0.15 * speed) % 100);
+      const canvas = canvasRef.current;
+      let currentProgress = progressRef.current;
+
+      if (playingRef.current) {
+        currentProgress = (currentProgress + 0.15 * speedRef.current) % 100;
+        progressRef.current = currentProgress;
       }
-      drawFront();
+
+      if (canvas) {
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          drawFront(ctx, frontTypeRef.current, currentProgress);
+        }
+      }
+
       animRef.current = requestAnimationFrame(animate);
     };
+
     animRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(animRef.current);
-  }, [playing, speed, drawFront]);
+  }, [drawFront]); // Stable effect
+
+  // Sync progress to state for slider
+  useEffect(() => {
+    if (!playing) {
+      setProgress(progressRef.current);
+      return;
+    }
+    const sync = setInterval(() => {
+      setProgress(progressRef.current);
+    }, 100);
+    return () => clearInterval(sync);
+  }, [playing]);
 
   // Temperature curve data
   const tempCurveData = {
@@ -250,7 +293,7 @@ const FrontWeather: React.FC = () => {
           <ToggleButtonGroup
             value={frontType}
             exclusive
-            onChange={(_, v) => { if (v) setFrontType(v); }}
+            onChange={(_, v) => { if (v) { setFrontType(v); progressRef.current = 0; } }}
             size="small"
             sx={{ mb: 1 }}
           >

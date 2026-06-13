@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { Box, Typography, Select, MenuItem, FormControl, InputLabel, Button } from '@mui/material';
 import ToolPageLayout from '@/components/shared/ToolPageLayout';
 import { terrainPresets } from '@/data/terrainPresets';
+import { getCanvasCoords } from '@/utils/canvasHelper';
 
 const CANVAS_W = 400;
 const CANVAS_H = 400;
@@ -222,9 +223,7 @@ const TerrainProfile: React.FC = () => {
   useEffect(() => { drawProfile(); }, [drawProfile]);
 
   const handleCanvasClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    const { x, y } = getCanvasCoords(e.currentTarget, e);
     if (!pointA || (pointA && pointB)) {
       setPointA({ x, y });
       setPointB(null);

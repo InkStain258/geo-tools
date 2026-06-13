@@ -6,6 +6,7 @@ import {
 } from 'chart.js';
 import ToolPageLayout from '@/components/shared/ToolPageLayout';
 import { riverBasins } from '@/data/terrainPresets';
+import { getCanvasCoords } from '@/utils/canvasHelper';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -131,9 +132,7 @@ const RiverBasin: React.FC = () => {
   useEffect(() => { drawBasin(); }, [drawBasin]);
 
   const handleCanvasClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    const { x, y } = getCanvasCoords(e.currentTarget, e);
     const cx = CANVAS_W / 2;
     const zones = [
       { x: cx - 10, y: 120 },

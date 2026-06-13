@@ -3,6 +3,7 @@ import { Box, Typography } from '@mui/material';
 import ToolPageLayout from '@/components/shared/ToolPageLayout';
 import AnimationControls from '@/components/shared/AnimationControls';
 import { oceanCurrents } from '@/data/terrainPresets';
+import { getCanvasCoords } from '@/utils/canvasHelper';
 
 const CANVAS_W = 700;
 const CANVAS_H = 450;
@@ -24,6 +25,15 @@ const OceanCurrent: React.FC = () => {
   const [progress, setProgress] = useState(0);
   const [selectedCurrent, setSelectedCurrent] = useState<string | null>(null);
   const particlesRef = useRef<Particle[]>([]);
+  const progressRef = useRef(0);
+  const playingRef = useRef(true);
+  const speedRef = useRef(1);
+  const selectedRef = useRef<string | null>(null);
+
+  // Keep refs in sync with state
+  useEffect(() => { playingRef.current = playing; }, [playing]);
+  useEffect(() => { speedRef.current = speed; }, [speed]);
+  useEffect(() => { selectedRef.current = selectedCurrent; }, [selectedCurrent]);
 
   // Initialize particles
   useEffect(() => {
@@ -46,19 +56,12 @@ const OceanCurrent: React.FC = () => {
     ctx.strokeStyle = '#aaa';
     ctx.lineWidth = 1;
 
-    // Simple continent outlines
     const continents = [
-      // North America
       [[60, 80], [80, 60], [130, 55], [160, 70], [170, 100], [160, 140], [130, 160], [100, 170], [80, 150], [60, 120]],
-      // South America
       [[110, 190], [130, 180], [150, 200], [155, 250], [140, 310], [120, 350], [105, 330], [100, 280], [105, 230]],
-      // Europe
       [[280, 60], [310, 55], [340, 65], [350, 90], [340, 110], [310, 120], [290, 110], [280, 85]],
-      // Africa
       [[280, 140], [310, 130], [340, 150], [350, 200], [340, 270], [310, 310], [290, 300], [280, 240], [275, 180]],
-      // Asia
       [[340, 50], [380, 40], [430, 45], [470, 60], [490, 90], [480, 120], [450, 150], [410, 160], [370, 140], [350, 100]],
-      // Australia
       [[430, 280], [470, 270], [500, 290], [490, 330], [460, 340], [430, 320]],
     ];
 
@@ -72,7 +75,6 @@ const OceanCurrent: React.FC = () => {
       ctx.stroke();
     });
 
-    // Equator
     ctx.strokeStyle = '#ccc';
     ctx.lineWidth = 0.5;
     ctx.setLineDash([5, 5]);
@@ -83,106 +85,118 @@ const OceanCurrent: React.FC = () => {
     ctx.setLineDash([]);
   }, []);
 
-  /** Animation loop */
-  const animate = useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+  // Animation loop - uses refs to avoid re-creating on every frame
+  useEffect(() => {
+    const animate = () => {
+      const canvas = canvasRef.current;
+      if (!canvas) { animRef.current = requestAnimationFrame(animate); return; }
+      const ctx = canvas.getContext('2d');
+      if (!ctx) { animRef.current = requestAnimationFrame(animate); return; }
 
-    ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
+      ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
 
-    // Ocean background
-    ctx.fillStyle = '#e3f2fd';
-    ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
+      // Ocean background
+      ctx.fillStyle = '#e3f2fd';
+      ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
 
-    drawWorldOutline(ctx);
+      drawWorldOutline(ctx);
 
-    // Draw current paths
-    oceanCurrents.forEach((current) => {
-      const path = current.path;
-      ctx.strokeStyle = current.type === 'warm' ? '#ef5350' : '#42A5F5';
-      ctx.lineWidth = 2;
-      ctx.setLineDash([6, 3]);
-      ctx.beginPath();
-      ctx.moveTo(path[0][0], path[0][1]);
-      for (let i = 1; i < path.length; i++) {
-        ctx.lineTo(path[i][0], path[i][1]);
-      }
-      ctx.stroke();
-      ctx.setLineDash([]);
-
-      // Arrow head
-      const last = path[path.length - 1];
-      const prev = path[path.length - 2];
-      const angle = Math.atan2(last[1] - prev[1], last[0] - prev[0]);
-      ctx.fillStyle = current.type === 'warm' ? '#ef5350' : '#42A5F5';
-      ctx.beginPath();
-      ctx.moveTo(last[0], last[1]);
-      ctx.lineTo(last[0] - 8 * Math.cos(angle - 0.4), last[1] - 8 * Math.sin(angle - 0.4));
-      ctx.lineTo(last[0] - 8 * Math.cos(angle + 0.4), last[1] - 8 * Math.sin(angle + 0.4));
-      ctx.closePath();
-      ctx.fill();
-
-      // Label
-      const mid = path[Math.floor(path.length / 2)];
-      ctx.fillStyle = current.type === 'warm' ? '#c62828' : '#1565C0';
-      ctx.font = '9px sans-serif';
-      ctx.fillText(current.name, mid[0] - 20, mid[1] - 8);
-    });
-
-    // Animate particles
-    if (playing) {
-      particlesRef.current.forEach((p) => {
-        p.t += p.speed * speed;
-        if (p.t > 1) p.t -= 1;
-
-        const current = oceanCurrents[p.pathIdx];
+      // Draw current paths
+      oceanCurrents.forEach((current) => {
         const path = current.path;
-        const totalSegs = path.length - 1;
-        const segIdx = Math.min(Math.floor(p.t * totalSegs), totalSegs - 1);
-        const segT = (p.t * totalSegs) - segIdx;
-
-        p.x = path[segIdx][0] + (path[segIdx + 1][0] - path[segIdx][0]) * segT;
-        p.y = path[segIdx][1] + (path[segIdx + 1][1] - path[segIdx][1]) * segT;
-
-        // Draw particle
-        ctx.fillStyle = current.type === 'warm'
-          ? `rgba(239,83,80,${0.5 + segT * 0.5})`
-          : `rgba(66,165,245,${0.5 + segT * 0.5})`;
+        ctx.strokeStyle = current.type === 'warm' ? '#ef5350' : '#42A5F5';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([6, 3]);
         ctx.beginPath();
-        ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+        ctx.moveTo(path[0][0], path[0][1]);
+        for (let i = 1; i < path.length; i++) {
+          ctx.lineTo(path[i][0], path[i][1]);
+        }
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Arrow head
+        const last = path[path.length - 1];
+        const prev = path[path.length - 2];
+        const angle = Math.atan2(last[1] - prev[1], last[0] - prev[0]);
+        ctx.fillStyle = current.type === 'warm' ? '#ef5350' : '#42A5F5';
+        ctx.beginPath();
+        ctx.moveTo(last[0], last[1]);
+        ctx.lineTo(last[0] - 8 * Math.cos(angle - 0.4), last[1] - 8 * Math.sin(angle - 0.4));
+        ctx.lineTo(last[0] - 8 * Math.cos(angle + 0.4), last[1] - 8 * Math.sin(angle + 0.4));
+        ctx.closePath();
         ctx.fill();
+
+        const mid = path[Math.floor(path.length / 2)];
+        ctx.fillStyle = current.type === 'warm' ? '#c62828' : '#1565C0';
+        ctx.font = '9px sans-serif';
+        ctx.fillText(current.name, mid[0] - 20, mid[1] - 8);
       });
 
-      setProgress((prev) => (prev + 0.1 * speed) % 100);
-    }
+      // Animate particles using refs
+      if (playingRef.current) {
+        particlesRef.current.forEach((p) => {
+          p.t += p.speed * speedRef.current;
+          if (p.t > 1) p.t -= 1;
 
-    // Highlight selected
-    if (selectedCurrent) {
-      const sc = oceanCurrents.find((c) => c.id === selectedCurrent);
-      if (sc) {
-        ctx.strokeStyle = sc.type === 'warm' ? '#b71c1c' : '#0D47A1';
-        ctx.lineWidth = 4;
-        ctx.beginPath();
-        ctx.moveTo(sc.path[0][0], sc.path[0][1]);
-        sc.path.forEach((p, i) => { if (i > 0) ctx.lineTo(p[0], p[1]); });
-        ctx.stroke();
+          const current = oceanCurrents[p.pathIdx];
+          const path = current.path;
+          const totalSegs = path.length - 1;
+          const segIdx = Math.min(Math.floor(p.t * totalSegs), totalSegs - 1);
+          const segT = (p.t * totalSegs) - segIdx;
+
+          p.x = path[segIdx][0] + (path[segIdx + 1][0] - path[segIdx][0]) * segT;
+          p.y = path[segIdx][1] + (path[segIdx + 1][1] - path[segIdx][1]) * segT;
+
+          ctx.fillStyle = current.type === 'warm'
+            ? `rgba(239,83,80,${0.5 + segT * 0.5})`
+            : `rgba(66,165,245,${0.5 + segT * 0.5})`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+          ctx.fill();
+        });
+
+        progressRef.current = (progressRef.current + 0.1 * speedRef.current) % 100;
       }
-    }
 
-    animRef.current = requestAnimationFrame(animate);
-  }, [playing, speed, selectedCurrent, drawWorldOutline]);
+      // Highlight selected using ref
+      if (selectedRef.current) {
+        const sc = oceanCurrents.find((c) => c.id === selectedRef.current);
+        if (sc) {
+          ctx.strokeStyle = sc.type === 'warm' ? '#b71c1c' : '#0D47A1';
+          ctx.lineWidth = 4;
+          ctx.beginPath();
+          ctx.moveTo(sc.path[0][0], sc.path[0][1]);
+          sc.path.forEach((p, i) => { if (i > 0) ctx.lineTo(p[0], p[1]); });
+          ctx.stroke();
+        }
+      }
 
-  useEffect(() => {
+      animRef.current = requestAnimationFrame(animate);
+    };
+
     animRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(animRef.current);
-  }, [animate]);
+  }, [drawWorldOutline]); // Only depends on drawWorldOutline (stable)
+
+  // Sync progress ref to state for slider UI (throttled to ~10fps)
+  useEffect(() => {
+    if (!playing) return;
+    const sync = setInterval(() => {
+      setProgress(progressRef.current);
+    }, 100);
+    return () => clearInterval(sync);
+  }, [playing]);
+
+  // Update progress when paused
+  useEffect(() => {
+    if (!playing) {
+      setProgress(progressRef.current);
+    }
+  }, [playing]);
 
   const handleCanvasClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const mx = e.clientX - rect.left;
-    const my = e.clientY - rect.top;
+    const { x: mx, y: my } = getCanvasCoords(e.currentTarget, e);
     let found: string | null = null;
     oceanCurrents.forEach((c) => {
       c.path.forEach((p) => {
