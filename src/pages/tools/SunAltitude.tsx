@@ -401,6 +401,52 @@ const SunAltitude: React.FC = () => {
               </Typography>
             </Box>
           </Box>
+          {/* 正午太阳高度角极值规律 */}
+          <Box sx={{ p: 1.5, bgcolor: '#e8f5e9', borderRadius: 2, mt: 1, border: '1px solid #a5d6a7' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#2E7D32', mb: 1 }}>
+              📐 正午太阳高度角极值规律
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.85rem', color: '#555', lineHeight: 1.8 }}>
+              正午太阳高度角 H 随直射点纬度 δ 的移动而呈现规律性变化。不同纬度区域 H 的极大值和极小值出现时间如下：
+            </Typography>
+            <Box sx={{ mt: 1, display: 'flex', flexDirection: 'column', gap: 1 }}>
+              <Box sx={{ p: 1.5, bgcolor: '#fff', borderRadius: 1, borderLeft: '4px solid #F44336' }}>
+                <Typography variant="body2" sx={{ fontWeight: 700, color: '#c62828', fontSize: '0.85rem' }}>
+                  ① 北回归线以北（φ &gt; 23.5°N）
+                </Typography>
+                <Typography variant="body2" sx={{ fontSize: '0.85rem', color: '#555', lineHeight: 1.7 }}>
+                  <b>夏至日 H 最大 → 冬至日 H 最小。</b>直射点北移至北回归线时（夏至），纬度差 |φ—δ| 最小，H 达全年最大值；直射点南移至南回归线时（冬至），纬度差最大，H 达全年最小值。<br/>
+                  <b>实例：</b>北京（40°N）——夏至 H=73.5°（最大），冬至 H=26.5°（最小），年变幅 = 47°（= 2×23.5°黄赤交角）。<br/>
+                  <b>延伸规律：</b>北半球夏至日，北回归线以北各纬度 H 达一年中最大值，且纬度越高 H 越小；冬至日则相反。此规律适用于所有 φ ≥ 23.5° 的区域。
+                </Typography>
+              </Box>
+              <Box sx={{ p: 1.5, bgcolor: '#fff', borderRadius: 1, borderLeft: '4px solid #FF9800' }}>
+                <Typography variant="body2" sx={{ fontWeight: 700, color: '#E65100', fontSize: '0.85rem' }}>
+                  ② 南北回归线之间（|φ| &lt; 23.5°）
+                </Typography>
+                <Typography variant="body2" sx={{ fontSize: '0.85rem', color: '#555', lineHeight: 1.7 }}>
+                  <b>一年有两次直射</b>（H = 90°），即有两个 H 极大值日。太阳直射点每年两次经过该纬度——一次北上、一次南下，两次直射日之间相隔约2—5个月不等。<br/>
+                  <b>实例：</b>海口（20°N）——太阳直射点在5月和7月两次经过20°N，这两日正午 H = 90°（太阳在头顶）。H 极小值出现在冬至日（直射南回归线时纬度差最大）。<br/>
+                  <b>延伸规律：</b>赤道（0°）——H 极大值出现在春秋分（各一次直射，H=90°），极小值在夏至和冬至（H=66.5°），年变幅仅23.5°（热带地区 H 年变幅最小）。
+                </Typography>
+              </Box>
+              <Box sx={{ p: 1.5, bgcolor: '#fff', borderRadius: 1, borderLeft: '4px solid #2196F3' }}>
+                <Typography variant="body2" sx={{ fontWeight: 700, color: '#1565C0', fontSize: '0.85rem' }}>
+                  ③ 南回归线以南（φ &lt; -23.5°，即 |φ| &gt; 23.5°S）
+                </Typography>
+                <Typography variant="body2" sx={{ fontSize: '0.85rem', color: '#555', lineHeight: 1.7 }}>
+                  <b>冬至日 H 最大 → 夏至日 H 最小。</b>与北回归线以北完全对称：当直射点在南回归线时（冬至，南半球为夏季），纬度差最小，H 达全年最大值；当直射点在北回归线时（夏至），纬度差最大，H 达全年最小值。<br/>
+                  <b>实例：</b>悉尼（34°S）——冬至（6月22日，南半球冬季）H 最小，夏至（12月22日，南半球夏季）H 最大。与北京完全颠倒。<br/>
+                  <b>延伸规律：</b>南半球夏至日（12月22日前后），南回归线以南各纬度 H 达最大值；南半球冬至日（6月22日前后）H 达最小值。
+                </Typography>
+              </Box>
+            </Box>
+            <Box sx={{ mt: 1.5, p: 1, bgcolor: '#fff8e1', borderRadius: 1, borderLeft: '3px solid #FF8F00' }}>
+              <Typography variant="body2" sx={{ fontSize: '0.85rem', color: '#E65100' }}>
+                <b>💡 速记口诀：</b>"北北夏至大，南南冬至大，中间两直射。" —— 北回归线以北夏至最大，南回归线以南冬至最大，回归线之间两次直射（两次 H=90°）。
+              </Typography>
+            </Box>
+          </Box>
         </Box>
       </Box>
     </ToolPageLayout>

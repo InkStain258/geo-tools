@@ -399,6 +399,52 @@ const SunlightCalculator: React.FC = () => {
               );
             })}
           </Box>
+          {/* 日照图判读要点 */}
+          <Box sx={{ p: 1.5, bgcolor: '#fff3e0', borderRadius: 2, mt: 1, border: '1px solid #ffcc80' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#E65100', mb: 1 }}>
+              🔍 日照图判读要点
+            </Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+              <Box sx={{ p: 1.5, bgcolor: '#fff', borderRadius: 1, borderLeft: '4px solid #FF9800' }}>
+                <Typography variant="body2" sx={{ fontWeight: 700, color: '#E65100', fontSize: '0.85rem' }}>
+                  🌅 晨线与昏线的判断
+                </Typography>
+                <Typography variant="body2" sx={{ fontSize: '0.85rem', color: '#555', lineHeight: 1.7 }}>
+                  <b>核心方法：自西向东穿越法。</b>沿地球自转方向（自西向东），从<b>夜半球进入昼半球</b>所经过的线为<b>晨线</b>（迎来黎明）；从<b>昼半球进入夜半球</b>所经过的线为<b>昏线</b>（进入黑夜）。<br/>
+                  <b>辅助判断：</b>晨线上各地正在日出（太阳高度=0°），昏线上各地正在日落（太阳高度=0°）。晨昏线是昼半球与夜半球的分界线，始终与太阳光线垂直。<br/>
+                  <b>常见误区：</b>切勿仅凭「左右位置」判断——若北极上空俯视图（逆时针自转），则左侧半圆为晨线、右侧半圆为昏线；南极上空俯视图（顺时针自转）则相反。
+                </Typography>
+              </Box>
+              <Box sx={{ p: 1.5, bgcolor: '#fff', borderRadius: 1, borderLeft: '4px solid #2196F3' }}>
+                <Typography variant="body2" sx={{ fontWeight: 700, color: '#1565C0', fontSize: '0.85rem' }}>
+                  🕐 地方时推算
+                </Typography>
+                <Typography variant="body2" sx={{ fontSize: '0.85rem', color: '#555', lineHeight: 1.7 }}>
+                  <b>关键定位点——晨线与赤道交点：地方时 6:00</b>（赤道上终年昼夜等长，6:00日出、18:00日落）。同理，昏线与赤道交点地方时为<b>18:00</b>。<br/>
+                  <b>太阳直射点所在经线：地方时 12:00</b>（正午）。夜半球中央经线（子夜线）：地方时 <b>0:00 或 24:00</b>。<br/>
+                  <b>推算方法：</b>已知某条经线的地方时，经度每差 15° → 地方时差 1 小时（东加西减）。晨昏线与极圈相切时（二至日），切点所在经线地方时为 0:00 或 12:00。<br/>
+                  <b>高考技巧：</b>日照图中常见「给晨线与赤道交点经度，求某地地方时」——先标出该交点（6:00），然后按照经度差逐步推算目标地的地方时。
+                </Typography>
+              </Box>
+              <Box sx={{ p: 1.5, bgcolor: '#fff', borderRadius: 1, borderLeft: '4px solid #4CAF50' }}>
+                <Typography variant="body2" sx={{ fontWeight: 700, color: '#2E7D32', fontSize: '0.85rem' }}>
+                  🌞 昼夜长短判读
+                </Typography>
+                <Typography variant="body2" sx={{ fontSize: '0.85rem', color: '#555', lineHeight: 1.7 }}>
+                  <b>基本原理：</b>地球自转一周，某地经历昼弧和夜弧。昼长 = 昼弧所跨经度 ÷ 15°（即昼弧对应的小时数）。<br/>
+                  <b>日照图判读方法：</b>①找出该地所在纬线被晨昏线分割的昼弧段；②计算昼弧跨越的经度；③除以15°/小时得昼长。<br/>
+                  <b>南北半球对称规律：</b>同一日期，南北半球相同纬度处，昼长与夜长互换（北纬30°昼长 = 南纬30°夜长）。<br/>
+                  <b>纬度变化规律：</b>太阳直射北半球时，北半球纬度越高昼越长（北极附近极昼）；直射南半球则反之。赤道终年昼长=12小时。<br/>
+                  <b>极值规律：</b>北半球夏至日——北半球昼最长、北极圈内极昼；冬至日——北半球昼最短、北极圈内极夜。南半球反之。
+                </Typography>
+              </Box>
+            </Box>
+            <Box sx={{ mt: 1.5, p: 1, bgcolor: '#fff8e1', borderRadius: 1, borderLeft: '3px solid #FF8F00' }}>
+              <Typography variant="body2" sx={{ fontSize: '0.85rem', color: '#E65100' }}>
+                <b>💡 判读口诀：</b>"自西向东穿晨昏，夜入昼为晨（6时），昼入夜为昏（18时）；赤道交点定时间，昼弧除以15得昼长；同纬南北昼夜反，直射半球纬度越高昼越长。"
+              </Typography>
+            </Box>
+          </Box>
         </Box>
       </Box>
     </ToolPageLayout>

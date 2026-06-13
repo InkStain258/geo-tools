@@ -382,6 +382,39 @@ const TimezoneCalculator: React.FC = () => {
           </CardContent>
         </Card>
 
+        {/* 夏令时(DST)概念 */}
+        <Card variant="outlined" sx={{ mt: 2 }}>
+          <CardContent>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 1, color: '#1565C0' }}>
+              🕐 夏令时（DST）概念
+            </Typography>
+            <Box sx={{ bgcolor: '#e3f2fd', p: 1.5, borderRadius: 1, mb: 1.5 }}>
+              <Typography variant="body2" sx={{ fontWeight: 700, fontSize: '0.9rem', textAlign: 'center', color: '#1565C0' }}>
+                「夏季将时钟拨快1小时」
+              </Typography>
+            </Box>
+            <Typography variant="body2" sx={{ mb: 1, lineHeight: 1.7, fontSize: '0.85rem' }}>
+              <b>什么是夏令时？</b>夏令时（Daylight Saving Time，简称DST）是指在夏季日照时间较长时，将时钟拨快1小时，使人早起早睡，充分利用日照时间，节约照明用电。通常在春季将时钟拨快1小时（"spring forward"），秋季再拨回（"fall back"）。
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 1, lineHeight: 1.7, fontSize: '0.85rem' }}>
+              <b>时区计算中的影响：</b>实施夏令时的国家和地区，在夏令时期间，其实际使用的"法定时间"比所属时区的标准区时<b>快1小时</b>。例如：伦敦（零时区UTC+0），夏令时期间使用UTC+1（British Summer Time）；纽约（西五区UTC−5），夏令时使用UTC−4（Eastern Daylight Time）。
+            </Typography>
+            <Box sx={{ bgcolor: '#FFF3E0', p: 1.5, borderRadius: 1, borderLeft: '4px solid #FF8F00' }}>
+              <Typography variant="body2" sx={{ fontSize: '0.85rem', color: '#E65100', lineHeight: 1.7, mb: 0.5 }}>
+                <b>🇨🇳 中国与夏令时：</b>中国曾于<b>1986年至1991年</b>实施夏令时（每年4月中旬第一个周日凌晨2时拨快1小时，9月中旬第一个周日凌晨2时拨回）。因中国幅员辽阔、东西跨度大，夏令时的节能效果不明显且造成混乱，<b>1992年起停止实施</b>。目前中国<b>不实行夏令时</b>，全年统一使用东八区区时（北京时间）。
+              </Typography>
+              <Typography variant="body2" sx={{ fontSize: '0.85rem', color: '#E65100', lineHeight: 1.7 }}>
+                <b>高考要点：</b>①题目若明确"夏令时"则需在正常计算结果上<b>+1小时</b>；②目前全球约70个国家实施DST（欧洲、北美、澳大利亚等），赤道附近国家大多不实施（全年日照变化小）；③高考常有陷阱：已知某地"夏令时"时间求另一地时间，需先换算为标准区时再计算。
+              </Typography>
+            </Box>
+            <Box sx={{ mt: 1.5, p: 1, bgcolor: '#e8f5e9', borderRadius: 1 }}>
+              <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#2E7D32', lineHeight: 1.7 }}>
+                <b>💡 快速记忆：</b>「夏令拨快一小时，中国1992已废止。北美欧洲仍使用，高考陷阱要警惕——夏令时→标准时（−1h），标准时→夏令时（+1h）。」
+              </Typography>
+            </Box>
+          </CardContent>
+        </Card>
+
       </Box>
     </ToolPageLayout>
   );

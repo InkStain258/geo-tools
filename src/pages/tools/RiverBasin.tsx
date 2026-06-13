@@ -1129,6 +1129,64 @@ const RiverBasin: React.FC = () => {
               <b>5. 地下水补给：</b>地下水稳定补给河流（常年性补给），是河流最可靠的补给来源。枯水期地下水位高于河水位时补给河流，是河流基流的主要来源。流量小而稳定。
             </Typography>
           </Box>
+
+          {/* 河流水文特征五要素详解 */}
+          <Box sx={{ p: 1.5, mt: 1, bgcolor: '#E0F7FA', borderRadius: 2, border: '1px solid #80DEEA' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 1, color: '#00695C' }}>
+              🌊 河流水文特征五要素详解（高考必背）
+            </Typography>
+
+            <Box sx={{ mb: 1 }}>
+              <Typography variant="body2" sx={{ fontWeight: 700, fontSize: '0.85rem', color: '#00838F' }}>
+                ① 流量（Discharge）
+              </Typography>
+              <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#555', lineHeight: 1.6 }}>
+                流量大小取决于流域的降水量、集水面积和蒸发量。流量大→降水丰富、流域面积大（如长江年均流量约31,000m³/s，亚马孙河约209,000m³/s为世界第一）；流量小→干旱/半干旱地区（如黄河年均流量仅约1,800m³/s）。高考常考：流量大小比较及成因分析（气候类型+流域特征）。
+              </Typography>
+            </Box>
+
+            <Box sx={{ mb: 1 }}>
+              <Typography variant="body2" sx={{ fontWeight: 700, fontSize: '0.85rem', color: '#00838F' }}>
+                ② 水位变化（Water Level Variation / 汛期与枯水期）
+              </Typography>
+              <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#555', lineHeight: 1.6 }}>
+                水位季节性变化由补给类型决定：雨水补给→汛期与雨季一致（如季风区夏汛、地中海气候区冬汛）；冰雪融水补给→夏季高温时汛期（如塔里木河7-8月汛期）；积雪融水补给→春汛（如东北河流4-5月春汛/凌汛）。水位变化大→季风/大陆性气候；变化小→海洋性气候或湖泊/地下水调节显著的河流。
+              </Typography>
+            </Box>
+
+            <Box sx={{ mb: 1 }}>
+              <Typography variant="body2" sx={{ fontWeight: 700, fontSize: '0.85rem', color: '#00838F' }}>
+                ③ 含沙量（Sediment Load）
+              </Typography>
+              <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#555', lineHeight: 1.6 }}>
+                含沙量取决于流域的植被覆盖率、土质和降水强度。含沙量大→植被稀疏、土质疏松、降水集中（如黄河中游流经黄土高原，含沙量世界之最，年输沙约16亿吨）；含沙量小→植被茂密、土质坚硬、降水均匀（如珠江含沙量小、亚马孙河虽大但因雨林覆盖含沙量相对可控）。影响因素口诀：「植被多→沙少；黄土松→沙多；暴雨强→沙增」。含沙量大影响：①水库淤积缩短寿命；②河床抬升（地上河）；③三角洲快速向海推进。
+              </Typography>
+            </Box>
+
+            <Box sx={{ mb: 1 }}>
+              <Typography variant="body2" sx={{ fontWeight: 700, fontSize: '0.85rem', color: '#00838F' }}>
+                ④ 结冰期（Freeze-up Period）
+              </Typography>
+              <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#555', lineHeight: 1.6 }}>
+                结冰期取决于最冷月均温是否低于0°C。有结冰期→最冷月&lt;0°C（温带/寒带河流，如黄河1-2月封冻、松花江12-3月冰期长达4个月）；无结冰期→最冷月&gt;0°C（亚热带/热带河流，如长江、珠江全年不封冻）。由低纬流向高纬的河段易发生<b>凌汛</b>（冰坝壅水，如黄河宁夏-内蒙古段和山东段）。高考常考：结冰期有无及长短→反映纬度/气候带；凌汛条件：①有结冰期 ②低纬→高纬流向。
+              </Typography>
+            </Box>
+
+            <Box>
+              <Typography variant="body2" sx={{ fontWeight: 700, fontSize: '0.85rem', color: '#00838F' }}>
+                ⑤ 流速 / 水能（Flow Velocity &amp; Hydropower）
+              </Typography>
+              <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#555', lineHeight: 1.6 }}>
+                流速取决于河床落差（坡度）和河道形态。流速大→上游山区、峡谷多、落差大（水能丰富→适合建水电站，如长江三峡、黄河龙羊峡）；流速小→中下游平原、河道宽、坡度缓（利于航运和灌溉，如长江中下游"黄金水道"）。水能资源丰富条件：①水量大 ②落差大。世界水能最丰富河流：刚果河（水量大+落差大）。
+              </Typography>
+            </Box>
+
+            <Box sx={{ mt: 1, p: 1, bgcolor: '#fff', borderRadius: 1 }}>
+              <Typography variant="body2" sx={{ fontSize: '0.75rem', color: '#00695C', fontWeight: 700, textAlign: 'center' }}>
+                💡 速记口诀：「流量水位沙冰速，五要素记清楚。流量看降水，水位看补给，含沙看植被，结冰看温度，流速看落差。」
+              </Typography>
+            </Box>
+          </Box>
         </Box>
       </Box>
     </ToolPageLayout>

@@ -567,6 +567,44 @@ const FrontWeather: React.FC = () => {
               💡 全年规律：中国以<b>冷锋</b>为主（占80%以上），暖锋次之；准静止锋主要集中在<b>冬半年（南岭/昆明）</b>和<b>初夏（江淮梅雨）</b>。锋面活动与<b>副高（西太平洋副热带高压）</b>的季节进退密切相关。
             </Typography>
           </Box>
+          {/* 三种特殊天气系统 */}
+          <Box sx={{ mt: 2, p: 1.5, bgcolor: '#f9fbe7', borderRadius: 2, border: '1px solid #dce775' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#827717', mb: 1.5 }}>
+              🌪️ 三种特殊天气系统
+            </Typography>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5 }}>
+              <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 32%' }, p: 1.5, bgcolor: '#e3f2fd', borderRadius: 2, border: '1px solid #90caf9' }}>
+                <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#1565C0', fontSize: '0.85rem' }}>
+                  ❄️ 寒潮
+                </Typography>
+                <Typography variant="body2" sx={{ fontSize: '0.85rem', color: '#555', lineHeight: 1.7, mt: 0.5 }}>
+                  <b>成因：</b>冬半年（10月—次年4月）蒙古-西伯利亚冷高压积聚强冷空气，当冷空气堆积到一定程度，沿西北、华北或东北路径大规模南下入侵我国。<br/>
+                  <b>特征：</b>剧烈降温（24小时降温≥8°C，最低温≤4°C）、大风（6—8级）、伴有雨雪或沙尘暴。范围广大，常席卷全国大部。<br/>
+                  <b>对我国影响：</b>北方：大风降温、暴雪、沙尘暴；南方：低温冻害（华南热带作物如香蕉、橡胶受灾严重）；全国：交通瘫痪、电力中断（2008年南方冰灾）、农作物大面积受损。寒潮虽为灾害，但也能冻死害虫卵，减轻翌年病虫害。
+                </Typography>
+              </Box>
+              <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 32%' }, p: 1.5, bgcolor: '#fce4ec', borderRadius: 2, border: '1px solid #f48fb1' }}>
+                <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#c62828', fontSize: '0.85rem' }}>
+                  🌀 台风
+                </Typography>
+                <Typography variant="body2" sx={{ fontSize: '0.85rem', color: '#555', lineHeight: 1.7, mt: 0.5 }}>
+                  <b>成因：</b>形成于西北太平洋（水温&gt;26.5°C的热带洋面），是强烈的热带气旋（中心风力≥12级）。多发于<b>夏秋季（7—9月最集中）</b>。<br/>
+                  <b>特征：</b>结构分为台风眼（晴朗无风）→ 云墙区（狂风暴雨）→ 螺旋雨带；直径数百至上千公里；能量巨大（一天释放的能量相当于几十万颗原子弹）。<br/>
+                  <b>对我国影响：</b>主要侵袭东南沿海（广东、福建、浙江、海南、台湾最频），常带来<b>狂风、暴雨、风暴潮</b>三重灾害。但台风也能缓解长江中下游伏旱（「台风雨」是夏季重要降水来源），调节热量平衡。我国每年平均登陆7—8个台风。
+                </Typography>
+              </Box>
+              <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 32%' }, p: 1.5, bgcolor: '#e8eaf6', borderRadius: 2, border: '1px solid #c5cae9' }}>
+                <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#283593', fontSize: '0.85rem' }}>
+                  🌧️ 梅雨
+                </Typography>
+                <Typography variant="body2" sx={{ fontSize: '0.85rem', color: '#555', lineHeight: 1.7, mt: 0.5 }}>
+                  <b>成因：</b>每年<b>6月中旬至7月上旬</b>，来自南方的暖湿气流与北方南下的冷空气在江淮地区势均力敌，形成<b>江淮准静止锋</b>，造成长时间持续性降水。<br/>
+                  <b>特征：</b>阴雨连绵，降水强度不大但持续时间长（20—30天），空气湿度极高（相对湿度&gt;80%），衣物易发霉（故名「霉雨」）。降水量占江淮地区全年40%以上。<br/>
+                  <b>对我国影响：</b>适时适量的梅雨有利于水稻插秧和生长（「黄梅时节家家雨」），但<b>异常梅雨</b>会导致旱涝：夏季风势力强→「空梅」（雨带迅速北跳→长江流域干旱）；夏季风势力弱→「涝梅」（雨带长期滞留→洪涝灾害）。高考常考「梅雨异常与夏季风强弱的关系」。
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
         </Box>
       </Box>
     </ToolPageLayout>

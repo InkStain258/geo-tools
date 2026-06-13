@@ -550,6 +550,72 @@ const TerrainProfile: React.FC = () => {
               💡 速记口诀：「平丘山高盆」——平原&lt;200m、丘陵&lt;500m、山地&gt;500m、高原&gt;500m顶面平、盆地四周高中间低。中国地形特征：<b>西高东低，呈三级阶梯</b>（青藏高原→中部山地高原→东部平原丘陵）。
             </Typography>
           </Box>
+
+          {/* 等高线计算题解题技巧 */}
+          <Box sx={{ bgcolor: '#FFF8E1', p: 1.5, mt: 1, borderRadius: 2, border: '1px solid #FFE082' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 1, color: '#E65100' }}>
+              🧮 等高线计算题解题技巧（高考必考）
+            </Typography>
+            
+            <Box sx={{ mb: 1 }}>
+              <Typography variant="body2" sx={{ fontWeight: 700, fontSize: '0.85rem', color: '#BF360C' }}>
+                1. 陡崖相对高度公式
+              </Typography>
+              <Box sx={{ bgcolor: '#fff', p: 1, borderRadius: 1, mb: 0.5 }}>
+                <Typography variant="body2" sx={{ fontFamily: '"JetBrains Mono", monospace', fontWeight: 700, fontSize: '0.85rem', textAlign: 'center', color: '#E65100' }}>
+                  (n−1)×d ≤ H &lt; (n+1)×d
+                </Typography>
+              </Box>
+              <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#555', mb: 0.3 }}>
+                其中：<b>n</b> = 陡崖处重叠的等高线条数，<b>d</b> = 等高距（相邻两条等高线的高差）
+              </Typography>
+              <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#555', mb: 0.3 }}>
+                · 最小相对高度 = (n−1)×d（≥，含等于）——当崖顶和崖底恰好落在等高线上时取等号
+              </Typography>
+              <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#555', mb: 0.3 }}>
+                · 最大相对高度 &lt; (n+1)×d（不含等于）——崖顶未达上一条等高线、崖底已过下一条等高线
+              </Typography>
+              <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#555' }}>
+                · 示例：陡崖处重叠4条等高线，等高距100m → (4−1)×100=300m ≤ H &lt; (4+1)×100=500m
+              </Typography>
+            </Box>
+
+            <Box sx={{ mb: 1 }}>
+              <Typography variant="body2" sx={{ fontWeight: 700, fontSize: '0.85rem', color: '#BF360C' }}>
+                2. 气温垂直递减率
+              </Typography>
+              <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#555', mb: 0.3 }}>
+                · <b>气温垂直递减率：0.6°C / 100m</b>（海拔每升高100米，气温下降约0.6°C）
+              </Typography>
+              <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#555', mb: 0.3 }}>
+                · 公式：T₂ = T₁ − (H₂ − H₁) × 0.6°C / 100m（H为海拔，单位m）
+              </Typography>
+              <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#555', mb: 0.3 }}>
+                · 示例：山脚（海拔200m）气温25°C → 山顶（海拔1700m）气温 = 25 − (1700−200)×0.6/100 = 25−9 = <b>16°C</b>
+              </Typography>
+              <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#555' }}>
+                · 高考常考：给出等高线图和某点气温，求另一点气温（先算高差，再算温差）
+              </Typography>
+            </Box>
+
+            <Box>
+              <Typography variant="body2" sx={{ fontWeight: 700, fontSize: '0.85rem', color: '#BF360C' }}>
+                3. 水库坝高/坝长估算
+              </Typography>
+              <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#555', mb: 0.3 }}>
+                · <b>坝高</b> = 设计蓄水位海拔 − 坝址处河床海拔（从等高线图中读取）
+              </Typography>
+              <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#555', mb: 0.3 }}>
+                · <b>坝长</b> = 坝址处等高线跨越河谷的水平距离（用比例尺换算）
+              </Typography>
+              <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#555', mb: 0.3 }}>
+                · 水库选址原则：① 口袋形洼地/盆地（库容大）；② 坝址选在峡谷最窄处（工程量小）；③ 上游集水面积大（水源充足）；④ 避开断层/喀斯特（防渗漏）
+              </Typography>
+              <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#555' }}>
+                · 水库淹没范围 = 设计蓄水位等高线所围区域。移民安置和耕地损失是重要评价指标。
+              </Typography>
+            </Box>
+          </Box>
         </Box>
       </Box>
     </ToolPageLayout>

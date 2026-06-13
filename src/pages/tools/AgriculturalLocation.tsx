@@ -404,6 +404,56 @@ const AgriculturalLocation: React.FC = () => {
         </Box>
       </Box>
 
+      {/* 农业可持续发展方向 */}
+      <Box sx={{ mt: 3, width: '100%' }}>
+        <Typography variant="h6" sx={{ fontWeight: 700, mb: 1.5, color: '#2E7D32' }}>
+          🌱 农业可持续发展方向
+        </Typography>
+        <Typography variant="body2" sx={{ mb: 2, color: '#555' }}>
+          面对人口增长、资源短缺和环境压力，现代农业正从"高产"向"高产+优质+生态+高效"转型。以下三种模式代表了农业可持续发展的核心路径。
+        </Typography>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+          <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 32%' }, p: 2, bgcolor: '#e8f5e9', borderRadius: 2, border: '1px solid #a5d6a7' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#2E7D32', fontSize: '0.9rem' }}>
+              🌿 生态农业
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.85rem', color: '#555', lineHeight: 1.7, mt: 0.5 }}>
+              <b>核心理念：</b>遵循生态学原理，实现农业生态系统内部的物质循环和能量多级利用。<br/>
+              <b>典型模式：</b>「桑基鱼塘」（珠江三角洲）——桑叶养蚕→蚕沙喂鱼→塘泥肥桑；「稻鱼共生」「稻鸭共育」；「猪—沼—果/菜」四位一体。<br/>
+              <b>优势：</b>减少化肥农药使用，保护农田生态，废弃物资源化利用，经济效益与生态效益兼顾。<br/>
+              <b>高考考点：</b>分析生态农业模式的物质循环路径；对比传统农业与生态农业的优缺点（如太湖平原「桑基鱼塘」vs 单一水稻种植）。
+            </Typography>
+          </Box>
+          <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 32%' }, p: 2, bgcolor: '#fff3e0', borderRadius: 2, border: '1px solid #ffcc80' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#E65100', fontSize: '0.9rem' }}>
+              🍃 有机农业
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.85rem', color: '#555', lineHeight: 1.7, mt: 0.5 }}>
+              <b>核心理念：</b>在生产中完全不用或基本不用人工合成的化肥、农药、激素、转基因技术，遵循自然规律和生态学原理。<br/>
+              <b>关键技术：</b>绿肥轮作（豆科作物固氮）、生物防治（天敌昆虫治虫）、有机肥（堆肥、沼液）、物理防治（防虫网、诱虫灯）。<br/>
+              <b>市场定位：</b>高端市场，产品价格通常是普通农产品的2-5倍；需通过有机认证（中国有机产品认证标志）。<br/>
+              <b>局限性：</b>产量通常低于常规农业（低20-30%），劳动力投入大，价格高限制消费群体；面临「是否足以养活全球人口」的争议。
+            </Typography>
+          </Box>
+          <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 32%' }, p: 2, bgcolor: '#e3f2fd', borderRadius: 2, border: '1px solid #90caf9' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#1565C0', fontSize: '0.9rem' }}>
+              🛰️ 精准农业
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '0.85rem', color: '#555', lineHeight: 1.7, mt: 0.5 }}>
+              <b>核心理念：</b>利用GPS、GIS、遥感（RS）、传感器和智能装备，对农田进行精细化、差异化管理——在正确的时间、正确的地点，按正确的量投入。<br/>
+              <b>典型技术：</b>无人机植保/巡田（多光谱成像识别病虫害）、变量施肥（根据土壤养分图精准投放）、自动驾驶农机、物联网墒情监测。<br/>
+              <b>优势：</b>节水节肥30-50%，减少农药用量，提高产量和品质；是解决「谁来种地」问题的技术路径。<br/>
+              <b>中国实践：</b>新疆棉花（北斗导航精量播种+无人机植保）、黑龙江农垦（大田物联网）、山东寿光（智能温室）。高考常结合「3S技术应用」命题。
+            </Typography>
+          </Box>
+        </Box>
+        <Box sx={{ mt: 2, p: 1.5, bgcolor: '#fff8e1', borderRadius: 2, borderLeft: '4px solid #FF8F00' }}>
+          <Typography variant="body2" sx={{ fontSize: '0.85rem', color: '#E65100' }}>
+            <b>💡 高考答题角度：</b>分析农业可持续发展——从<b>生态（减少污染/资源循环）、经济（提高效益/品牌化）、社会（食品安全/农民增收）</b>三个维度作答。常见设问：「某地区农业发展的可持续措施」「分析某种生态农业模式的效益」。关键词：循环经济、清洁生产、绿色农业、智慧农业。
+          </Typography>
+        </Box>
+      </Box>
+
     </ToolPageLayout>
   );
 };

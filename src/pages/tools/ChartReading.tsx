@@ -772,6 +772,67 @@ const ChartReading: React.FC = () => {
               <b>❌ 陷阱6——产业结构饼图惯性思维：</b>看到"第三产业&gt;50%"就判断为发达国家，但忽略了可能是<b>旅游型小国</b>（如马尔代夫、塞舌尔——第三产业主要是旅游，工业化程度实际很低）。解法：结合<b>人均GDP、城市化率、工业化水平</b>综合判断。
             </Typography>
           </Box>
+
+          {/* 判读示例 */}
+          <Box sx={{ mt: 2, p: 1.5, bgcolor: '#E8F5E9', borderRadius: 2, border: '1px solid #A5D6A7' }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 1, color: '#2E7D32' }}>
+              📝 判读示例——逐步推演（高考答题范本）
+            </Typography>
+
+            {/* 示例1：气温降水柱状图 */}
+            <Box sx={{ bgcolor: '#fff', p: 1.5, borderRadius: 1, mb: 1.5, border: '1px solid #C8E6C9' }}>
+              <Typography variant="body2" sx={{ fontWeight: 700, fontSize: '0.85rem', color: '#1B5E20', mb: 0.5 }}>
+                🌡️ 示例1：气温曲线+降水柱状图判读
+              </Typography>
+              <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#333', mb: 0.5 }}>
+                <b>给定数据：</b>某城市各月均温 [−4, −1, 6, 14, 20, 25, 27, 25, 20, 13, 4, −2]°C，月降水量 [3, 6, 10, 22, 27, 75, 180, 210, 52, 20, 8, 4]mm
+              </Typography>
+              <Box sx={{ pl: 1, borderLeft: '3px solid #2E7D32' }}>
+                <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#555', mb: 0.3 }}>
+                  <b>Step 1 · 读图名：</b>气温曲线+降水柱状图 → 综合气候统计图（判断气候类型）
+                </Typography>
+                <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#555', mb: 0.3 }}>
+                  <b>Step 2 · 看坐标：</b>横轴=月份(1-12月)，左纵轴=气温°C，右纵轴=降水量mm（双纵轴！注意区分）
+                </Typography>
+                <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#555', mb: 0.3 }}>
+                  <b>Step 3 · 析趋势：</b>气温呈"<b>单峰型</b>"——1月最低(−4°C)，7月最高(27°C)，年较差=27−(−4)=<b>31°C</b>（年较差大→大陆性特征）；降水7-8月激增（180mm、210mm），冬季极少(3-4mm)→<b>夏雨型</b>。
+                </Typography>
+                <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#555', mb: 0.3 }}>
+                  <b>Step 4 · 找特征：</b>最冷月−4°C &lt; 0°C → 温带（非亚热带/热带）；降水集中在夏季（7-8月占全年61%）→ 降水季节分配极不均匀；年降水量≈ 180+210+75+52+27+... = <b>约600mm</b>。
+                </Typography>
+                <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#2E7D32', fontWeight: 600 }}>
+                  <b>Step 5 · 得结论：</b>最冷月&lt;0°C + 夏雨集中 + 年较差大 + 年降水约600mm = <b>温带季风气候</b>（如北京）。口诀：「夏高温冬寒冷，夏雨集中冬干燥」。
+                </Typography>
+              </Box>
+            </Box>
+
+            {/* 示例2：人口金字塔 */}
+            <Box sx={{ bgcolor: '#fff', p: 1.5, borderRadius: 1, border: '1px solid #C8E6C9' }}>
+              <Typography variant="body2" sx={{ fontWeight: 700, fontSize: '0.85rem', color: '#1B5E20', mb: 0.5 }}>
+                👥 示例2：人口金字塔判读
+              </Typography>
+              <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#333', mb: 0.5 }}>
+                <b>给定图形特征：</b>塔形底部窄（0-14岁各段男/女均约4-5%），中段膨胀（35-59岁各段约7-8%），顶部宽（65岁以上累计约22%），女性高龄段略多于男性。
+              </Typography>
+              <Box sx={{ pl: 1, borderLeft: '3px solid #2E7D32' }}>
+                <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#555', mb: 0.3 }}>
+                  <b>Step 1 · 看底部宽度：</b>0-14岁各段仅4-5% → <b>低出生率</b>（总和生育率&lt;2.0，底部窄=少子化）
+                </Typography>
+                <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#555', mb: 0.3 }}>
+                  <b>Step 2 · 看塔形：</b>底部窄、顶部宽 → <b>倒三角/收缩型</b>（老年人口比重大于青少年）
+                </Typography>
+                <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#555', mb: 0.3 }}>
+                  <b>Step 3 · 看顶部：</b>65岁以上累计约22% → 远超7%老龄化标准 → <b>深度老龄化社会</b>
+                </Typography>
+                <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#555', mb: 0.3 }}>
+                  <b>Step 4 · 看性别比：</b>中年段男女基本平衡，高龄段女性多于男性（女性平均寿命更长）→ 自然规律，非移民/战争因素
+                </Typography>
+                <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#2E7D32', fontWeight: 600 }}>
+                  <b>Step 5 · 得结论：</b>收缩型金字塔 + 深度老龄化 + 低出生率 = <b>发达国家老龄化社会</b>（如日本、德国、意大利）。面临问题：劳动力短缺、养老负担重、社会保障压力大。
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
         </Box>
       </Box>
     </ToolPageLayout>
