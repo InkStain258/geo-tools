@@ -1,459 +1,295 @@
 import React, { useRef, useState } from 'react';
-import { Box, Typography, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
-import {
-  Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend,
-} from 'chart.js';
+import { Box, Typography, Select, MenuItem, FormControl, InputLabel, Tabs, Tab, Card, CardContent, Chip } from '@mui/material';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import ToolPageLayout from '@/components/shared/ToolPageLayout';
 import { agricultureTypes } from '@/data/geoFormulas';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
+/* ============ 中国三大农业区 ============ */
+const chinaZones = [
+  {
+    t:'🌾 东部季风区（种植业主导）',c:'#2E7D32',bg:'#e8f5e9',pct:'45%国土, 95%人口',
+    d:'范围：大兴安岭—阴山—贺兰山—巴颜喀拉山—冈底斯山以东以南。| 条件：季风气候、雨热同期、降水>400mm、平原盆地为主。| 特征：北方旱地小麦玉米（1-2熟）、南方水田水稻（2-3熟）。秦岭—淮河线=800mm降水/1月0°C/水旱田分界。| 制约：洪涝、寒潮、水土流失。'
+  },
+  {
+    t:'🐑 西北干旱区（畜牧业主导）',c:'#E65100',bg:'#fff3e0',pct:'30%国土',
+    d:'范围：大兴安岭以西、长城—祁连山以北。| 条件：深居内陆、降水<400mm（大部<200mm）、温带大陆性气候、光照充足。| 特征：草原牧业（内蒙古东部）+山地牧业季节转场（天山）+灌溉/绿洲农业（河套、宁夏平原、河西走廊）。| 制约：水资源短缺→"有水就有农业"。'
+  },
+  {
+    t:'🏔️ 青藏高寒区（高寒牧业+河谷农业）',c:'#1565C0',bg:'#e3f2fd',pct:'25%国土',
+    d:'范围：青藏高原（西藏、青海、川西、滇西北）。| 条件：海拔>4000m、年均温<0°C、热量不足但日照强+昼夜温差大。| 特征：牦牛/藏绵羊耐寒牧业+雅鲁藏布江/湟水河谷种植青稞/小麦/油菜。| 制约：热量不足（低温冻害）是根本限制因素。'
+  },
+];
+
+/* ============ 世界农业地域 ============ */
+const worldAgriByLat = [
+  ['热带','热带雨林迁移农业(亚马孙/刚果)、热带种植园(东南亚橡胶油棕/西非可可)、水稻种植(东南亚/南亚季风区)'],
+  ['亚热带','地中海式农业(地中海沿岸/加州/智利/开普敦/澳洲西南:葡萄柑橘橄榄)、水稻(中国南方/美国南部)、混合农业(美国东南/澳洲东南)'],
+  ['温带','商品谷物(美国中部/加拿大/乌克兰/中国东北)、乳畜业(西欧/五大湖区/新西兰)、大牧场放牧(美国西部/阿根廷/内蒙古)'],
+  ['寒带/干旱','粗放畜牧业(蒙古/中亚/澳大利亚内陆/非洲萨赫勒)、传统游牧业'],
+];
+
+const worldAgriByDev = [
+  ['发达国家','商品谷物(高度机械化大规模)、乳畜业(集约化工厂化)、大牧场(现代管理)、混合农业。特征:科技高+机械高+商品率高+受补贴影响大'],
+  ['发展中国家','水稻种植(小农精耕)、热带种植园(单一作物外资出口)、传统旱作(自给)、游牧。特征:劳动力密集+商品率低+受自然约束大+粮食安全挑战'],
+];
+
+/* ============ 美国农业带 ============ */
+const usBelts = [
+  ['🥛乳畜带','五大湖及东北','气候湿冷+土壤贫瘠','牛奶乳制品','市场(城市密集+冷链)'],
+  ['🌽玉米带','中央低平原中北部','夏季高温多雨+黑钙土','玉米(全球最大)','自然+饲料需求'],
+  ['🌾小麦带','大平原北部/南部','地势平坦+半干旱','小麦','地形+机械化+出口市场'],
+  ['🌿棉花带','东南部35°N以南','亚热带湿热+长生长期','棉花','热量+劳动力(历史)'],
+  ['🐄混合带','玉米带以南','过渡带+温和','玉米大豆养猪','多元化抗风险'],
+  ['🏜️畜牧灌溉','西部落基山区','干旱+地广人稀','肉牛绵羊','水源决定分布'],
+];
+
+/* ============ 澳洲混合农业 ============ */
+const ausMix = [
+  {t:'📋 特征',c:'#2E7D32',bg:'#e8f5e9',d:'墨累-达令河流域(温带)+西南部(地中海)。农场数千公顷，家庭经营，极高机械化。轮作:小麦→牧草(豆科固氮)→放牧绵羊→再种小麦，形成"小麦→牧草→羊→小麦"循环。'},
+  {t:'🎯 区位',c:'#E65100',bg:'#fff3e0',d:'地势平坦(大自流盆地)+温带气候+降水300-600mm(旱作边界)。地广人稀(3人/km²)+机械化+近港口出口+政府补贴。'},
+  {t:'✅ 三大优势',c:'#283593',bg:'#e8eaf6',d:'①时间互补:小麦忙季(秋播春夏收)与牧羊忙季(春剪毛秋配种)错开，劳力均衡。②风险对冲:小麦/羊毛两市场独立→东方不亮西方亮。③生态循环:秸秆饲料→羊粪还田→豆科固氮→减化肥。"以农养牧、以牧促农"。'},
+  {t:'⚠️ 制约',c:'#AD1457',bg:'#fce4ec',d:'①水资源短缺→过度灌溉→土壤盐碱化(最大生态威胁)。②距国际市场远运输成本高。③厄尔尼诺→周期性干旱(如2003-2012千年干旱)。'},
+];
+
 const AgriculturalLocation: React.FC = () => {
   const exportRef = useRef<HTMLDivElement>(null);
   const [selectedId, setSelectedId] = useState('rice');
-
-  const agri = agricultureTypes.find((a) => a.id === selectedId) || agricultureTypes[0];
+  const [tab, setTab] = useState(0);
+  const agri = agricultureTypes.find(a => a.id === selectedId) || agricultureTypes[0];
 
   const naturalChartData = {
-    labels: agri.naturalFactors.map((f) => f.name),
-    datasets: [{
-      label: '自然因素权重',
-      data: agri.naturalFactors.map((f) => f.weight),
-      backgroundColor: 'rgba(46,125,50,0.6)',
-      borderColor: '#2E7D32',
-      borderWidth: 1,
-    }],
+    labels: agri.naturalFactors.map(f => f.name),
+    datasets: [{ label:'自然因素权重', data:agri.naturalFactors.map(f=>f.weight), backgroundColor:'rgba(46,125,50,0.6)', borderColor:'#2E7D32', borderWidth:1 }],
   };
-
   const humanChartData = {
-    labels: agri.humanFactors.map((f) => f.name),
-    datasets: [{
-      label: '人文因素权重',
-      data: agri.humanFactors.map((f) => f.weight),
-      backgroundColor: 'rgba(245,124,0,0.6)',
-      borderColor: '#F57C00',
-      borderWidth: 1,
-    }],
+    labels: agri.humanFactors.map(f => f.name),
+    datasets: [{ label:'人文因素权重', data:agri.humanFactors.map(f=>f.weight), backgroundColor:'rgba(245,124,0,0.6)', borderColor:'#F57C00', borderWidth:1 }],
   };
 
   return (
     <ToolPageLayout title="农业区位图解" exportRef={exportRef}>
-      <Box ref={exportRef} sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 2, width: '100%' }}>
-        <Box sx={{ flex: 1 }}>
-          <FormControl size="small" sx={{ minWidth: 200, mb: 2 }}>
+      {/* ========== 上半部: 2列布局 ========== */}
+      <Box ref={exportRef} sx={{ display:'flex', flexDirection:{xs:'column',md:'row'}, gap:2, width:'100%' }}>
+        <Box sx={{ flex:1 }}>
+          <FormControl size="small" sx={{ minWidth:200, mb:2 }}>
             <InputLabel>农业类型</InputLabel>
-            <Select value={selectedId} label="农业类型" onChange={(e) => setSelectedId(e.target.value)}>
-              {agricultureTypes.map((a) => (
-                <MenuItem key={a.id} value={a.id}>{a.name}</MenuItem>
-              ))}
+            <Select value={selectedId} label="农业类型" onChange={e => setSelectedId(e.target.value)}>
+              {agricultureTypes.map(a => <MenuItem key={a.id} value={a.id}>{a.name}</MenuItem>)}
             </Select>
           </FormControl>
-
-          <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 1 }}>自然因素</Typography>
-          <div style={{ height: 180 }}>
-            <Bar data={naturalChartData} options={{
-              responsive: true, maintainAspectRatio: false,
-              plugins: { legend: { display: false } },
-              scales: { y: { max: 0.5, title: { display: true, text: '权重' } } },
-            }} />
-          </div>
-
-          <Typography variant="subtitle2" sx={{ fontWeight: 700, mt: 2, mb: 1 }}>人文因素</Typography>
-          <div style={{ height: 180 }}>
-            <Bar data={humanChartData} options={{
-              responsive: true, maintainAspectRatio: false,
-              plugins: { legend: { display: false } },
-              scales: { y: { max: 0.5, title: { display: true, text: '权重' } } },
-            }} />
-          </div>
+          <Typography variant="subtitle2" sx={{ fontWeight:700, mb:1 }}>🌿 自然因素</Typography>
+          <div style={{ height:160 }}><Bar data={naturalChartData} options={{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{y:{max:0.5,title:{display:true,text:'权重'}}}} } /></div>
+          <Typography variant="subtitle2" sx={{ fontWeight:700, mt:2, mb:1 }}>👥 人文因素</Typography>
+          <div style={{ height:160 }}><Bar data={humanChartData} options={{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{y:{max:0.5,title:{display:true,text:'权重'}}}} } /></div>
         </Box>
 
-        <Box sx={{ flex: 1 }}>
-          <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 1 }}>
-            {agri.name} · 因素详解
-          </Typography>
-
-          <Box sx={{ mb: 2 }}>
-            <Typography variant="subtitle2" sx={{ color: '#2E7D32', fontWeight: 700 }}>🌿 自然因素</Typography>
-            {agri.naturalFactors
-              .sort((a, b) => b.weight - a.weight)
-              .map((f, i) => (
-                <Box key={i} sx={{ display: 'flex', alignItems: 'center', gap: 1, my: 0.5 }}>
-                  <Typography variant="body2" sx={{ minWidth: 50, fontWeight: 600 }}>{f.name}</Typography>
-                  <Box sx={{ flex: 1, height: 10, bgcolor: '#e8f5e9', borderRadius: 5, overflow: 'hidden' }}>
-                    <Box sx={{ width: `${f.weight * 100}%`, height: '100%', bgcolor: '#2E7D32', borderRadius: 5 }} />
+        {/* 右: 因素详解 */}
+        <Box sx={{ flex:1 }}>
+          <Typography variant="subtitle2" sx={{ fontWeight:700, mb:1 }}>{agri.name} · 因素详解</Typography>
+          {(['natural','human'] as const).map((type, idx) => {
+            const factors = type==='natural' ? agri.naturalFactors : agri.humanFactors;
+            const color = type==='natural' ? '#2E7D32' : '#F57C00';
+            const bg = type==='natural' ? '#e8f5e9' : '#fff3e0';
+            const icon = type==='natural' ? '🌿 自然因素' : '👥 人文因素';
+            return (
+              <Box key={idx} sx={{mb:1.5}}>
+                <Typography variant="subtitle2" sx={{color,fontWeight:700,mb:0.5}}>{icon}</Typography>
+                {factors.sort((a,b)=>b.weight-a.weight).map((f,i)=>(
+                  <Box key={i} sx={{display:'flex',alignItems:'center',gap:1,my:0.4}}>
+                    <Typography variant="body2" sx={{minWidth:50,fontWeight:600,fontSize:13}}>{f.name}</Typography>
+                    <Box sx={{flex:1,height:8,bgcolor:bg,borderRadius:4,overflow:'hidden'}}>
+                      <Box sx={{width:`${f.weight*100}%`,height:'100%',bgcolor:color,borderRadius:4}}/>
+                    </Box>
+                    <Typography variant="caption">{(f.weight*100).toFixed(0)}%</Typography>
                   </Box>
-                  <Typography variant="caption" sx={{ minWidth: 35 }}>{(f.weight * 100).toFixed(0)}%</Typography>
-                </Box>
-              ))}
-          </Box>
-
-          <Box sx={{ mb: 2 }}>
-            <Typography variant="subtitle2" sx={{ color: '#F57C00', fontWeight: 700 }}>👥 人文因素</Typography>
-            {agri.humanFactors
-              .sort((a, b) => b.weight - a.weight)
-              .map((f, i) => (
-                <Box key={i} sx={{ display: 'flex', alignItems: 'center', gap: 1, my: 0.5 }}>
-                  <Typography variant="body2" sx={{ minWidth: 50, fontWeight: 600 }}>{f.name}</Typography>
-                  <Box sx={{ flex: 1, height: 10, bgcolor: '#fff3e0', borderRadius: 5, overflow: 'hidden' }}>
-                    <Box sx={{ width: `${f.weight * 100}%`, height: '100%', bgcolor: '#F57C00', borderRadius: 5 }} />
-                  </Box>
-                  <Typography variant="caption" sx={{ minWidth: 35 }}>{(f.weight * 100).toFixed(0)}%</Typography>
-                </Box>
-              ))}
-          </Box>
-
-          <Box sx={{ p: 1.5, bgcolor: '#e8f5e9', borderRadius: 2 }}>
-            {agri.detailDesc && (
-              <Typography variant="body2" sx={{ mb: 1, fontStyle: 'italic' }}>
-                📖 {agri.detailDesc}
-              </Typography>
-            )}
-            {agri.naturalFactors.map((f, i) => (
-              <Typography key={`n${i}`} variant="body2" sx={{ mb: 0.3 }}>
-                <b>{f.name}</b>：{f.description}
-              </Typography>
-            ))}
-            {agri.humanFactors.map((f, i) => (
-              <Typography key={`h${i}`} variant="body2" sx={{ mb: 0.3 }}>
-                <b>{f.name}</b>：{f.description}
-              </Typography>
-            ))}
-          </Box>
-
-          {/* Examples */}
-          {agri.examples && agri.examples.length > 0 && (
-            <Box sx={{ mt: 2, p: 1.5, bgcolor: '#e8eaf6', borderRadius: 2 }}>
-              <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#283593', mb: 0.5 }}>
-                🌍 典型分布区域
-              </Typography>
-              {agri.examples.map((ex, i) => (
-                <Typography key={i} variant="body2" sx={{ mb: 0.3 }}>
-                  • {ex}
-                </Typography>
-              ))}
+                ))}
+              </Box>
+            );
+          })}
+          {agri.detailDesc && (
+            <Box sx={{p:1.5,bgcolor:'#e8f5e9',borderRadius:2,mb:1.5}}>
+              <Typography variant="body2" sx={{fontSize:13,fontStyle:'italic'}}>📖 {agri.detailDesc}</Typography>
             </Box>
           )}
-
-          {/* Gaokao Tips */}
           {agri.gaokaoTips && (
-            <Box sx={{ mt: 2, p: 1.5, bgcolor: '#fff8e1', borderRadius: 2, borderLeft: '4px solid #FF8F00' }}>
-              <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#E65100', mb: 0.5 }}>
-                💡 学习提示 (Gaokao Tips)
-              </Typography>
-              <Typography variant="body2">
-                {agri.gaokaoTips}
-              </Typography>
+            <Box sx={{p:1.5,bgcolor:'#fff8e1',borderRadius:2,borderLeft:'3px solid #FF8F00'}}>
+              <Typography variant="subtitle2" sx={{fontWeight:700,color:'#E65100',mb:0.3}}>💡 高考提示</Typography>
+              <Typography variant="body2" sx={{fontSize:13}}>{agri.gaokaoTips}</Typography>
+            </Box>
+          )}
+          {agri.examples && agri.examples.length>0 && (
+            <Box sx={{mt:1.5}}>
+              <Typography variant="subtitle2" sx={{fontWeight:700,mb:0.5}}>🌍 典型分布</Typography>
+              <Box sx={{display:'flex',flexWrap:'wrap',gap:0.5}}>
+                {agri.examples.map((ex,i)=><Chip key={i} label={ex} size="small" sx={{bgcolor:'#e8eaf6',fontSize:12}} />)}
+              </Box>
             </Box>
           )}
         </Box>
       </Box>
 
-      {/* 中国农业地域差异 */}
-      <Box sx={{ mt: 3, width: '100%' }}>
-        <Typography variant="h6" sx={{ fontWeight: 700, mb: 1.5, color: '#2E7D32' }}>
-          🌏 中国农业地域差异
-        </Typography>
-        <Typography variant="body2" sx={{ mb: 2, color: '#555' }}>
-          中国幅员辽阔，自然条件差异显著，农业生产呈现<b>东部季风区、西北干旱区、青藏高寒区</b>三大地域分异格局。这是高考\"中国地理\"部分的核心考点。
-        </Typography>
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-          <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 32%' }, p: 2, bgcolor: '#e8f5e9', borderRadius: 2, border: '1px solid #a5d6a7' }}>
-            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#2E7D32' }}>🌾 东部季风区（种植业为主）</Typography>
-            <Typography variant="caption" sx={{ color: '#2E7D32', display: 'block', mb: 1 }}>约占国土面积45%，承载95%以上人口</Typography>
-            <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#555', lineHeight: 1.6 }}>
-              <b>范围：</b>大兴安岭—阴山—贺兰山—巴颜喀拉山—冈底斯山以东以南（季风区与非季风区分界线）。<br/>
-              <b>自然条件：</b>季风气候显著，雨热同期，降水&gt;400mm；平原、盆地和低缓丘陵为主。<br/>
-              <b>农业特征：</b>以种植业为主，林业和渔业发达。南北方差异明显：<br/>
-              · <b>北方</b>（秦岭—淮河以北）：旱地，小麦、玉米为主，一年一熟至两年三熟（长城以北一年一熟，华北两年三熟或一年两熟）；<br/>
-              · <b>南方</b>（秦岭—淮河以南）：水田，水稻为主，一年两熟至三熟（长江中下游一年两熟，华南一年三熟）。<br/>
-              <b>秦岭—淮河线</b>是中国最重要的农业分界线：800mm等降水量线、1月0°C等温线、水田与旱地分界线、南方与北方分界线。
-            </Typography>
-          </Box>
-          <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 32%' }, p: 2, bgcolor: '#fff3e0', borderRadius: 2, border: '1px solid #ffcc80' }}>
-            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#E65100' }}>🐑 西北干旱区（畜牧业为主）</Typography>
-            <Typography variant="caption" sx={{ color: '#E65100', display: 'block', mb: 1 }}>约占国土面积30%，人口稀少</Typography>
-            <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#555', lineHeight: 1.6 }}>
-              <b>范围：</b>大兴安岭以西，长城和昆仑山—阿尔金山—祁连山以北。<br/>
-              <b>自然条件：</b>深居内陆，距海遥远，降水稀少（&lt;400mm，大部分&lt;200mm）；温带大陆性气候，光照充足但干旱缺水；草原、荒漠草原和荒漠为主。<br/>
-              <b>农业特征：</b>以畜牧业（草原牧业）为主，灌溉农业（绿洲农业）沿河流分布。<br/>
-              · <b>牧区：</b>内蒙古东部（草原牧业）、新疆天山南北（山地牧业，季节转场）；<br/>
-              · <b>灌溉农业区：</b>河套平原（引黄河水）、宁夏平原（塞上江南）、河西走廊（祁连山冰雪融水）、新疆绿洲（塔里木盆地边缘）。主要作物：小麦、棉花（新疆长绒棉）、瓜果（哈密瓜、葡萄）。
-              <br/><b>制约因素：</b>水资源短缺是限制农业发展的决定性因素（\"有水就有农业\"）。
-            </Typography>
-          </Box>
-          <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 32%' }, p: 2, bgcolor: '#e3f2fd', borderRadius: 2, border: '1px solid #90caf9' }}>
-            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#1565C0' }}>🏔️ 青藏高寒区（高寒牧业+河谷农业）</Typography>
-            <Typography variant="caption" sx={{ color: '#1565C0', display: 'block', mb: 1 }}>约占国土面积25%，人口极为稀少</Typography>
-            <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#555', lineHeight: 1.6 }}>
-              <b>范围：</b>青藏高原（西藏、青海、四川西部、云南西北部）。<br/>
-              <b>自然条件：</b>海拔高（平均&gt;4000m），气温低（年均温&lt;0°C），热量严重不足；日照时间长，太阳辐射强；空气稀薄，昼夜温差大。<br/>
-              <b>农业特征：</b>以高寒畜牧业为主，河谷地区有零星种植业。<br/>
-              · <b>高寒牧业：</b>牦牛、藏绵羊、藏山羊，耐寒耐粗饲，主要分布在高原面上；<br/>
-              · <b>河谷农业：</b>雅鲁藏布江谷地、湟水谷地，海拔较低（3000-4000m），热量条件较好，种植青稞、小麦、油菜。<br/>
-              · 独特优势：日照时间长、昼夜温差大，有利于作物养分积累（青稞品质优良）。
-              <br/><b>制约因素：</b>热量不足（低温冻害严重）是青藏高寒区农业生产的根本限制因素。
-            </Typography>
-          </Box>
-        </Box>
-      </Box>
+      {/* ========== 下半部: Tab标签切换 ========== */}
+      <Box sx={{ mt:3, width:'100%' }}>
+        <Tabs value={tab} onChange={(_,v)=>setTab(v)} variant="scrollable" scrollButtons="auto"
+          sx={{ mb:2, '& .MuiTab-root':{minWidth:90,fontSize:13,fontWeight:600,textTransform:'none'} }}>
+          <Tab label="🇨🇳 中国农业" />
+          <Tab label="🗺️ 世界分布" />
+          <Tab label="🇺🇸🇦🇺 美澳案例" />
+          <Tab label="🌱 可持续发展" />
+        </Tabs>
 
-      {/* 世界主要农业地域类型分布 */}
-      <Box sx={{ mt: 3, width: '100%' }}>
-        <Typography variant="h6" sx={{ fontWeight: 700, mb: 1.5, color: '#2E7D32' }}>
-          🗺️ 世界主要农业地域类型分布
-        </Typography>
-        <Typography variant="body2" sx={{ mb: 2, color: '#555' }}>
-          全球农业地域类型分布与气候带、经济发展水平密切相关。掌握各类型的<b>空间分布格局</b>是高考读图分析和综合题的基础。
-        </Typography>
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-          <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 48%' }, p: 2, bgcolor: '#f9fbe7', borderRadius: 2, border: '1px solid #dce775' }}>
-            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#827717' }}>🌍 按纬度带分布</Typography>
-            <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#555', lineHeight: 1.6 }}>
-              <b>热带地区（南北回归线之间）：</b>热带雨林迁移农业（亚马孙、刚果盆地）、热带种植园农业（东南亚橡胶、油棕；西非可可；中美洲香蕉；巴西咖啡）、水稻种植业（东南亚、南亚季风区）。<br/><br/>
-              <b>亚热带地区（南北纬23.5°-35°）：</b>地中海式农业（地中海沿岸、美国加州、澳大利亚西南、南非开普敦、智利中部，以葡萄、柑橘、油橄榄为特色）；水稻种植业（中国南方、美国南部）；混合农业（美国东南部、澳大利亚东南部）。<br/><br/>
-              <b>温带地区（南北纬35°-55°）：</b>商品谷物农业（美国中部、加拿大、乌克兰、中国东北、阿根廷潘帕斯南部）；乳畜业（西欧、北美五大湖区、新西兰）；混合农业（欧洲西部）；大牧场放牧业（美国西部、阿根廷潘帕斯、中国内蒙古）。<br/><br/>
-              <b>寒带/干旱区：</b>粗放畜牧业（蒙古高原、中亚、澳大利亚内陆、非洲萨赫勒地带）；传统游牧业。
-            </Typography>
+        {/* Tab 0: 中国农业 */}
+        {tab === 0 && (
+          <Box sx={{display:'flex',flexWrap:'wrap',gap:2}}>
+            {chinaZones.map((z,i)=>(
+              <Card key={i} sx={{flex:{xs:'1 1 100%',md:'1 1 32%'},bgcolor:z.bg,border:`1px solid ${z.c}40`}}>
+                <CardContent sx={{p:2,'&:last-child':{pb:2}}}>
+                  <Typography variant="subtitle2" sx={{fontWeight:700,color:z.c}}>{z.t}</Typography>
+                  <Chip label={z.pct} size="small" sx={{bgcolor:`${z.c}18`,color:z.c,fontSize:10,mt:0.5,mb:1}} />
+                  {z.d.split('|').map((line,j)=>(
+                    <Typography key={j} variant="body2" sx={{fontSize:13,lineHeight:1.7,mt:j>0?0.5:0}}>{line}</Typography>
+                  ))}
+                </CardContent>
+              </Card>
+            ))}
+            <Box sx={{width:'100%',p:1.5,bgcolor:'#e8f5e9',borderRadius:2}}>
+              <Typography variant="body2" sx={{fontSize:13}}>
+                <b>📌 关键分界线：</b>秦岭—淮河线 = 800mm降水 + 1月0°C + 水田/旱田 + 南/北方分界线。大兴安岭—阴山—贺兰山—巴颜喀拉山—冈底斯山 = 季风/非季风 + 种植/畜牧分界。
+              </Typography>
+            </Box>
           </Box>
-          <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 48%' }, p: 2, bgcolor: '#fce4ec', borderRadius: 2, border: '1px solid #f8bbd0' }}>
-            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#AD1457' }}>🏗️ 按经济发展水平分布</Typography>
-            <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#555', lineHeight: 1.6 }}>
-              <b>发达国家：</b><br/>
-              · 商品谷物农业：高度机械化、大规模经营（美国、加拿大、澳大利亚）；<br/>
-              · 乳畜业：集约化、工厂化生产（西欧、新西兰、北美五大湖区）；<br/>
-              · 大牧场放牧业：现代牧场管理（美国西部、澳大利亚、新西兰）；<br/>
-              · 混合农业：农牧结合，灵活应对市场（欧洲、澳大利亚）。<br/>
-              特征：科技水平高，机械化程度高，商品率高，受政府补贴政策影响大。<br/><br/>
-              <b>发展中国家：</b><br/>
-              · 水稻种植业：小农经营、精耕细作（东亚、东南亚、南亚）；<br/>
-              · 热带种植园农业：单一作物、外资控制、出口导向（东南亚、非洲、拉丁美洲）；<br/>
-              · 传统旱作农业：自给自足（非洲撒哈拉以南、南亚内陆）；<br/>
-              · 游牧业：逐水草而居（非洲萨赫勒地带、中亚、蒙古高原）。<br/>
-              特征：劳动力密集，商品率相对较低，受自然条件约束大，面临粮食安全挑战。
-            </Typography>
-          </Box>
-        </Box>
-      </Box>
+        )}
 
-      {/* 农业区位因素变化 */}
-      <Box sx={{ mt: 3, width: '100%' }}>
-        <Typography variant="h6" sx={{ fontWeight: 700, mb: 1.5, color: '#2E7D32' }}>
-          📊 农业区位因素的变化趋势
-        </Typography>
-        <Typography variant="body2" sx={{ mb: 2, color: '#555' }}>
-          与工业区位类似，农业区位因素也在动态变化中。传统自然因素（气候、地形、土壤、水源）的基础性作用依然存在，但<b>市场、交通、技术</b>等人文因素的影响力不断上升。
-        </Typography>
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-          <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 31%' }, p: 2, bgcolor: '#e8eaf6', borderRadius: 2, border: '1px solid #c5cae9' }}>
-            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#283593' }}>🛒 市场影响力上升</Typography>
-            <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#555', lineHeight: 1.6 }}>
-              <b>城市化和消费升级</b>推动农业市场化程度不断提高：<br/>
-              · 城市周边农业从粮食生产转向蔬菜、花卉、乳畜产品等<b>城郊农业</b>（经济收益更高）；<br/>
-              · 市场需求决定农业生产类型和规模——如\"订单农业\"；<br/>
-              · 国际市场需求催生<b>出口导向型农业</b>（如荷兰花卉、智利车厘子、泰国热带水果）；<br/>
-              · <b>农业品牌化</b>：从卖产品到卖品牌（如五常大米、阳澄湖大闸蟹、西湖龙井茶）。
-            </Typography>
-          </Box>
-          <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 31%' }, p: 2, bgcolor: '#fff3e0', borderRadius: 2, border: '1px solid #ffcc80' }}>
-            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#E65100' }}>🚄 交通影响力上升</Typography>
-            <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#555', lineHeight: 1.6 }}>
-              <b>现代物流和冷链技术</b>极大拓宽了农产品的市场半径：<br/>
-              · 高速公路和高速铁路网缩短了产地到消费地的时空距离；<br/>
-              · <b>冷链物流</b>使鲜活农产品（鲜奶、蔬菜、水果、海鲜）可以跨区域甚至跨洲运输；<br/>
-              · 集装箱化和多式联运降低了运输成本，促进了农业地域专业化；<br/>
-              · 典型案例：荷兰鲜花通过冷链航空运往全球（阿姆斯特丹鲜花拍卖市场），中国寿光蔬菜通过\"绿色通道\"辐射华北。
-            </Typography>
-          </Box>
-          <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 31%' }, p: 2, bgcolor: '#e0f2f1', borderRadius: 2, border: '1px solid #b2dfdb' }}>
-            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#00695C' }}>🔬 技术影响力上升</Typography>
-            <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#555', lineHeight: 1.6 }}>
-              <b>农业科技进步</b>正在重塑农业区位格局：<br/>
-              · <b>温室和设施农业</b>突破自然条件限制（如荷兰温室蔬菜、以色列沙漠农业、中国寿光大棚）；<br/>
-              · <b>滴灌和喷灌技术</b>使干旱区也能发展高效农业（如以色列、中国新疆）；<br/>
-              · <b>品种改良</b>（杂交水稻、转基因抗虫棉、耐寒品种）扩大作物适宜种植范围；<br/>
-              · <b>精准农业</b>（GPS导航、无人机植保、物联网监控）提升农业生产效率；<br/>
-              · 技术使\"不适宜区\"变为\"适宜区\"，自然因素的限制作用在弱化。
-            </Typography>
-          </Box>
-        </Box>
-        <Box sx={{ mt: 2, p: 1.5, bgcolor: '#fff8e1', borderRadius: 2, borderLeft: '4px solid #FF8F00' }}>
-          <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#E65100' }}>
-            <b>💡 高考答题模板：</b>分析农业区位因素变化——①自然因素：相对稳定（但温室、灌溉等技术可局部改变）；②市场：决定农业生产<b>类型和规模</b>（核心动力）；③交通：扩大<b>市场半径</b>，促进专业化；④技术：降低<b>自然条件约束</b>，提高生产效率。综合题常要求\"说明某地农业区位因素的变化及其影响\"。
-          </Typography>
-        </Box>
-      </Box>
+        {/* Tab 1: 世界分布 */}
+        {tab === 1 && (
+          <Box sx={{display:'flex',flexWrap:'wrap',gap:2}}>
+            <Card sx={{flex:{xs:'1 1 100%',md:'1 1 48%'},bgcolor:'#f9fbe7',border:'1px solid #dce775'}}>
+              <CardContent sx={{p:2,'&:last-child':{pb:2}}}>
+                <Typography variant="subtitle2" sx={{fontWeight:700,color:'#827717',mb:1}}>🌍 按纬度带分布</Typography>
+                {worldAgriByLat.map((row,i)=>(
+                  <Box key={i} sx={{mb:1}}>
+                    <Chip label={row[0]} size="small" sx={{fontSize:11,fontWeight:600,mb:0.3,bgcolor:'#f0f4c3'}} />
+                    <Typography variant="body2" sx={{fontSize:13}}>{row[1]}</Typography>
+                  </Box>
+                ))}
+              </CardContent>
+            </Card>
 
-      {/* 美国农业带分布 */}
-      <Box sx={{ mt: 3, width: '100%' }}>
-        <Typography variant="h6" sx={{ fontWeight: 700, mb: 1.5, color: '#2E7D32' }}>
-          🇺🇸 美国农业带分布（高考世界地理必考）
-        </Typography>
-        <Typography variant="body2" sx={{ mb: 2, color: '#555' }}>
-          美国农业地域专业化程度世界最高，形成<b>因地制宜、高度商品化</b>的农业带格局。掌握各农业带的空间分布和区位条件，是高考读图题的必备知识。
-        </Typography>
-        <Box sx={{ overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '10px' }}>
-            <thead>
-              <tr style={{ backgroundColor: '#c8e6c9' }}>
-                <th style={{ border: '1px solid #a5d6a7', padding: '4px 6px', textAlign: 'center' }}>农业带</th>
-                <th style={{ border: '1px solid #a5d6a7', padding: '4px 6px', textAlign: 'center' }}>分布位置</th>
-                <th style={{ border: '1px solid #a5d6a7', padding: '4px 6px', textAlign: 'center' }}>自然条件</th>
-                <th style={{ border: '1px solid #a5d6a7', padding: '4px 6px', textAlign: 'center' }}>主要产品</th>
-                <th style={{ border: '1px solid #a5d6a7', padding: '4px 6px', textAlign: 'center' }}>区位核心因素</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px', fontWeight: 700 }}>🥛 乳畜带</td>
-                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>五大湖及东北部地区</td>
-                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>气候湿冷（适合牧草生长）、土壤贫瘠</td>
-                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>牛奶、乳制品（鲜奶为主）</td>
-                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px', color: '#c62828' }}><b>市场</b>（城市群密集+冷冻技术）</td>
-              </tr>
-              <tr style={{ backgroundColor: '#e8f5e9' }}>
-                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px', fontWeight: 700 }}>🌽 玉米带</td>
-                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>乳畜带以南、中央低平原中北部</td>
-                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>温带大陆性气候、夏季高温多雨、土壤肥沃（黑钙土）</td>
-                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>玉米（全球最大生产/出口国）</td>
-                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>自然条件优越+畜牧业饲料需求</td>
-              </tr>
-              <tr>
-                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px', fontWeight: 700 }}>🌾 小麦带</td>
-                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>大平原北部（春小麦）和南部（冬小麦）</td>
-                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>地势平坦开阔、半干旱气候、机械化条件好</td>
-                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>小麦（全球最大出口国之一）</td>
-                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>地形+机械化+国际市场</td>
-              </tr>
-              <tr style={{ backgroundColor: '#e8f5e9' }}>
-                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px', fontWeight: 700 }}>🌿 棉花带</td>
-                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>东南部（北纬35°以南的东部地区）</td>
-                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>亚热带湿润气候、热量充足、生长期长</td>
-                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>棉花（历史棉区→向西迁移至德州）</td>
-                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>热量+劳动力（历史因素）</td>
-              </tr>
-              <tr>
-                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px', fontWeight: 700 }}>🐄 混合农业带</td>
-                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>玉米带以南、棉花带以北</td>
-                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>过渡地带，气候温和、降水适中</td>
-                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>玉米+大豆+养猪（种养结合）</td>
-                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>多样化经营抗风险+市场灵活</td>
-              </tr>
-              <tr style={{ backgroundColor: '#e8f5e9' }}>
-                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px', fontWeight: 700 }}>🏜️ 畜牧与灌溉农业带</td>
-                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>西部落基山脉及山间高原盆地</td>
-                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>干旱少雨、地广人稀、草原/荒漠</td>
-                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>肉牛、绵羊（粗放畜牧业）</td>
-                <td style={{ border: '1px solid #a5d6a7', padding: '4px 6px' }}>水源（灌溉决定农业分布）</td>
-              </tr>
-            </tbody>
-          </table>
-        </Box>
-        <Typography variant="body2" sx={{ color: '#757575', fontSize: '0.7rem', mt: 0.5 }}>
-          💡 美国农业带核心规律：<b>从东向西</b>——乳畜带→玉米带→小麦带→畜牧/灌溉带，体现了<b>水分递减</b>（降水从1000mm→250mm）和<b>热量纬度差异</b>的综合作用。农业专门化程度世界最高，商品率&gt;95%。
-        </Typography>
-      </Box>
+            <Card sx={{flex:{xs:'1 1 100%',md:'1 1 48%'},bgcolor:'#fce4ec',border:'1px solid #f8bbd0'}}>
+              <CardContent sx={{p:2,'&:last-child':{pb:2}}}>
+                <Typography variant="subtitle2" sx={{fontWeight:700,color:'#AD1457',mb:1}}>🏗️ 按经济发展水平</Typography>
+                {worldAgriByDev.map((row,i)=>(
+                  <Box key={i} sx={{mb:1}}>
+                    <Chip label={row[0]} size="small" sx={{fontSize:11,fontWeight:600,mb:0.3,bgcolor:'#f8bbd0'}} />
+                    <Typography variant="body2" sx={{fontSize:13}}>{row[1]}</Typography>
+                  </Box>
+                ))}
+              </CardContent>
+            </Card>
 
-      {/* 澳大利亚混合农业 */}
-      <Box sx={{ mt: 3, width: '100%' }}>
-        <Typography variant="h6" sx={{ fontWeight: 700, mb: 1.5, color: '#2E7D32' }}>
-          🇦🇺 澳大利亚混合农业——小麦-牧羊模式详解（高考经典案例）
-        </Typography>
-        <Typography variant="body2" sx={{ mb: 2, color: '#555' }}>
-          澳大利亚东南部和西南部的<b>小麦-牧羊混合农业</b>是世界混合农业的典范，被誉为高考农业地理的"经典母题"。掌握其区位条件、经营特点和优势，是农业区位分析的必修课。
-        </Typography>
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-          <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 48%' }, p: 2, bgcolor: '#e8f5e9', borderRadius: 2, border: '1px solid #a5d6a7' }}>
-            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#2E7D32' }}>📋 基本特征</Typography>
-            <Typography variant="body2" sx={{ fontSize: '0.75rem', color: '#555', lineHeight: 1.7 }}>
-              <b>分布：</b>澳大利亚东南部墨累-达令河流域（温带地区）和西南部（地中海气候区）。<br/>
-              <b>经营模式：</b>一块土地上<b>混合种植小麦和饲养绵羊</b>。农场规模大（平均数千公顷），家庭经营为主，机械化程度极高。<br/>
-              <b>轮作制度：</b>小麦与牧草（豆科）轮作——种几年小麦→牧草恢复地力→放牧绵羊→再种小麦。形成\"<b>小麦→牧草→羊→小麦</b>\"的良性循环。
-            </Typography>
+            {/* 区位因素变化 */}
+            <Card sx={{flex:'1 1 100%',bgcolor:'#e8eaf6',border:'1px solid #c5cae9'}}>
+              <CardContent sx={{p:2,'&:last-child':{pb:2}}}>
+                <Typography variant="subtitle2" sx={{fontWeight:700,color:'#283593',mb:1}}>📊 农业区位因素变化趋势</Typography>
+                <Box sx={{display:'flex',flexWrap:'wrap',gap:1.5}}>
+                  {[
+                    {t:'🛒 市场↑',d:'城市化→城郊农业(蔬菜/花卉/乳畜)。订单农业+品牌化(五常大米/阳澄湖大闸蟹)。国际需求→出口导向(荷兰花卉/智利车厘子)。'},
+                    {t:'🚄 交通↑',d:'冷链物流使鲜活品跨洲运输。高速路网缩短产地-消费地时距。集装箱化降低运费→促进地域专业化。'},
+                    {t:'🔬 技术↑',d:'温室/大棚突破季节限制。滴灌/喷灌(以色列沙漠农业)。品种改良(杂交水稻/耐寒品种)。精准农业(GPS+无人机+物联网)。技术使"不适宜区"变"适宜区"。'},
+                  ].map((ch,i)=>(
+                    <Box key={i} sx={{flex:{xs:'1 1 100%',md:'1 1 32%'},p:1.5,bgcolor:'#fff',borderRadius:1}}>
+                      <Typography variant="subtitle2" sx={{fontWeight:700,fontSize:13,mb:0.3}}>{ch.t}</Typography>
+                      <Typography variant="body2" sx={{fontSize:12.5}}>{ch.d}</Typography>
+                    </Box>
+                  ))}
+                </Box>
+              </CardContent>
+            </Card>
           </Box>
-          <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 48%' }, p: 2, bgcolor: '#fff3e0', borderRadius: 2, border: '1px solid #ffcc80' }}>
-            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#E65100' }}>🎯 区位优势分析</Typography>
-            <Typography variant="body2" sx={{ fontSize: '0.75rem', color: '#555', lineHeight: 1.7 }}>
-              <b>① 自然条件：</b>地势平坦开阔（大自流盆地），利于大规模机械化耕作。温带气候，冬季温和、夏季不太炎热，适合小麦生长。降水300-600mm（处于旱作农业的边界）。<br/>
-              <b>② 社会经济：</b>地广人稀（平均人口密度约3人/km²）、<b>机械化程度极高</b>（一个家庭可管理数千公顷）。距港口较近，出口便利。<br/>
-              <b>③ 政策支持：</b>政府鼓励农牧结合，提供农业补贴和技术推广。
-            </Typography>
-          </Box>
-          <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 48%' }, p: 2, bgcolor: '#e8eaf6', borderRadius: 2, border: '1px solid #c5cae9' }}>
-            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#283593' }}>✅ 三大优势（高考必背）</Typography>
-            <Typography variant="body2" sx={{ fontSize: '0.75rem', color: '#555', lineHeight: 1.7 }}>
-              <b>1. 时间互补——忙闲错开：</b>小麦种植的忙季（播种秋季、收获春夏）与牧羊忙季（剪羊毛春季、配种秋季）在不同月份，劳动力全年均衡利用，没有明显的农闲期。<br/>
-              <b>2. 风险对冲——\"东方不亮西方亮\"：</b>小麦和羊毛/羊肉是两个独立市场。小麦丰收→收入增加；若小麦歉收（干旱）→牧羊可弥补收入。经济弹性极强。<br/>
-              <b>3. 生态循环——可持续农业：</b>小麦秸秆用作饲料→羊粪还田作为有机肥→豆科牧草固氮恢复地力→减少化肥使用。实现<b>\"以农养牧、以牧促农\"</b>的良性生态循环。
-            </Typography>
-          </Box>
-          <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 48%' }, p: 2, bgcolor: '#fce4ec', borderRadius: 2, border: '1px solid #f8bbd0' }}>
-            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#AD1457' }}>⚠️ 制约因素</Typography>
-            <Typography variant="body2" sx={{ fontSize: '0.75rem', color: '#555', lineHeight: 1.7 }}>
-              <b>1. 水资源短缺：</b>墨累-达令河流域降水偏少（300-600mm），位于旱作农业的边界。过度引水灌溉导致<b>土壤盐碱化</b>，是最大的生态威胁。<br/>
-              <b>2. 距国际市场远：</b>小麦和羊毛主要面向出口，澳大利亚距欧美主要市场遥远，运输成本高。<br/>
-              <b>3. 干旱风险：</b>受厄尔尼诺现象影响，澳大利亚东南部常遭遇周期性干旱（如\"千年干旱\"2003-2012），对小麦产量影响巨大。
-            </Typography>
-          </Box>
-        </Box>
-        <Box sx={{ mt: 2, p: 1.5, bgcolor: '#fff8e1', borderRadius: 2, borderLeft: '4px solid #FF8F00' }}>
-          <Typography variant="body2" sx={{ fontSize: '0.8rem', color: '#E65100' }}>
-            <b>💡 高考经典命题角度：</b>①分析墨累-达令盆地混合农业的区位条件；②说明农牧混合的时间互补优势；③对比澳大利亚混合农业与中国北方农牧交错带（如内蒙古）的异同；④\"为什么说混合农业是可持续农业的典范？\"——从生态循环、经济弹性、劳力安排三个角度作答。
-          </Typography>
-        </Box>
-      </Box>
+        )}
 
-      {/* 农业可持续发展方向 */}
-      <Box sx={{ mt: 3, width: '100%' }}>
-        <Typography variant="h6" sx={{ fontWeight: 700, mb: 1.5, color: '#2E7D32' }}>
-          🌱 农业可持续发展方向
-        </Typography>
-        <Typography variant="body2" sx={{ mb: 2, color: '#555' }}>
-          面对人口增长、资源短缺和环境压力，现代农业正从"高产"向"高产+优质+生态+高效"转型。以下三种模式代表了农业可持续发展的核心路径。
-        </Typography>
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-          <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 32%' }, p: 2, bgcolor: '#e8f5e9', borderRadius: 2, border: '1px solid #a5d6a7' }}>
-            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#2E7D32', fontSize: '0.9rem' }}>
-              🌿 生态农业
-            </Typography>
-            <Typography variant="body2" sx={{ fontSize: '0.85rem', color: '#555', lineHeight: 1.7, mt: 0.5 }}>
-              <b>核心理念：</b>遵循生态学原理，实现农业生态系统内部的物质循环和能量多级利用。<br/>
-              <b>典型模式：</b>「桑基鱼塘」（珠江三角洲）——桑叶养蚕→蚕沙喂鱼→塘泥肥桑；「稻鱼共生」「稻鸭共育」；「猪—沼—果/菜」四位一体。<br/>
-              <b>优势：</b>减少化肥农药使用，保护农田生态，废弃物资源化利用，经济效益与生态效益兼顾。<br/>
-              <b>高考考点：</b>分析生态农业模式的物质循环路径；对比传统农业与生态农业的优缺点（如太湖平原「桑基鱼塘」vs 单一水稻种植）。
-            </Typography>
-          </Box>
-          <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 32%' }, p: 2, bgcolor: '#fff3e0', borderRadius: 2, border: '1px solid #ffcc80' }}>
-            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#E65100', fontSize: '0.9rem' }}>
-              🍃 有机农业
-            </Typography>
-            <Typography variant="body2" sx={{ fontSize: '0.85rem', color: '#555', lineHeight: 1.7, mt: 0.5 }}>
-              <b>核心理念：</b>在生产中完全不用或基本不用人工合成的化肥、农药、激素、转基因技术，遵循自然规律和生态学原理。<br/>
-              <b>关键技术：</b>绿肥轮作（豆科作物固氮）、生物防治（天敌昆虫治虫）、有机肥（堆肥、沼液）、物理防治（防虫网、诱虫灯）。<br/>
-              <b>市场定位：</b>高端市场，产品价格通常是普通农产品的2-5倍；需通过有机认证（中国有机产品认证标志）。<br/>
-              <b>局限性：</b>产量通常低于常规农业（低20-30%），劳动力投入大，价格高限制消费群体；面临「是否足以养活全球人口」的争议。
-            </Typography>
-          </Box>
-          <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 32%' }, p: 2, bgcolor: '#e3f2fd', borderRadius: 2, border: '1px solid #90caf9' }}>
-            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#1565C0', fontSize: '0.9rem' }}>
-              🛰️ 精准农业
-            </Typography>
-            <Typography variant="body2" sx={{ fontSize: '0.85rem', color: '#555', lineHeight: 1.7, mt: 0.5 }}>
-              <b>核心理念：</b>利用GPS、GIS、遥感（RS）、传感器和智能装备，对农田进行精细化、差异化管理——在正确的时间、正确的地点，按正确的量投入。<br/>
-              <b>典型技术：</b>无人机植保/巡田（多光谱成像识别病虫害）、变量施肥（根据土壤养分图精准投放）、自动驾驶农机、物联网墒情监测。<br/>
-              <b>优势：</b>节水节肥30-50%，减少农药用量，提高产量和品质；是解决「谁来种地」问题的技术路径。<br/>
-              <b>中国实践：</b>新疆棉花（北斗导航精量播种+无人机植保）、黑龙江农垦（大田物联网）、山东寿光（智能温室）。高考常结合「3S技术应用」命题。
-            </Typography>
-          </Box>
-        </Box>
-        <Box sx={{ mt: 2, p: 1.5, bgcolor: '#fff8e1', borderRadius: 2, borderLeft: '4px solid #FF8F00' }}>
-          <Typography variant="body2" sx={{ fontSize: '0.85rem', color: '#E65100' }}>
-            <b>💡 高考答题角度：</b>分析农业可持续发展——从<b>生态（减少污染/资源循环）、经济（提高效益/品牌化）、社会（食品安全/农民增收）</b>三个维度作答。常见设问：「某地区农业发展的可持续措施」「分析某种生态农业模式的效益」。关键词：循环经济、清洁生产、绿色农业、智慧农业。
-          </Typography>
-        </Box>
-      </Box>
+        {/* Tab 2: 美澳案例 */}
+        {tab === 2 && (
+          <Box sx={{display:'flex',flexWrap:'wrap',gap:2}}>
+            {/* 美国农业带 */}
+            <Card sx={{flex:{xs:'1 1 100%',md:'1 1 55%'},bgcolor:'#e8f5e9',border:'1px solid #a5d6a7'}}>
+              <CardContent sx={{p:2,'&:last-child':{pb:2}}}>
+                <Typography variant="subtitle2" sx={{fontWeight:700,color:'#2E7D32',mb:1}}>🇺🇸 美国农业带</Typography>
+                <Box sx={{overflowX:'auto'}}>
+                  <table style={{width:'100%',borderCollapse:'collapse',fontSize:12}}>
+                    <thead>
+                      <tr style={{backgroundColor:'#c8e6c9'}}>
+                        <th style={{border:'1px solid #a5d6a7',padding:4,textAlign:'center'}}>农业带</th>
+                        <th style={{border:'1px solid #a5d6a7',padding:4,textAlign:'center'}}>分布</th>
+                        <th style={{border:'1px solid #a5d6a7',padding:4,textAlign:'center'}}>核心因素</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {usBelts.map((r,i)=>(
+                        <tr key={i} style={{backgroundColor:i%2===0?'#fff':'#f1f8e9'}}>
+                          <td style={{border:'1px solid #ddd',padding:4,fontWeight:600}}>{r[0]}</td>
+                          <td style={{border:'1px solid #ddd',padding:4}}>{r[1]}</td>
+                          <td style={{border:'1px solid #ddd',padding:4,color:'#c62828'}}><b>{r[4]}</b></td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </Box>
+                <Typography variant="caption" sx={{color:'#757575',mt:1,display:'block',fontSize:12}}>
+                  💡 美国农业带从东到西(乳畜→玉米→小麦→畜牧)体现了水分递减(1000mm→250mm)和热量纬度差异。商品率&gt;95%。
+                </Typography>
+              </CardContent>
+            </Card>
 
+            {/* 澳洲混合农业 */}
+            <Card sx={{flex:{xs:'1 1 100%',md:'1 1 42%'},bgcolor:'#fff8e1',border:'1px solid #ffcc80'}}>
+              <CardContent sx={{p:2,'&:last-child':{pb:2}}}>
+                <Typography variant="subtitle2" sx={{fontWeight:700,color:'#E65100',mb:1}}>🇦🇺 澳洲小麦-牧羊混合农业</Typography>
+                {ausMix.map((a,i)=>(
+                  <Box key={i} sx={{p:1,mb:0.8,bgcolor:a.bg,borderRadius:1,border:`1px solid ${a.c}30`}}>
+                    <Typography variant="caption" sx={{fontWeight:700,color:a.c,fontSize:12}}>{a.t}</Typography>
+                    <Typography variant="body2" sx={{fontSize:12.5,mt:0.2}}>{a.d}</Typography>
+                  </Box>
+                ))}
+                <Box sx={{p:1,mt:1,bgcolor:'#FFF8E1',borderRadius:1,borderLeft:'3px solid #FF8F00'}}>
+                  <Typography variant="caption" sx={{fontSize:12}}>
+                    <b>💡 高考命题：</b>分析墨累-达令区位条件 / 说明时间互补优势 / 对比内蒙古农牧交错带 / "为什么混合农业是可持续典范？"
+                  </Typography>
+                </Box>
+              </CardContent>
+            </Card>
+          </Box>
+        )}
+
+        {/* Tab 3: 可持续发展 */}
+        {tab === 3 && (
+          <Box sx={{display:'flex',flexWrap:'wrap',gap:2}}>
+            {[
+              {t:'🌿 生态农业',c:'#2E7D32',bg:'#e8f5e9',
+               d:'遵循生态学原理，物质循环+能量多级利用。典型：「桑基鱼塘」(珠三角)→桑养蚕→蚕沙喂鱼→塘泥肥桑；「稻鱼共生」；「猪—沼—果」四位一体。优势：减化肥农药，废弃物资源化，经济+生态双赢。高考：分析物质循环路径，对比传统vs生态农业。'},
+              {t:'🍃 有机农业',c:'#E65100',bg:'#fff3e0',
+               d:'完全/基本不用人工合成化肥农药激素转基因。技术：绿肥轮作(豆科固氮)+生物防治(天敌)+有机肥(堆肥沼液)+物理防治。定位：高端市场，价格2-5倍常规。局限：产量低20-30%，劳动力大。争议："能否养活全球？"'},
+              {t:'🛰️ 精准农业',c:'#1565C0',bg:'#e3f2fd',
+               d:'利用GPS+GIS+RS+传感器+智能装备，精细化差异化管理。技术：无人机植保/巡田+变量施肥+自动驾驶农机+物联网墒情。优势：节水节肥30-50%，减药增产。中国：新疆棉花(北斗播种)、黑龙江农垦(物联网)、寿光(智能温室)。高考常结合3S技术命题。'},
+            ].map((c,i)=>(
+              <Card key={i} sx={{flex:{xs:'1 1 100%',md:'1 1 32%'},bgcolor:c.bg,border:`1px solid ${c.c}40`}}>
+                <CardContent sx={{p:2,'&:last-child':{pb:2}}}>
+                  <Typography variant="subtitle2" sx={{fontWeight:700,color:c.c,fontSize:15,mb:0.5}}>{c.t}</Typography>
+                  <Typography variant="body2" sx={{fontSize:13,lineHeight:1.7}}>{c.d}</Typography>
+                </CardContent>
+              </Card>
+            ))}
+            <Box sx={{width:'100%',p:1.5,bgcolor:'#fff8e1',borderRadius:2,borderLeft:'3px solid #FF8F00'}}>
+              <Typography variant="body2" sx={{fontSize:13}}>
+                <b>💡 答题三维度：</b>生态(减污/资源循环) + 经济(提效/品牌化) + 社会(食品安全/农民增收)。关键词：循环经济、清洁生产、绿色农业、智慧农业。
+              </Typography>
+            </Box>
+          </Box>
+        )}
+      </Box>
     </ToolPageLayout>
   );
 };
